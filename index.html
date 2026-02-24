@@ -1,0 +1,2981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>WeekBite — Bite into a better week.</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FAFAF7;
+    --deep: #1B4332;
+    --deep2: #2D6A4F;
+    --coral: #FF6B35;
+    --coral-light: #FFF0EA;
+    --cream: #F5F0E8;
+    --card: #FFFFFF;
+    --text: #1A1A1A;
+    --muted: #6B7280;
+    --border: #E8E4DD;
+    --shadow: 0 4px 24px rgba(0,0,0,0.08);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.14);
+    --radius: 20px;
+    --radius-sm: 12px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    background: #2D2D2D;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'DM Sans', sans-serif;
+    padding: 20px;
+  }
+
+  .phone-shell {
+    width: 390px;
+    height: 844px;
+    background: var(--bg);
+    border-radius: 44px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.1);
+  }
+
+  .screen {
+    position: absolute;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--bg);
+  }
+  .screen.active { display: flex; }
+
+  /* ── SCROLLABLE CONTENT ── */
+  .scroll-content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .scroll-content::-webkit-scrollbar { display: none; }
+
+  /* ── STATUS BAR ── */
+  .status-bar {
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    flex-shrink: 0;
+  }
+  .status-time { font-size: 15px; font-weight: 600; color: var(--text); }
+  .status-icons { display: flex; gap: 6px; align-items: center; font-size: 13px; color: var(--text); }
+
+  /* ── BOTTOM NAV ── */
+  .bottom-nav {
+    height: 80px;
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 8px 12px;
+    flex-shrink: 0;
+  }
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-width: 60px;
+  }
+  .nav-item.active { background: var(--coral-light); }
+  .nav-icon { font-size: 22px; }
+  .nav-label { font-size: 10px; font-weight: 600; color: var(--muted); letter-spacing: 0.3px; }
+  .nav-item.active .nav-label { color: var(--coral); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  @keyframes pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-12px); }
+  }
+  @keyframes float2 {
+    0%, 100% { transform: translateY(0px) rotate(-5deg); }
+    50% { transform: translateY(-8px) rotate(5deg); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+  @keyframes drawRing {
+    from { stroke-dashoffset: 283; }
+    to { stroke-dashoffset: 0; }
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  @keyframes confetti {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(-120px) rotate(720deg); opacity: 0; }
+  }
+  @keyframes stagger1 { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+
+  .animate-fadeUp { animation: fadeUp 0.5s ease forwards; }
+  .animate-fadeIn { animation: fadeIn 0.4s ease forwards; }
+
+  /* ─────────────────────────────────────────
+     SCREEN 1 — WELCOME / SPLASH
+  ───────────────────────────────────────── */
+  #splash {
+    background: linear-gradient(160deg, #1B4332 0%, #2D6A4F 50%, #1B4332 100%);
+  }
+  .splash-floaters {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .floater {
+    position: absolute;
+    font-size: 48px;
+    opacity: 0.15;
+  }
+  .f1 { top: 8%; left: 10%; animation: float 4s ease-in-out infinite; }
+  .f2 { top: 15%; right: 12%; font-size: 36px; animation: float2 5s ease-in-out infinite; }
+  .f3 { top: 35%; left: 5%; font-size: 32px; animation: float 6s ease-in-out infinite 1s; }
+  .f4 { bottom: 30%; right: 8%; font-size: 42px; animation: float2 4.5s ease-in-out infinite 0.5s; }
+  .f5 { bottom: 15%; left: 15%; font-size: 28px; animation: float 5.5s ease-in-out infinite 1.5s; }
+  .f6 { top: 55%; right: 18%; font-size: 24px; animation: float2 3.5s ease-in-out infinite; }
+
+  .splash-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    padding: 40px 32px;
+    text-align: center;
+  }
+  .splash-badge {
+    background: rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.9);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+    border: 1px solid rgba(255,255,255,0.2);
+    animation: fadeUp 0.6s ease 0.2s both;
+  }
+  .splash-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 68px;
+    font-weight: 900;
+    color: #F5F0E8;
+    line-height: 1;
+    margin-bottom: 12px;
+    animation: fadeUp 0.6s ease 0.4s both;
+  }
+  .splash-tagline {
+    font-size: 18px;
+    color: var(--coral);
+    font-style: italic;
+    font-weight: 400;
+    margin-bottom: 48px;
+    animation: fadeUp 0.6s ease 0.6s both;
+  }
+  .splash-desc {
+    font-size: 14px;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.7;
+    margin-bottom: 56px;
+    max-width: 280px;
+    animation: fadeUp 0.6s ease 0.7s both;
+  }
+  .btn-primary {
+    width: 100%;
+    padding: 18px;
+    background: var(--coral);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.3px;
+    animation: fadeUp 0.6s ease 0.8s both;
+  }
+  .btn-primary:active { transform: scale(0.97); background: #e85d2a; }
+  .btn-secondary {
+    width: 100%;
+    padding: 16px;
+    background: transparent;
+    color: rgba(255,255,255,0.7);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 16px;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 12px;
+    animation: fadeUp 0.6s ease 0.9s both;
+  }
+  .splash-dots {
+    display: flex;
+    gap: 6px;
+    margin-top: 32px;
+    animation: fadeUp 0.6s ease 1s both;
+  }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3); }
+  .dot.active { width: 20px; border-radius: 3px; background: var(--coral); }
+
+  /* ─────────────────────────────────────────
+     ONBOARDING SHARED
+  ───────────────────────────────────────── */
+  .ob-header {
+    padding: 16px 24px 0;
+    flex-shrink: 0;
+  }
+  .progress-bar {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-bottom: 28px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--deep), var(--coral));
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+  .ob-step {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--coral);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .ob-question {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.3;
+    margin-bottom: 6px;
+  }
+  .ob-sub {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 28px;
+    line-height: 1.5;
+  }
+  .ob-body { padding: 0 24px; flex: 1; overflow-y: auto; }
+  .ob-body::-webkit-scrollbar { display: none; }
+  .ob-footer { padding: 16px 24px 28px; flex-shrink: 0; }
+
+  /* Input fields */
+  .input-group { margin-bottom: 16px; }
+  .input-label { font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 6px; display: block; }
+  .input-field {
+    width: 100%;
+    padding: 14px 16px;
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 16px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .input-field:focus { border-color: var(--deep); }
+  .input-row { display: flex; gap: 12px; }
+  .input-row .input-group { flex: 1; }
+
+  /* Selection cards */
+  .select-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .select-card {
+    padding: 18px 14px;
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .select-card:active { transform: scale(0.97); }
+  .select-card.selected { border-color: var(--deep); background: #E8F5EE; }
+  .select-card.selected .card-icon { animation: pop 0.3s ease; }
+  .card-icon { font-size: 28px; }
+  .card-label { font-size: 14px; font-weight: 600; color: var(--text); }
+  .card-sub { font-size: 11px; color: var(--muted); }
+  .select-card.selected .card-label { color: var(--deep); }
+  .check-badge {
+    width: 20px; height: 20px;
+    background: var(--deep);
+    border-radius: 50%;
+    color: white;
+    font-size: 11px;
+    display: flex; align-items: center; justify-content: center;
+    align-self: flex-end;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .select-card.selected .check-badge { opacity: 1; }
+
+  /* Chip selectors */
+  .chip-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+  .chip {
+    padding: 10px 16px;
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .chip:active { transform: scale(0.95); }
+  .chip.selected { border-color: var(--deep); background: var(--deep); color: white; }
+
+  /* Time grid */
+  .time-day { margin-bottom: 14px; }
+  .time-day-label { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+  .time-options { display: flex; gap: 6px; }
+  .time-btn {
+    flex: 1;
+    padding: 8px 4px;
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  .time-btn.selected { border-color: var(--coral); background: var(--coral-light); color: var(--coral); }
+
+  /* Pantry items */
+  .pantry-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+  .pantry-item {
+    padding: 8px 14px;
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .pantry-item.selected { border-color: var(--deep2); background: #E8F5EE; color: var(--deep); }
+  .pantry-item:active { transform: scale(0.95); }
+
+  /* ─────────────────────────────────────────
+     LOADING SCREEN
+  ───────────────────────────────────────── */
+  #loading {
+    background: linear-gradient(160deg, #1B4332 0%, #2D6A4F 100%);
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px;
+  }
+  .loading-emoji { font-size: 72px; margin-bottom: 24px; animation: float 2s ease-in-out infinite; }
+  .loading-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    color: var(--cream);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  .loading-sub { font-size: 14px; color: rgba(255,255,255,0.6); margin-bottom: 48px; }
+  .loading-steps { width: 100%; max-width: 280px; }
+  .loading-step {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 12px;
+    margin-bottom: 8px;
+    opacity: 0.4;
+    transition: all 0.4s;
+  }
+  .loading-step.done { opacity: 1; background: rgba(255,255,255,0.15); }
+  .step-icon { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+  .loading-step.done .step-icon { background: var(--coral); }
+  .step-text { font-size: 14px; color: white; font-weight: 500; text-align: left; }
+  .loading-dots { display: flex; gap: 6px; margin-top: 32px; justify-content: center; }
+  .ldot { width: 8px; height: 8px; border-radius: 50%; background: var(--coral); animation: pulse 1.2s ease infinite; }
+  .ldot:nth-child(2) { animation-delay: 0.2s; }
+  .ldot:nth-child(3) { animation-delay: 0.4s; }
+
+  /* ─────────────────────────────────────────
+     HOME SCREEN
+  ───────────────────────────────────────── */
+  .home-header {
+    padding: 12px 24px 0;
+    flex-shrink: 0;
+  }
+  .home-greeting-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px; }
+  .home-greeting {
+    font-family: 'Playfair Display', serif;
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  .home-greeting span { color: var(--coral); }
+  .avatar {
+    width: 44px; height: 44px;
+    background: var(--deep);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .home-sub { font-size: 14px; color: var(--muted); margin-bottom: 16px; }
+
+  /* Nutrition banner */
+  .nutrition-banner {
+    background: linear-gradient(135deg, var(--deep) 0%, var(--deep2) 100%);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .nutrition-banner:active { transform: scale(0.98); }
+  .nb-left { display: flex; flex-direction: column; gap: 2px; }
+  .nb-label { font-size: 11px; color: rgba(255,255,255,0.6); font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; }
+  .nb-value { font-size: 18px; font-weight: 700; color: white; }
+  .nb-sub { font-size: 11px; color: rgba(255,255,255,0.7); }
+  .nb-right { display: flex; gap: 10px; }
+  .macro-pill { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .macro-val { font-size: 13px; font-weight: 700; color: white; }
+  .macro-lbl { font-size: 9px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* Day strip */
+  .day-strip { display: flex; gap: 8px; overflow-x: auto; padding: 0 24px 16px; flex-shrink: 0; }
+  .day-strip::-webkit-scrollbar { display: none; }
+  .day-pill {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 10px 14px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex-shrink: 0;
+    border: 2px solid transparent;
+  }
+  .day-pill:active { transform: scale(0.95); }
+  .day-pill.active { background: var(--deep); }
+  .day-pill.today { border-color: var(--coral); }
+  .day-name { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .day-num { font-size: 18px; font-weight: 700; color: var(--text); }
+  .day-pill.active .day-name, .day-pill.active .day-num { color: white; }
+  .day-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--coral); }
+  .day-pill:not(.active) .day-dot { display: none; }
+
+  /* Meal cards */
+  .meal-section { padding: 0 24px; }
+  .meal-type-label { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; margin-top: 20px; }
+  .meal-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+    cursor: pointer;
+    transition: all 0.25s;
+    animation: fadeUp 0.5s ease both;
+  }
+  .meal-card:active { transform: scale(0.98); box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+  .meal-img {
+    height: 120px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+  }
+  .meal-img-bg {
+    position: absolute;
+    inset: 0;
+    opacity: 0.9;
+  }
+  .meal-img-emoji { position: relative; z-index: 1; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2)); }
+  .pantry-hero-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #22C55E;
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .swap-btn {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(255,255,255,0.9);
+    border: none;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 2;
+    transition: all 0.2s;
+    backdrop-filter: blur(8px);
+  }
+  .swap-btn:active { transform: rotate(180deg); }
+  .meal-info { padding: 14px 16px; }
+  .meal-name { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 8px; line-height: 1.3; }
+  .meal-meta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .meta-tag {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .tag-time { background: var(--coral-light); color: var(--coral); }
+  .tag-diet { background: #E8F5EE; color: var(--deep); }
+  .tag-cal { background: #F3F4F6; color: var(--muted); }
+  .tag-protein { background: #FEF3C7; color: #92400E; }
+  .tag-kids { background: #EDE9FE; color: #5B21B6; }
+  .meal-bottom-row { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+  .cook-btn {
+    background: var(--deep);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .cook-btn:active { transform: scale(0.95); background: var(--coral); }
+  .cooked-badge { display: flex; align-items: center; gap: 4px; font-size: 12px; color: #22C55E; font-weight: 600; }
+
+  /* ─────────────────────────────────────────
+     RECIPE DETAIL BOTTOM SHEET
+  ───────────────────────────────────────── */
+  .bottom-sheet-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 50;
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+  .bottom-sheet-overlay.open { display: block; }
+  .bottom-sheet {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: var(--bg);
+    border-radius: 28px 28px 0 0;
+    max-height: 90%;
+    overflow-y: auto;
+    animation: slideUp 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+    z-index: 51;
+  }
+  .bottom-sheet::-webkit-scrollbar { display: none; }
+  .bs-handle { width: 40px; height: 4px; background: var(--border); border-radius: 2px; margin: 14px auto 0; }
+  .bs-header { padding: 16px 24px; }
+  .bs-meal-img { height: 160px; border-radius: var(--radius-sm); overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 64px; margin: 0 24px 16px; position: relative; }
+  .bs-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .bs-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+
+  /* Recipe tabs */
+  .recipe-tabs { display: flex; background: var(--border); border-radius: 12px; padding: 3px; margin: 0 24px 20px; }
+  .recipe-tab {
+    flex: 1;
+    padding: 8px;
+    border-radius: 9px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    border: none;
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .recipe-tab.active { background: white; color: var(--deep); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+  .recipe-content { padding: 0 24px 24px; display: none; }
+  .recipe-content.active { display: block; }
+  .ingredients-title { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+  .ingredient-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .ingredient-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .dot-green { background: #22C55E; }
+  .dot-amber { background: #F59E0B; }
+  .ingredient-name { font-size: 14px; color: var(--text); flex: 1; }
+  .ingredient-status { font-size: 11px; font-weight: 600; }
+  .status-have { color: #22C55E; }
+  .status-need { color: #F59E0B; }
+  .start-cooking-btn {
+    width: 100%;
+    padding: 16px;
+    background: var(--coral);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .start-cooking-btn:active { transform: scale(0.97); background: #e85d2a; }
+
+  /* ─────────────────────────────────────────
+     COOK MODE
+  ───────────────────────────────────────── */
+  #cookmode {
+    background: linear-gradient(180deg, #1B4332 0%, var(--bg) 35%);
+  }
+  .cook-header { padding: 16px 24px; display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+  .back-btn {
+    width: 36px; height: 36px;
+    background: rgba(255,255,255,0.2);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    backdrop-filter: blur(8px);
+  }
+  .back-btn.dark { background: var(--border); color: var(--text); }
+  .back-btn:active { transform: scale(0.9); }
+  .cook-title { font-family: 'Playfair Display', serif; font-size: 20px; color: white; font-weight: 700; }
+  .cook-progress-wrap { padding: 0 24px; margin-bottom: 20px; flex-shrink: 0; }
+  .cook-progress-bar { height: 6px; background: rgba(255,255,255,0.2); border-radius: 3px; overflow: hidden; }
+  .cook-progress-fill { height: 100%; background: var(--coral); border-radius: 3px; transition: width 0.6s ease; }
+  .cook-step-count { font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 8px; font-weight: 500; }
+  .cook-step-card {
+    margin: 0 24px;
+    background: white;
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: var(--shadow-lg);
+    flex-shrink: 0;
+  }
+  .step-num { font-size: 12px; font-weight: 700; color: var(--coral); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+  .step-instruction { font-size: 18px; line-height: 1.6; color: var(--text); font-weight: 400; margin-bottom: 20px; }
+  .timer-display {
+    background: var(--deep);
+    border-radius: 16px;
+    padding: 16px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .timer-time { font-size: 36px; font-weight: 700; color: white; font-variant-numeric: tabular-nums; }
+  .timer-label { font-size: 11px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1px; }
+  .timer-btn {
+    width: 48px; height: 48px;
+    background: var(--coral);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .timer-btn:active { transform: scale(0.92); }
+  .cook-nav-row { display: flex; gap: 12px; padding: 20px 24px; flex-shrink: 0; }
+  .cook-prev-btn {
+    flex: 1;
+    padding: 15px;
+    background: var(--border);
+    border: none;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .cook-next-btn {
+    flex: 2;
+    padding: 15px;
+    background: var(--deep);
+    border: none;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .cook-next-btn:active { transform: scale(0.97); }
+  .cook-tips { margin: 12px 24px 0; padding: 14px 16px; background: var(--coral-light); border-radius: 12px; }
+  .cook-tip-text { font-size: 13px; color: var(--coral); line-height: 1.5; }
+
+  /* Completion */
+  .cook-complete {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    text-align: center;
+  }
+  .complete-emoji { font-size: 80px; margin-bottom: 20px; animation: float 2s ease-in-out infinite; }
+  .complete-title { font-family: 'Playfair Display', serif; font-size: 32px; color: var(--text); margin-bottom: 8px; }
+  .complete-sub { font-size: 15px; color: var(--muted); line-height: 1.6; margin-bottom: 32px; }
+  .confetti-piece {
+    position: absolute;
+    width: 8px; height: 8px;
+    border-radius: 2px;
+    animation: confetti 1s ease forwards;
+  }
+
+  /* ─────────────────────────────────────────
+     SHOPPING LIST
+  ───────────────────────────────────────── */
+  #shopping .scroll-content { padding: 0 24px 24px; }
+  .shop-header { padding: 12px 24px 0; flex-shrink: 0; }
+  .page-title { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .page-sub { font-size: 14px; color: var(--muted); margin-bottom: 16px; }
+  .shop-summary {
+    background: var(--deep);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .shop-sum-left { color: white; }
+  .shop-sum-count { font-size: 22px; font-weight: 700; color: white; }
+  .shop-sum-label { font-size: 12px; color: rgba(255,255,255,0.7); }
+  .share-btn {
+    background: var(--coral);
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 6px;
+    transition: all 0.2s;
+  }
+  .share-btn:active { transform: scale(0.95); }
+  .shop-category { margin-bottom: 24px; }
+  .category-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+  .category-emoji { font-size: 18px; }
+  .category-title { font-size: 14px; font-weight: 700; color: var(--text); text-transform: uppercase; letter-spacing: 0.5px; }
+  .shop-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 14px;
+    background: var(--card);
+    border-radius: 12px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .shop-item.checked { opacity: 0.5; }
+  .shop-checkbox {
+    width: 22px; height: 22px;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .shop-item.checked .shop-checkbox { background: #22C55E; border-color: #22C55E; color: white; font-size: 13px; }
+  .shop-item-name { font-size: 15px; color: var(--text); flex: 1; font-weight: 500; }
+  .shop-item.checked .shop-item-name { text-decoration: line-through; color: var(--muted); }
+  .shop-item-qty { font-size: 13px; color: var(--muted); font-weight: 500; }
+
+  /* ─────────────────────────────────────────
+     NUTRITION SCREEN
+  ───────────────────────────────────────── */
+  #nutrition { background: var(--bg); }
+  #nutrition .scroll-content { padding: 0 24px 24px; }
+  .nutrition-header { padding: 12px 24px 0; flex-shrink: 0; }
+  .macro-ring-card {
+    background: var(--deep);
+    border-radius: 24px;
+    padding: 24px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .ring-svg { flex-shrink: 0; }
+  .ring-circle-bg { fill: none; stroke: rgba(255,255,255,0.15); stroke-width: 8; }
+  .ring-circle { fill: none; stroke-width: 8; stroke-linecap: round; transform: rotate(-90deg); transform-origin: 50% 50%; }
+  .ring-protein { stroke: #FF6B35; stroke-dasharray: 100 283; }
+  .ring-carbs { stroke: #FCD34D; stroke-dasharray: 100 283; stroke-dashoffset: -100; }
+  .ring-fat { stroke: #86EFAC; stroke-dasharray: 83 283; stroke-dashoffset: -200; }
+  .ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .ring-wrap { position: relative; width: 100px; height: 100px; }
+  .ring-center-abs { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .ring-kcal { font-size: 20px; font-weight: 700; color: white; }
+  .ring-kcal-lbl { font-size: 9px; color: rgba(255,255,255,0.6); text-transform: uppercase; }
+  .macro-details { flex: 1; }
+  .macro-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .macro-color-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .macro-info { flex: 1; }
+  .macro-name { font-size: 11px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.5px; }
+  .macro-amount { font-size: 15px; font-weight: 700; color: white; }
+  .macro-pct { font-size: 12px; color: rgba(255,255,255,0.6); }
+
+  /* Day bars */
+  .day-bars-card { background: var(--card); border-radius: var(--radius-sm); padding: 20px; box-shadow: var(--shadow); margin-bottom: 16px; }
+  .day-bars-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .day-bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .day-bar-label { font-size: 12px; color: var(--muted); font-weight: 600; width: 30px; }
+  .day-bar-track { flex: 1; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+  .day-bar-fill { height: 100%; border-radius: 4px; background: var(--deep); }
+  .day-bar-fill.warning { background: var(--coral); }
+  .day-bar-val { font-size: 12px; color: var(--muted); font-weight: 600; width: 50px; text-align: right; }
+
+  /* Suggestion flag */
+  .suggestion-card { background: var(--coral-light); border-radius: var(--radius-sm); padding: 16px; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: all 0.2s; }
+  .suggestion-card:active { transform: scale(0.98); }
+  .suggestion-icon { font-size: 24px; }
+  .suggestion-text { flex: 1; }
+  .suggestion-title { font-size: 14px; font-weight: 700; color: var(--coral); margin-bottom: 2px; }
+  .suggestion-sub { font-size: 12px; color: var(--muted); }
+  .suggestion-arrow { font-size: 16px; color: var(--coral); }
+
+  /* ─────────────────────────────────────────
+     PROFILE SCREEN
+  ───────────────────────────────────────── */
+  #profile .scroll-content { padding: 0 24px 24px; }
+  .profile-header { padding: 12px 24px 0; flex-shrink: 0; }
+  .profile-card {
+    background: linear-gradient(135deg, var(--deep) 0%, var(--deep2) 100%);
+    border-radius: 24px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .profile-avatar { width: 64px; height: 64px; background: var(--coral); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 700; color: white; flex-shrink: 0; }
+  .profile-name { font-family: 'Playfair Display', serif; font-size: 22px; color: white; font-weight: 700; }
+  .profile-meta { font-size: 13px; color: rgba(255,255,255,0.7); }
+  .stats-row { display: flex; gap: 12px; margin-bottom: 20px; }
+  .stat-card { flex: 1; background: var(--card); border-radius: 16px; padding: 16px; text-align: center; box-shadow: var(--shadow); }
+  .stat-val { font-size: 24px; font-weight: 700; color: var(--deep); font-family: 'Playfair Display', serif; }
+  .stat-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+  .weekly-summary-card { background: var(--card); border-radius: 16px; padding: 20px; box-shadow: var(--shadow); margin-bottom: 16px; }
+  .ws-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .ws-val { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--coral); font-weight: 700; margin-bottom: 4px; }
+  .ws-sub { font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .settings-group { margin-bottom: 20px; }
+  .settings-group-title { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+  .settings-item { display: flex; align-items: center; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--border); cursor: pointer; }
+  .settings-item:last-child { border-bottom: none; }
+  .settings-icon { font-size: 20px; width: 32px; text-align: center; }
+  .settings-label { flex: 1; font-size: 15px; color: var(--text); font-weight: 500; }
+  .settings-arrow { font-size: 14px; color: var(--muted); }
+  .toggle-switch { width: 44px; height: 24px; background: var(--deep); border-radius: 12px; position: relative; cursor: pointer; }
+  .toggle-knob { width: 20px; height: 20px; background: white; border-radius: 50%; position: absolute; top: 2px; left: 22px; transition: left 0.2s; }
+
+  /* ─────────────────────────────────────────
+     KIDS MODE OVERLAY
+  ───────────────────────────────────────── */
+  .kids-tabs { display: flex; background: var(--border); border-radius: 12px; padding: 3px; margin: 0 24px 20px; }
+  .kids-tab { flex: 1; padding: 8px; border-radius: 9px; font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; text-align: center; border: none; background: transparent; font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
+  .kids-tab.active { background: white; color: var(--deep); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+  .kids-content { padding: 0 24px; display: none; }
+  .kids-content.active { display: block; }
+  .kids-recipe-name { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .kids-note { background: #EDE9FE; border-radius: 10px; padding: 10px 14px; font-size: 13px; color: #5B21B6; margin-bottom: 16px; display: flex; gap: 8px; align-items: flex-start; }
+
+  /* ── PANTRY CARDS ── */
+  .pantry-cat-tab {
+    padding: 7px 14px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+    background: var(--card);
+    border: 2px solid var(--border);
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+  .pantry-cat-tab.active { background: var(--deep); color: white; border-color: var(--deep); }
+
+  .pantry-card {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 14px 8px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    text-align: center;
+  }
+  .pantry-card:active { transform: scale(0.94); }
+  .pantry-card.selected { border-color: var(--deep2); background: #E8F5EE; }
+  .pantry-card-emoji { font-size: 32px; line-height: 1; }
+  .pantry-card-name { font-size: 11px; font-weight: 700; color: var(--text); line-height: 1.2; }
+  .pantry-card.selected .pantry-card-name { color: var(--deep); }
+  .pantry-card-check {
+    position: absolute;
+    top: 6px; right: 6px;
+    width: 18px; height: 18px;
+    background: var(--deep);
+    border-radius: 50%;
+    color: white;
+    font-size: 10px;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.2s;
+  }
+  .pantry-card.selected .pantry-card-check { opacity: 1; transform: scale(1); }
+
+  /* ── CUISINE CARDS ── */
+  .cuisine-card {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 18px;
+    padding: 16px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    text-align: center;
+  }
+  .cuisine-card:active { transform: scale(0.95); }
+  .cuisine-card.selected { border-color: var(--coral); background: var(--coral-light); }
+  .cuisine-flag { font-size: 32px; }
+  .cuisine-name { font-size: 14px; font-weight: 700; color: var(--text); }
+  .cuisine-sub { font-size: 11px; color: var(--muted); line-height: 1.3; }
+  .cuisine-check {
+    position: absolute;
+    top: 8px; right: 8px;
+    width: 20px; height: 20px;
+    background: var(--coral);
+    border-radius: 50%;
+    color: white;
+    font-size: 11px;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transform: scale(0);
+    transition: all 0.2s;
+  }
+  .cuisine-card.selected .cuisine-check { opacity: 1; transform: scale(1); }
+
+  /* cuisine sub cards */
+  .cuisine-sub-card {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .cuisine-sub-card:active { transform: scale(0.97); }
+  .cuisine-sub-card.selected { border-color: var(--deep); background: #E8F5EE; }
+  .sub-check {
+    margin-left: auto;
+    width: 24px; height: 24px;
+    background: var(--deep);
+    border-radius: 50%;
+    color: white;
+    font-size: 12px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    opacity: 0; transform: scale(0);
+    transition: all 0.2s;
+  }
+  .cuisine-sub-card.selected .sub-check { opacity: 1; transform: scale(1); }
+
+  .cuisine-sub-card-sm {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 12px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    text-align: center;
+  }
+  .cuisine-sub-card-sm:active { transform: scale(0.95); }
+  .cuisine-sub-card-sm.selected { border-color: var(--deep); background: #E8F5EE; }
+  .sub-check-sm {
+    position: absolute;
+    top: 6px; right: 6px;
+    width: 16px; height: 16px;
+    background: var(--deep);
+    border-radius: 50%;
+    color: white;
+    font-size: 9px;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transform: scale(0);
+    transition: all 0.2s;
+  }
+  .cuisine-sub-card-sm.selected .sub-check-sm { opacity: 1; transform: scale(1); }
+
+  /* ── PACE CARDS ── */
+  .pace-card {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    position: relative;
+  }
+  .pace-card:active { transform: scale(0.97); }
+  .pace-card.selected { border-color: var(--deep); background: #E8F5EE; }
+  .pace-emoji { font-size: 32px; flex-shrink: 0; }
+  .pace-info { flex: 1; }
+  .pace-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+  .pace-sub { font-size: 12px; color: var(--muted); line-height: 1.4; }
+  .pace-card.selected .pace-title { color: var(--deep); }
+  .pace-check {
+    width: 24px; height: 24px;
+    background: var(--deep);
+    border-radius: 50%;
+    color: white;
+    font-size: 12px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    opacity: 0; transform: scale(0);
+    transition: all 0.2s;
+  }
+  .pace-card.selected .pace-check { opacity: 1; transform: scale(1); }
+
+  /* ── SWAP VISIBLE BUTTON ── */
+  .swap-visible-btn {
+    padding: 9px 14px;
+    background: var(--bg);
+    border: 2px solid var(--border);
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .swap-visible-btn:active { transform: scale(0.95); background: var(--coral-light); border-color: var(--coral); color: var(--coral); }
+
+  /* ── TIME PICKER OVERLAY ── */
+  .time-picker-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 60;
+    display: none;
+    animation: fadeIn 0.3s ease;
+    align-items: flex-end;
+  }
+  .time-picker-overlay.open { display: flex; }
+  .time-picker-sheet {
+    width: 100%;
+    background: var(--bg);
+    border-radius: 28px 28px 0 0;
+    padding: 20px 24px 36px;
+    animation: slideUp 0.4s cubic-bezier(0.32,0.72,0,1);
+  }
+  .time-option-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    background: var(--card);
+    border-radius: 14px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .time-option-card:active { transform: scale(0.97); }
+  .time-option-card.selected { border-color: var(--coral); background: var(--coral-light); }
+  .time-option-emoji { font-size: 28px; }
+  .time-option-title { font-size: 15px; font-weight: 700; color: var(--text); }
+  .time-option-sub { font-size: 12px; color: var(--muted); }
+
+  /* ── QUICK MEAL PREP OVERLAY ── */
+  .qmp-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 60;
+    display: none;
+    animation: fadeIn 0.3s ease;
+    align-items: flex-end;
+  }
+  .qmp-overlay.open { display: flex; }
+  .qmp-sheet {
+    width: 100%;
+    background: var(--bg);
+    border-radius: 28px 28px 0 0;
+    padding: 20px 24px 36px;
+    animation: slideUp 0.4s cubic-bezier(0.32,0.72,0,1);
+  }
+  .qmp-meal-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: all 0.2s;
+    border: 2px solid transparent;
+  }
+  .qmp-meal-card:active { transform: scale(0.97); border-color: var(--coral); }
+  .qmp-emoji { font-size: 36px; flex-shrink: 0; }
+  .qmp-info { flex: 1; }
+  .qmp-name { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .qmp-meta { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  /* ── TOAST NOTIFICATION ── */
+  .pantry-toast {
+    position: absolute;
+    bottom: 90px;
+    left: 24px;
+    right: 24px;
+    background: var(--deep);
+    color: white;
+    border-radius: 14px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 100;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    box-shadow: var(--shadow-lg);
+  }
+  .pantry-toast.show { transform: translateY(0); opacity: 1; }
+  .toast-icon { font-size: 20px; flex-shrink: 0; }
+  .toast-text { flex: 1; font-size: 13px; font-weight: 600; }
+  .toast-sub { font-size: 11px; color: rgba(255,255,255,0.7); margin-top:1px; }
+
+  /* Responsive for desktop view */
+  @media (max-width: 500px) {
+    body { padding: 0; background: var(--bg); }
+    .phone-shell { width: 100vw; height: 100vh; border-radius: 0; box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="phone-shell" id="app">
+
+  <!-- ══════════════════════════════════
+       SCREEN 1 — SPLASH / WELCOME
+  ══════════════════════════════════ -->
+  <div class="screen active" id="splash">
+    <div class="status-bar">
+      <span class="status-time" style="color:rgba(255,255,255,0.8)">9:41</span>
+      <div class="status-icons" style="color:rgba(255,255,255,0.8)">
+        <span>●●●</span><span>WiFi</span><span>🔋</span>
+      </div>
+    </div>
+    <div class="splash-floaters">
+      <div class="floater f1">🥑</div>
+      <div class="floater f2">🍳</div>
+      <div class="floater f3">🌿</div>
+      <div class="floater f4">🍅</div>
+      <div class="floater f5">🥗</div>
+      <div class="floater f6">🫐</div>
+    </div>
+    <div class="splash-content">
+      <div class="splash-badge">✨ Smart Meal Planning</div>
+      <div class="splash-logo">WeekBite</div>
+      <div class="splash-tagline">Bite into a better week.</div>
+      <div class="splash-desc">Your pantry. Your schedule. Your perfect week of meals — planned in seconds.</div>
+      <button class="btn-primary" onclick="goTo('ob1')">Get Started →</button>
+      <button class="btn-secondary" onclick="goTo('home')">I already have an account</button>
+      <div class="splash-dots">
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       SCREEN 2 — ONBOARDING 1: Name/Age
+  ══════════════════════════════════ -->
+  <div class="screen" id="ob1">
+    <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span>🔋</span></div></div>
+    <div class="ob-header">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+        <button class="back-btn dark" onclick="goTo('splash')" style="width:36px;height:36px;background:var(--border);border:none;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">←</button>
+        <div style="flex:1"><div class="progress-bar" style="margin:0;"><div class="progress-fill" style="width:14%"></div></div></div>
+      </div>
+      <div class="ob-step">Step 1 of 7</div>
+      <div class="ob-question">What should we call you? 👋</div>
+      <div class="ob-sub">Help us make WeekBite feel like yours.</div>
+    </div>
+    <div class="ob-body">
+      <div class="input-group">
+        <label class="input-label">First Name</label>
+        <input class="input-field" type="text" placeholder="e.g. Maya" id="userName" value="Maya">
+      </div>
+      <div class="input-row">
+        <div class="input-group">
+          <label class="input-label">Age</label>
+          <input class="input-field" type="number" placeholder="31" id="userAge" value="31">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Weight (kg)</label>
+          <input class="input-field" type="number" placeholder="60" value="60">
+        </div>
+      </div>
+      <div class="input-row">
+        <div class="input-group">
+          <label class="input-label">Height (cm)</label>
+          <input class="input-field" type="number" placeholder="165" value="165">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Sex</label>
+          <select class="input-field" style="appearance:none">
+            <option>Female</option>
+            <option>Male</option>
+            <option>Prefer not to say</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-top:16px; padding:14px 16px; background:var(--coral-light); border-radius:12px;">
+        <div style="font-size:12px;color:var(--coral);font-weight:700;margin-bottom:2px;">📊 Your estimated daily need</div>
+        <div style="font-size:20px;font-weight:700;color:var(--deep);">1,890 kcal/day</div>
+        <div style="font-size:12px;color:var(--muted);">Based on your profile — updates as you type</div>
+      </div>
+    </div>
+    <div class="ob-footer">
+      <button class="btn-primary" style="background:var(--deep);animation:none;" onclick="goTo('ob2')">Continue →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       SCREEN 3 — ONBOARDING 2: Household
+  ══════════════════════════════════ -->
+  <div class="screen" id="ob2">
+    <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span>🔋</span></div></div>
+    <div class="ob-header">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+        <button class="back-btn dark" onclick="goTo('ob1')" style="width:36px;height:36px;background:var(--border);border:none;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">←</button>
+        <div style="flex:1"><div class="progress-bar" style="margin:0;"><div class="progress-fill" style="width:28%"></div></div></div>
+      </div>
+      <div class="ob-step">Step 2 of 7</div>
+      <div class="ob-question">Who's eating with you? 🏡</div>
+      <div class="ob-sub">We'll scale portions and plan accordingly.</div>
+    </div>
+    <div class="ob-body">
+      <div class="select-grid">
+        <div class="select-card" onclick="selectCard(this)">
+          <div class="check-badge">✓</div>
+          <div class="card-icon">🧑</div>
+          <div class="card-label">Just Me</div>
+          <div class="card-sub">Solo planning</div>
+        </div>
+        <div class="select-card" onclick="selectCard(this)">
+          <div class="check-badge">✓</div>
+          <div class="card-icon">👫</div>
+          <div class="card-label">Couple</div>
+          <div class="card-sub">2 people</div>
+        </div>
+        <div class="select-card selected" onclick="selectCard(this)">
+          <div class="check-badge">✓</div>
+          <div class="card-icon">👨‍👩‍👧‍👦</div>
+          <div class="card-label">Family</div>
+          <div class="card-sub">3+ people</div>
+        </div>
+        <div class="select-card" onclick="selectCard(this)">
+          <div class="check-badge">✓</div>
+          <div class="card-icon">🏠</div>
+          <div class="card-label">Housemates</div>
+          <div class="card-sub">Shared home</div>
+        </div>
+      </div>
+      <div style="background:var(--card);border-radius:16px;padding:16px;box-shadow:var(--shadow);margin-top:8px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <div>
+            <div style="font-size:15px;font-weight:700;color:var(--text);">Kids under 12?</div>
+            <div style="font-size:12px;color:var(--muted);">Activates kids-friendly meal mode 🧒</div>
+          </div>
+          <div class="toggle-switch" onclick="this.querySelector('.toggle-knob').style.left='2px'; this.style.background='var(--border)'">
+            <div class="toggle-knob"></div>
+          </div>
+        </div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.5;">Kids Mode adds child-friendly recipe variants to every meal — same ingredients, milder flavours, fun names.</div>
+      </div>
+    </div>
+    <div class="ob-footer">
+      <button class="btn-primary" style="background:var(--deep);animation:none;" onclick="goTo('ob3')">Continue →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       SCREEN 4 — ONBOARDING 3: Diet
+  ══════════════════════════════════ -->
+  <div class="screen" id="ob3">
+    <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span>🔋</span></div></div>
+    <div class="ob-header">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+        <button class="back-btn dark" onclick="goTo('ob2')" style="width:36px;height:36px;background:var(--border);border:none;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">←</button>
+        <div style="flex:1"><div class="progress-bar" style="margin:0;"><div class="progress-fill" style="width:43%"></div></div></div>
+      </div>
+      <div class="ob-step">Step 3 of 7</div>
+      <div class="ob-question">What does your body love? 🥗</div>
+      <div class="ob-sub">Select all that apply. We'll never suggest anything that doesn't work for you.</div>
+    </div>
+    <div class="ob-body">
+      <div class="chip-grid">
+        <div class="chip selected" onclick="toggleChip(this)">🌱 Vegetarian</div>
+        <div class="chip" onclick="toggleChip(this)">🌿 Vegan</div>
+        <div class="chip selected" onclick="toggleChip(this)">💪 High Protein</div>
+        <div class="chip" onclick="toggleChip(this)">🌾 Gluten-Free</div>
+        <div class="chip" onclick="toggleChip(this)">🥛 Dairy-Free</div>
+        <div class="chip" onclick="toggleChip(this)">☪️ Halal</div>
+        <div class="chip" onclick="toggleChip(this)">🐟 Pescatarian</div>
+        <div class="chip" onclick="toggleChip(this)">🍽️ No Restrictions</div>
+      </div>
+      <div style="background:var(--card);border-radius:16px;padding:16px;box-shadow:var(--shadow);">
+        <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px;">🎯 Your Fitness Goal</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <div class="chip selected" style="font-size:13px" onclick="toggleChip(this)">🏃 Build Muscle</div>
+          <div class="chip" style="font-size:13px" onclick="toggleChip(this)">⚖️ Lose Weight</div>
+          <div class="chip" style="font-size:13px" onclick="toggleChip(this)">✨ Maintain</div>
+          <div class="chip" style="font-size:13px" onclick="toggleChip(this)">🥦 Just Eat Healthy</div>
+        </div>
+      </div>
+    </div>
+    <div class="ob-footer">
+      <button class="btn-primary" style="background:var(--deep);animation:none;" onclick="goTo('ob4')">Continue →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       SCREEN 5 — ONBOARDING 4: Cooking Pace
+  ══════════════════════════════════ -->
+  <div class="screen" id="ob4">
+    <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span>🔋</span></div></div>
+    <div class="ob-header">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+        <button class="back-btn dark" onclick="goTo('ob3')" style="width:36px;height:36px;background:var(--border);border:none;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">←</button>
+        <div style="flex:1"><div class="progress-bar" style="margin:0;"><div class="progress-fill" style="width:57%"></div></div></div>
+      </div>
+      <div class="ob-step">Step 4 of 7</div>
+      <div class="ob-question">How does your day usually look? 📅</div>
+      <div class="ob-sub">This helps us suggest the right meal pace for you. You can always adjust in the moment when you open the app each day!</div>
+    </div>
+    <div class="ob-body" style="padding-bottom:16px;">
+      <div style="display:grid;grid-template-columns:1fr;gap:14px;">
+
+        <div class="pace-card selected" onclick="selectPace(this)">
+          <div class="pace-emoji">🏃</div>
+          <div class="pace-info">
+            <div class="pace-title">Super Busy</div>
+            <div class="pace-sub">Under 20 minutes — quick and easy always</div>
+          </div>
+          <div class="pace-check">✓</div>
+        </div>
+
+        <div class="pace-card" onclick="selectPace(this)">
+          <div class="pace-emoji">⚖️</div>
+          <div class="pace-info">
+            <div class="pace-title">Moderate</div>
+            <div class="pace-sub">Around 30 minutes — I can manage most nights</div>
+          </div>
+          <div class="pace-check">✓</div>
+        </div>
+
+        <div class="pace-card" onclick="selectPace(this)">
+          <div class="pace-emoji">😌</div>
+          <div class="pace-info">
+            <div class="pace-title">Relaxed</div>
+            <div class="pace-sub">45 minutes is fine — I enjoy the process</div>
+          </div>
+          <div class="pace-check">✓</div>
+        </div>
+
+        <div class="pace-card" onclick="selectPace(this)">
+          <div class="pace-emoji">👨‍🍳</div>
+          <div class="pace-info">
+            <div class="pace-title">I Love Cooking</div>
+            <div class="pace-sub">An hour or more — cooking is my therapy</div>
+          </div>
+          <div class="pace-check">✓</div>
+        </div>
+
+      </div>
+
+      <div style="margin-top:20px;background:var(--coral-light);border-radius:14px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start;">
+        <div style="font-size:20px;">💡</div>
+        <div style="font-size:13px;color:var(--coral);line-height:1.5;">
+          <strong>You're in control every day.</strong> When you open WeekBite each evening, just tap your meal and tell us how much time you have right then. We'll instantly show the right recipe for that moment.
+        </div>
+      </div>
+    </div>
+    <div class="ob-footer">
+      <button class="btn-primary" style="background:var(--deep);animation:none;" onclick="goTo('ob5')">Continue →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       SCREEN 6 — ONBOARDING 5: Pantry
+  ══════════════════════════════════ -->
+  <div class="screen" id="ob5">
+    <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span>🔋</span></div></div>
+    <div class="ob-header">
+      <div class="progress-bar"><div class="progress-fill" style="width:71%"></div></div>
+      <div class="ob-step">Step 5 of 7</div>
+      <div class="ob-question">What's hiding in your fridge? 🧊</div>
+      <div class="ob-sub">Tap everything you have. We'll build meals around these first.</div>
+    </div>
+    <div class="ob-body" style="padding-bottom:8px;">
+      <input class="input-field" type="text" placeholder="🔍  Search ingredients..." style="margin-bottom:16px;" oninput="filterPantry(this.value)">
+
+      <!-- Category tabs -->
+      <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:12px;scrollbar-width:none;" id="pantryTabs">
+        <div class="pantry-cat-tab active" onclick="showPantryCategory('all',this)">All</div>
+        <div class="pantry-cat-tab" onclick="showPantryCategory('protein',this)">🥩 Protein</div>
+        <div class="pantry-cat-tab" onclick="showPantryCategory('veggie',this)">🥦 Veggies</div>
+        <div class="pantry-cat-tab" onclick="showPantryCategory('grain',this)">🌾 Grains</div>
+        <div class="pantry-cat-tab" onclick="showPantryCategory('dairy',this)">🥛 Dairy</div>
+        <div class="pantry-cat-tab" onclick="showPantryCategory('pantry',this)">🫙 Pantry</div>
+      </div>
+
+      <!-- Pantry grid — big tappable cards -->
+      <div id="pantryGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding-bottom:16px;">
+        <!-- Proteins -->
+        <div class="pantry-card selected" data-cat="protein" onclick="togglePantryCard(this)">
+          <div class="pantry-card-emoji">🥚</div>
+          <div class="pantry-card-name">Eggs</div>
+          <div class="pantry-card-check">✓</div>
+        </div>
+        <div class="pantry-card selected" data-cat="protein" onclick="togglePantryCard(this)">
+          <div class="pantry-card-emoji">🍗</div>
+          <div class="pantry-card-name">Chicken</div>
+          <div class="pantry-card-check">✓</div>
+        </div>
+        <div class="pantry-card selected" data-cat="protein" onclick="togglePantryCard(this)">
+          <div class="pantry-card-emoji">🐟</div>
+          <div class="pantry-card-name">Salmon</div>
+          <div class="pantry-card-check">✓</div>
+        </div>
+        <div class="pantry-card" data-cat="protein" onclick="togglePantryCard(this)">
+          <div class="pantry-card-emoji">🥩</div>
+          <div class="pantry-card-name">Beef</div>
+          <div class="pantry-card-check">✓</div>
+        </div>
+        <div class="pantry-card" data-cat="protein" onclick="togglePantryCard(this)">
+          <div class="pantry-card-emoji">🫘</div>
+          <div class="pantry-card-name">Chickpeas</div>
+          <div class="pantry-card-check">✓</div>
+        </div>
+        <div class="pantry-card" data-cat="protein" onclick="togglePantryCard(this)">
+          <div class="pantry-card-emoji">🐠</div>
+          <div class="pantry-card-name">Tuna</div>
+          <div class="pantry-card-check">✓</div>
+        </div>
+        <!-- Veggies -->
+        <div class="pantry-card selected" data-cat="veggie" onclick="togglePantryCard(this)">
+          <div class="pantry-card-emoji">🥬</div>
+          <div class="pantry-card-name">Spinach</div>
+          <div class="pantry-card-check">✓</div>
+        </div>
+        <div class="pantry-card selected" data-cat="veggie" onclick="togglePantryCard(this)">
+          <div class="pantry-card-emoji">🥦</div>
+          <div class="pantry-card-name">Broccoli</div>
+          <div class="pantry-card-check">✓</div>
+        </div>
+        <div class="pantry-card selected" data-cat="veggie" onclick="togglePantryCard(this)">
+          <div class="pantry-card-emoji">🍅</div>
+          <div class="pantry-card-name">Tomatoes</div>
+          <div class="pantry-card-check">✓</div>
+        </div>
+        <div class="pantry-card selected" data-cat="veggie" onclick="togglePantryCard(this)">
+          <div class="pantry-card-emoji">🥕</div>
+          <div class="pantry-card-name">Carrots</div>
+          <div class="pantry-card-check">✓</div>
+        </div>
+        <div class="pantry-card selected" data-cat="veggie" onclick="togglePantryCard(this)">
+          <div class="pantry-card-emoji">🧄</div>
+          <div class="pantry-card-name">Garlic</div>
+          <div class="pantry-card-check">✓</div>
+        </div>
+        <div class="pantry-card selected" data-cat="veggie" onclick="togglePantryCard(this)">
+          <div class="pantry-card-emoji">🧅</div>
+          <div class="pantry-card-name">Onion</div>
+          <div class="pantry-card-check">✓</div>
+        </div>
+        <div class="pantry-card" data-cat="veggie" onclick="togglePantryCard(this)">
+          <div class="pantry-card-emoji">🥑</div>
+          <div class="pantry-card-name">Avocado</div>
+          <div class="pantry-card-check">✓</div>
+        </div>
+        <div class="pantry-card" data-cat="veggie" onclick="togglePantryCard(this)">
+          <div class="pantry-card-emoji">🌶️</div>
+          <div class="pantry-card-name">Chilli</div>
+          <div class="pantry-card-check">✓</div>
+        </div>
+        <div class="pantry-card" data-cat="veggie" onclick="togglePantryCard(this)">
+          <div class="pantry-card-emoji">🍠</div>
+          <div class="pantry-card-name">Sweet Potato</div>
+          <div class="pantry-card-check">✓</div>
+        </div>
+        <!-- Grains -->
+        <div class="pantry-card selected" data-cat="grain" onclick="togglePantryCard(this)">
+          <div class="pantry-card-emoji">🌾</div>
+          <div class="pantry-card-name">Rice</div>
+          <div class="pantry-card-check">✓</div>
+        </div>
+        <div class="pantry-card" data-cat="grain" onclick="togglePantryCard(this)">
+          <div class="pantry-card-emoji">🍝</div>
+          <div class="pantry-card-name">Pasta</div>
+          <div class="pantry-card-check">✓</div>
+        </div>
+        <div class="pantry-card" data-cat="grain" onclick="togglePantryCard(this)">
+          <div class="pantry-card-emoji">🫓</div>
+          <div class="pantry-card-name">Bread</div>
+          <div class="pantry-card-check">✓</div>
+        </div>
+        <div class="pantry-card" data-cat="grain" onclick="togglePantryCard(this)">
+          <div class="pantry-card-emoji">🥣</div>
+          <div class="pantry-card-name">Oats</div>
+          <div class="pantry-card-check">✓</div>
+        </div>
+        <div class="pantry-card" data-cat="grain" onclick="togglePantryCard(this)">
+          <div class="pantry-card-emoji">🌽</div>
+          <div class="pantry-card-name">Quinoa</div>
+          <div class="pantry-card-check">✓</div>
+        </div>
+        <!-- Dairy -->
+        <div class="pantry-card selected" data-cat="dairy" onclick="togglePantryCard(this)">
+          <div class="pantry-card-emoji">🥛</div>
+          <div class="pantry-card-name">Milk</div>
+          <div class="pantry-card-check">✓</div>
+        </div>
+        <div class="pantry-card selected" data-cat="dairy" onclick="togglePantryCard(this)">
+          <div class="pantry-card-emoji">🧀</div>
+          <div class="pantry-card-name">Cheese</div>
+          <div class="pantry-card-check">✓</div>
+        </div>
+        <div class="pantry-card" data-cat="dairy" onclick="togglePantryCard(this)">
+          <div class="pantry-card-emoji">🍦</div>
+          <div class="pantry-card-name">Yogurt</div>
+          <div class="pantry-card-check">✓</div>
+        </div>
+        <div class="pantry-card" data-cat="dairy" onclick="togglePantryCard(this)">
+          <div class="pantry-card-emoji">🧈</div>
+          <div class="pantry-card-name">Butter</div>
+          <div class="pantry-card-check">✓</div>
+        </div>
+        <!-- Pantry staples -->
+        <div class="pantry-card selected" data-cat="pantry" onclick="togglePantryCard(this)">
+          <div class="pantry-card-emoji">🫒</div>
+          <div class="pantry-card-name">Olive Oil</div>
+          <div class="pantry-card-check">✓</div>
+        </div>
+        <div class="pantry-card" data-cat="pantry" onclick="togglePantryCard(this)">
+          <div class="pantry-card-emoji">🧂</div>
+          <div class="pantry-card-name">Salt & Pepper</div>
+          <div class="pantry-card-check">✓</div>
+        </div>
+        <div class="pantry-card" data-cat="pantry" onclick="togglePantryCard(this)">
+          <div class="pantry-card-emoji">🍋</div>
+          <div class="pantry-card-name">Lemon</div>
+          <div class="pantry-card-check">✓</div>
+        </div>
+        <div class="pantry-card" data-cat="pantry" onclick="togglePantryCard(this)">
+          <div class="pantry-card-emoji">🥫</div>
+          <div class="pantry-card-name">Canned Beans</div>
+          <div class="pantry-card-check">✓</div>
+        </div>
+        <div class="pantry-card" data-cat="pantry" onclick="togglePantryCard(this)">
+          <div class="pantry-card-emoji">🍯</div>
+          <div class="pantry-card-name">Honey</div>
+          <div class="pantry-card-check">✓</div>
+        </div>
+        <div class="pantry-card" data-cat="pantry" onclick="togglePantryCard(this)">
+          <div class="pantry-card-emoji">🌿</div>
+          <div class="pantry-card-name">Mixed Herbs</div>
+          <div class="pantry-card-check">✓</div>
+        </div>
+      </div>
+
+      <!-- Selected count -->
+      <div id="pantryCount" style="text-align:center;font-size:13px;color:var(--deep);font-weight:700;padding-bottom:8px;">
+        10 ingredients selected ✓
+      </div>
+    </div>
+    <div class="ob-footer">
+      <button class="btn-primary" style="background:var(--deep);animation:none;" onclick="goTo('ob6')">Continue →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       SCREEN 7 — ONBOARDING 6: Cuisine
+  ══════════════════════════════════ -->
+  <div class="screen" id="ob6">
+    <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span>🔋</span></div></div>
+    <div class="ob-header">
+      <div class="progress-bar"><div class="progress-fill" style="width:86%"></div></div>
+      <div class="ob-step">Step 6 of 7</div>
+      <div class="ob-question" id="cuisineQuestion">What cuisines do you love? 🌍</div>
+      <div class="ob-sub" id="cuisineSub">We'll suggest meals that actually excite you. Pick all you love!</div>
+    </div>
+    <div class="ob-body" style="padding-bottom:8px;" id="cuisineBody">
+
+      <!-- STAGE 1: Region selection -->
+      <div id="cuisineStage1">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div class="cuisine-card" onclick="selectCuisineRegion('indian',this)">
+            <div class="cuisine-flag">🇮🇳</div>
+            <div class="cuisine-name">Indian</div>
+            <div class="cuisine-sub">Spicy & aromatic</div>
+            <div class="cuisine-check">✓</div>
+          </div>
+          <div class="cuisine-card" onclick="selectCuisineRegion('asian',this)">
+            <div class="cuisine-flag">🌏</div>
+            <div class="cuisine-name">Asian</div>
+            <div class="cuisine-sub">Chinese, Thai, Japanese</div>
+            <div class="cuisine-check">✓</div>
+          </div>
+          <div class="cuisine-card" onclick="selectCuisineRegion('mediterranean',this)">
+            <div class="cuisine-flag">🫒</div>
+            <div class="cuisine-name">Mediterranean</div>
+            <div class="cuisine-sub">Fresh & wholesome</div>
+            <div class="cuisine-check">✓</div>
+          </div>
+          <div class="cuisine-card" onclick="selectCuisineRegion('italian',this)">
+            <div class="cuisine-flag">🇮🇹</div>
+            <div class="cuisine-name">Italian</div>
+            <div class="cuisine-sub">Pasta, pizza & more</div>
+            <div class="cuisine-check">✓</div>
+          </div>
+          <div class="cuisine-card" onclick="selectCuisineRegion('mexican',this)">
+            <div class="cuisine-flag">🇲🇽</div>
+            <div class="cuisine-name">Mexican</div>
+            <div class="cuisine-sub">Bold & flavourful</div>
+            <div class="cuisine-check">✓</div>
+          </div>
+          <div class="cuisine-card" onclick="selectCuisineRegion('middleeastern',this)">
+            <div class="cuisine-flag">🌙</div>
+            <div class="cuisine-name">Middle Eastern</div>
+            <div class="cuisine-sub">Rich & warming</div>
+            <div class="cuisine-check">✓</div>
+          </div>
+          <div class="cuisine-card" onclick="selectCuisineRegion('western',this)">
+            <div class="cuisine-flag">🥗</div>
+            <div class="cuisine-name">Western</div>
+            <div class="cuisine-sub">Classic comfort food</div>
+            <div class="cuisine-check">✓</div>
+          </div>
+          <div class="cuisine-card" onclick="selectCuisineRegion('korean',this)">
+            <div class="cuisine-flag">🇰🇷</div>
+            <div class="cuisine-name">Korean</div>
+            <div class="cuisine-sub">Umami & fermented</div>
+            <div class="cuisine-check">✓</div>
+          </div>
+        </div>
+        <div style="margin-top:16px;text-align:center;font-size:13px;color:var(--muted);">
+          Select all you love — tap a cuisine to explore its dishes →
+        </div>
+      </div>
+
+      <!-- STAGE 2: Indian sub-region (hidden by default) -->
+      <div id="cuisineStage2Indian" style="display:none;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;cursor:pointer;" onclick="backToCuisineStage1()">
+          <div style="font-size:18px;color:var(--coral);">←</div>
+          <div style="font-size:13px;font-weight:600;color:var(--coral);">Back to all cuisines</div>
+        </div>
+        <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:16px;">🇮🇳 Which Indian cuisine do you prefer?</div>
+        <div style="display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:20px;">
+          <div class="cuisine-sub-card selected" onclick="toggleCuisineSubCard(this)">
+            <div style="font-size:28px;">🍛</div>
+            <div>
+              <div style="font-size:15px;font-weight:700;color:var(--text);">North Indian</div>
+              <div style="font-size:12px;color:var(--muted);">Butter Chicken, Dal Makhani, Biryani, Paneer, Roti</div>
+            </div>
+            <div class="sub-check">✓</div>
+          </div>
+          <div class="cuisine-sub-card" onclick="toggleCuisineSubCard(this)">
+            <div style="font-size:28px;">🥥</div>
+            <div>
+              <div style="font-size:15px;font-weight:700;color:var(--text);">South Indian</div>
+              <div style="font-size:12px;color:var(--muted);">Dosa, Idli, Sambar, Rasam, Coconut Curry, Appam</div>
+            </div>
+            <div class="sub-check">✓</div>
+          </div>
+          <div class="cuisine-sub-card" onclick="toggleCuisineSubCard(this)">
+            <div style="font-size:28px;">🍱</div>
+            <div>
+              <div style="font-size:15px;font-weight:700;color:var(--text);">Both — I love it all!</div>
+              <div style="font-size:12px;color:var(--muted);">Mix of North and South Indian recipes each week</div>
+            </div>
+            <div class="sub-check">✓</div>
+          </div>
+        </div>
+        <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:12px;">Your favourite dishes (tap to add):</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <div class="chip selected" onclick="toggleChip(this)">🍛 Biryani</div>
+          <div class="chip selected" onclick="toggleChip(this)">🧆 Dal Tadka</div>
+          <div class="chip" onclick="toggleChip(this)">🫓 Butter Naan</div>
+          <div class="chip selected" onclick="toggleChip(this)">🥘 Palak Paneer</div>
+          <div class="chip" onclick="toggleChip(this)">🍳 Masala Omelette</div>
+          <div class="chip" onclick="toggleChip(this)">🥞 Dosa</div>
+          <div class="chip" onclick="toggleChip(this)">🍲 Rajma</div>
+          <div class="chip" onclick="toggleChip(this)">🍜 Khichdi</div>
+        </div>
+      </div>
+
+      <!-- STAGE 2: Asian sub-region -->
+      <div id="cuisineStage2Asian" style="display:none;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;cursor:pointer;" onclick="backToCuisineStage1()">
+          <div style="font-size:18px;color:var(--coral);">←</div>
+          <div style="font-size:13px;font-weight:600;color:var(--coral);">Back to all cuisines</div>
+        </div>
+        <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:16px;">🌏 Which Asian cuisine do you love?</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;">
+          <div class="cuisine-sub-card-sm selected" onclick="toggleCuisineSubCardSm(this)"><div style="font-size:24px;">🇨🇳</div><div style="font-size:13px;font-weight:700;">Chinese</div><div class="sub-check-sm">✓</div></div>
+          <div class="cuisine-sub-card-sm" onclick="toggleCuisineSubCardSm(this)"><div style="font-size:24px;">🇯🇵</div><div style="font-size:13px;font-weight:700;">Japanese</div><div class="sub-check-sm">✓</div></div>
+          <div class="cuisine-sub-card-sm" onclick="toggleCuisineSubCardSm(this)"><div style="font-size:24px;">🇹🇭</div><div style="font-size:13px;font-weight:700;">Thai</div><div class="sub-check-sm">✓</div></div>
+          <div class="cuisine-sub-card-sm selected" onclick="toggleCuisineSubCardSm(this)"><div style="font-size:24px;">🇻🇳</div><div style="font-size:13px;font-weight:700;">Vietnamese</div><div class="sub-check-sm">✓</div></div>
+        </div>
+        <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:12px;">Favourite dishes:</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <div class="chip selected" onclick="toggleChip(this)">🍜 Ramen</div>
+          <div class="chip" onclick="toggleChip(this)">🍱 Sushi</div>
+          <div class="chip selected" onclick="toggleChip(this)">🥡 Stir Fry</div>
+          <div class="chip" onclick="toggleChip(this)">🍛 Thai Curry</div>
+          <div class="chip" onclick="toggleChip(this)">🍲 Pho</div>
+          <div class="chip" onclick="toggleChip(this)">🥟 Dumplings</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="ob-footer">
+      <button class="btn-primary" style="background:var(--deep);animation:none;" id="cuisineNextBtn" onclick="goTo('loading')">Almost there! →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       SCREEN 7 — LOADING
+  ══════════════════════════════════ -->
+  <div class="screen" id="loading">
+    <div class="status-bar" style="position:relative;z-index:2;">
+      <span class="status-time" style="color:rgba(255,255,255,0.8)">9:41</span>
+      <div class="status-icons" style="color:rgba(255,255,255,0.8)"><span>🔋</span></div>
+    </div>
+    <div class="loading-emoji">🍽️</div>
+    <div class="loading-title">Cooking up something<br>brilliant for you...</div>
+    <div class="loading-sub">This will only take a moment, Maya.</div>
+    <div class="loading-steps">
+      <div class="loading-step done" id="ls1">
+        <div class="step-icon">✓</div>
+        <div class="step-text">Analysing your pantry</div>
+      </div>
+      <div class="loading-step done" id="ls2">
+        <div class="step-icon">✓</div>
+        <div class="step-text">Matching your schedule</div>
+      </div>
+      <div class="loading-step" id="ls3">
+        <div class="step-icon" style="animation:pulse 1s infinite">⏳</div>
+        <div class="step-text">Personalising your plan</div>
+      </div>
+    </div>
+    <div class="loading-dots">
+      <div class="ldot"></div>
+      <div class="ldot"></div>
+      <div class="ldot"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       SCREEN 8 — HOME (WEEKLY PLAN)
+  ══════════════════════════════════ -->
+  <div class="screen" id="home">
+    <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span>●●● WiFi 🔋</span></div></div>
+    <div class="home-header">
+      <div class="home-greeting-row">
+        <div>
+          <div class="home-greeting">Good morning,<br><span>Maya.</span> 👋</div>
+          <div class="home-sub">Tuesday · Your plan is ready</div>
+        </div>
+        <div class="avatar">M</div>
+      </div>
+      <div class="nutrition-banner" onclick="goTo('nutrition')">
+        <div class="nb-left">
+          <div class="nb-label">This week averages</div>
+          <div class="nb-value">1,890 kcal/day</div>
+          <div class="nb-sub">On track for your goal ✓</div>
+        </div>
+        <div class="nb-right">
+          <div class="macro-pill"><div class="macro-val">142g</div><div class="macro-lbl">Protein</div></div>
+          <div class="macro-pill"><div class="macro-val">180g</div><div class="macro-lbl">Carbs</div></div>
+          <div class="macro-pill"><div class="macro-val">62g</div><div class="macro-lbl">Fat</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="day-strip">
+      <div class="day-pill" onclick="selectDay(this)"><div class="day-name">MON</div><div class="day-num">24</div><div class="day-dot"></div></div>
+      <div class="day-pill active today" onclick="selectDay(this)"><div class="day-name">TUE</div><div class="day-num">25</div><div class="day-dot"></div></div>
+      <div class="day-pill" onclick="selectDay(this)"><div class="day-name">WED</div><div class="day-num">26</div><div class="day-dot"></div></div>
+      <div class="day-pill" onclick="selectDay(this)"><div class="day-name">THU</div><div class="day-num">27</div><div class="day-dot"></div></div>
+      <div class="day-pill" onclick="selectDay(this)"><div class="day-name">FRI</div><div class="day-num">28</div><div class="day-dot"></div></div>
+      <div class="day-pill" onclick="selectDay(this)"><div class="day-name">SAT</div><div class="day-num">1</div><div class="day-dot"></div></div>
+      <div class="day-pill" onclick="selectDay(this)"><div class="day-name">SUN</div><div class="day-num">2</div><div class="day-dot"></div></div>
+    </div>
+    <!-- Quick Meal Prep Banner -->
+    <div style="margin:0 24px 16px;background:linear-gradient(135deg,#FF6B35,#e85d2a);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;" onclick="openQuickMealPrep()">
+      <div style="font-size:32px;">⚡</div>
+      <div style="flex:1;">
+        <div style="font-size:15px;font-weight:700;color:white;">Quick Meal Prep</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.8);">Short on time right now? We'll find something fast!</div>
+      </div>
+      <div style="color:white;font-size:20px;">→</div>
+    </div>
+
+    <div class="scroll-content">
+      <div class="meal-section">
+        <div class="meal-type-label">🌅 Breakfast</div>
+        <div class="meal-card" onclick="openTimePickerThen('recipe','Avocado Toast with Poached Eggs','🥑','linear-gradient(135deg,#d4edda,#a8d5b5)')">
+          <div class="meal-img">
+            <div class="meal-img-bg" style="background:linear-gradient(135deg,#d4edda,#a8d5b5)"></div>
+            <div class="meal-img-emoji">🥑</div>
+            <div class="pantry-hero-badge">✓ No shopping needed</div>
+          </div>
+          <div class="meal-info">
+            <div class="meal-name">Avocado Toast with Poached Eggs</div>
+            <div class="meal-meta">
+              <span class="meta-tag tag-diet">🌱 Vegetarian</span>
+              <span class="meta-tag tag-cal">380 kcal</span>
+              <span class="meta-tag tag-protein">🔥 High Protein</span>
+            </div>
+            <div class="meal-bottom-row" style="margin-top:12px;">
+              <button class="swap-visible-btn" onclick="event.stopPropagation();openSwap()">🔄 Swap Meal</button>
+              <button class="cook-btn" onclick="event.stopPropagation();openTimePickerThen('cookmode')">Cook Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="meal-type-label">☀️ Lunch</div>
+        <div class="meal-card" onclick="openTimePickerThen('recipe','Grilled Chicken Bowl','🍗','linear-gradient(135deg,#fff3cd,#ffc107)')">
+          <div class="meal-img">
+            <div class="meal-img-bg" style="background:linear-gradient(135deg,#fff3cd,#ffc107)"></div>
+            <div class="meal-img-emoji">🍗</div>
+          </div>
+          <div class="meal-info">
+            <div class="meal-name">Grilled Chicken & Quinoa Bowl</div>
+            <div class="meal-meta">
+              <span class="meta-tag tag-protein">🔥 High Protein</span>
+              <span class="meta-tag tag-cal">520 kcal</span>
+            </div>
+            <div class="meal-bottom-row" style="margin-top:12px;">
+              <button class="swap-visible-btn" onclick="event.stopPropagation();openSwap()">🔄 Swap Meal</button>
+              <button class="cook-btn" onclick="event.stopPropagation();openTimePickerThen('cookmode')">Cook Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="meal-type-label">🌙 Dinner</div>
+        <div class="meal-card" onclick="openTimePickerThen('recipe','Lemon Herb Salmon','🐟','linear-gradient(135deg,#cce5ff,#74c0fc)')">
+          <div class="meal-img">
+            <div class="meal-img-bg" style="background:linear-gradient(135deg,#cce5ff,#74c0fc)"></div>
+            <div class="meal-img-emoji">🐟</div>
+            <span class="meta-tag tag-kids" style="position:absolute;top:10px;right:10px;z-index:2;">🧒 Kids Version</span>
+          </div>
+          <div class="meal-info">
+            <div class="meal-name">Lemon Herb Salmon with Roasted Vegetables</div>
+            <div class="meal-meta">
+              <span class="meta-tag tag-protein">🔥 High Protein</span>
+              <span class="meta-tag tag-cal">480 kcal</span>
+              <span class="meta-tag tag-kids">🧒 Kids Mode</span>
+            </div>
+            <div class="meal-bottom-row" style="margin-top:12px;">
+              <button class="swap-visible-btn" onclick="event.stopPropagation();openSwap()">🔄 Swap Meal</button>
+              <button class="cook-btn" onclick="event.stopPropagation();openTimePickerThen('cookmode')">Cook Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Kids Mode Card — shown when Kids Mode is ON -->
+        <div style="background:linear-gradient(135deg,#EDE9FE,#F5F3FF);border-radius:20px;padding:16px;margin-bottom:14px;border:2px solid #DDD6FE;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+            <div style="font-size:24px;">🧒</div>
+            <div style="flex:1;">
+              <div style="font-size:14px;font-weight:700;color:#5B21B6;">Kids Dinner Tonight</div>
+              <div style="font-size:12px;color:#7C3AED;">Same ingredients · Kid-friendly version</div>
+            </div>
+            <span style="background:#5B21B6;color:white;font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px;">KIDS MODE</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;background:white;border-radius:14px;padding:12px 14px;margin-bottom:12px;">
+            <div style="font-size:32px;">🐟</div>
+            <div style="flex:1;">
+              <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px;">Salmon Bites with Sweet Potato Mash</div>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <span class="meta-tag" style="background:#EDE9FE;color:#5B21B6;font-size:10px;">⚡ 25 min</span>
+                <span class="meta-tag" style="background:#E8F5EE;color:var(--deep);font-size:10px;">✓ Pantry only</span>
+                <span class="meta-tag" style="background:#FEF3C7;color:#92400E;font-size:10px;">No strong spices</span>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;">
+            <button onclick="goTo('kidsrecipe')" style="flex:1;padding:11px;background:#5B21B6;color:white;border:none;border-radius:12px;font-size:13px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;">🧒 Cook Kids Version</button>
+            <button onclick="openSwap()" style="padding:11px 14px;background:white;border:2px solid #DDD6FE;border-radius:12px;font-size:13px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;color:#5B21B6;">🔄 Swap</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <div class="nav-item active" onclick="switchTab('home',this)"><div class="nav-icon">🏠</div><div class="nav-label">Home</div></div>
+      <div class="nav-item" onclick="goTo('nutrition');switchTab('nutrition',this)"><div class="nav-icon">📊</div><div class="nav-label">Nutrition</div></div>
+      <div class="nav-item" onclick="goTo('shopping');switchTab('shopping',this)"><div class="nav-icon">🛒</div><div class="nav-label">Shopping</div></div>
+      <div class="nav-item" onclick="goTo('profile');switchTab('profile',this)"><div class="nav-icon">👤</div><div class="nav-label">Profile</div></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       RECIPE BOTTOM SHEET (overlay)
+  ══════════════════════════════════ -->
+  <div class="bottom-sheet-overlay" id="recipeOverlay" onclick="closeRecipe()">
+  </div>
+  <div class="bottom-sheet" id="recipeSheet" style="display:none;position:absolute;bottom:0;left:0;right:0;z-index:51;background:var(--bg);border-radius:28px 28px 0 0;max-height:90%;overflow-y:auto;">
+    <div class="bs-handle"></div>
+    <div class="bs-meal-img" id="bsMealImg" style="margin:16px 24px;">
+      <div id="bsMealBg" style="position:absolute;inset:0;border-radius:var(--radius-sm);"></div>
+      <span id="bsMealEmoji" style="position:relative;z-index:1;font-size:64px;"></span>
+    </div>
+    <div class="bs-header">
+      <div class="bs-title" id="bsMealName"></div>
+      <div class="bs-tags">
+        <span class="meta-tag tag-protein">🔥 High Protein</span>
+        <span class="meta-tag tag-diet">🌱 Vegetarian option</span>
+        <span class="meta-tag tag-cal">480 kcal</span>
+      </div>
+    </div>
+
+    <!-- Kids tabs (for dinner) -->
+    <div class="kids-tabs">
+      <button class="kids-tab active" onclick="switchKidsTab('adult',this)">👤 Adult Recipe</button>
+      <button class="kids-tab" onclick="switchKidsTab('kids',this)">🧒 Kids Version</button>
+    </div>
+
+    <!-- Adult recipe -->
+    <div class="kids-content active" id="adultContent">
+      <div class="recipe-tabs">
+        <button class="recipe-tab active" onclick="switchRecipeTab(0,this)">⚡ Fastest<br><small>20 min</small></button>
+        <button class="recipe-tab" onclick="switchRecipeTab(1,this)">⚖️ Balanced<br><small>30 min</small></button>
+        <button class="recipe-tab" onclick="switchRecipeTab(2,this)">📦 Meal Prep<br><small>45 min</small></button>
+      </div>
+      <div class="recipe-content active" id="recipe0">
+        <div class="ingredients-title">Ingredients</div>
+        <div class="ingredient-row"><div class="ingredient-dot dot-green"></div><div class="ingredient-name">Salmon fillet (200g)</div><div class="ingredient-status status-have">✓ Have it</div></div>
+        <div class="ingredient-row"><div class="ingredient-dot dot-green"></div><div class="ingredient-name">Broccoli (1 cup)</div><div class="ingredient-status status-have">✓ Have it</div></div>
+        <div class="ingredient-row"><div class="ingredient-dot dot-green"></div><div class="ingredient-name">Olive oil (2 tbsp)</div><div class="ingredient-status status-have">✓ Have it</div></div>
+        <div class="ingredient-row"><div class="ingredient-dot dot-amber"></div><div class="ingredient-name">Lemon (1 whole)</div><div class="ingredient-status status-need">+ Buy this</div></div>
+        <div class="ingredient-row"><div class="ingredient-dot dot-green"></div><div class="ingredient-name">Garlic (3 cloves)</div><div class="ingredient-status status-have">✓ Have it</div></div>
+        <button class="start-cooking-btn" onclick="closeRecipe();goTo('cookmode')">🍳 Start Cooking</button>
+      </div>
+      <div class="recipe-content" id="recipe1">
+        <div class="ingredients-title">Balanced Version — 30 min</div>
+        <div class="ingredient-row"><div class="ingredient-dot dot-green"></div><div class="ingredient-name">Salmon fillet (200g)</div><div class="ingredient-status status-have">✓ Have it</div></div>
+        <div class="ingredient-row"><div class="ingredient-dot dot-green"></div><div class="ingredient-name">Mixed vegetables</div><div class="ingredient-status status-have">✓ Have it</div></div>
+        <div class="ingredient-row"><div class="ingredient-dot dot-amber"></div><div class="ingredient-name">Capers (1 tbsp)</div><div class="ingredient-status status-need">+ Buy this</div></div>
+        <div class="ingredient-row"><div class="ingredient-dot dot-amber"></div><div class="ingredient-name">Fresh dill</div><div class="ingredient-status status-need">+ Buy this</div></div>
+        <button class="start-cooking-btn" onclick="closeRecipe();goTo('cookmode')">🍳 Start Cooking</button>
+      </div>
+      <div class="recipe-content" id="recipe2">
+        <div class="ingredients-title">Meal Prep — Makes 2 servings</div>
+        <div class="ingredient-row"><div class="ingredient-dot dot-green"></div><div class="ingredient-name">Salmon fillets (400g)</div><div class="ingredient-status status-have">✓ Have it</div></div>
+        <div class="ingredient-row"><div class="ingredient-dot dot-green"></div><div class="ingredient-name">Broccoli + Carrots</div><div class="ingredient-status status-have">✓ Have it</div></div>
+        <div class="ingredient-row"><div class="ingredient-dot dot-amber"></div><div class="ingredient-name">Brown rice (2 cups)</div><div class="ingredient-status status-need">+ Buy this</div></div>
+        <div style="background:var(--coral-light);border-radius:10px;padding:10px 14px;margin-top:12px;font-size:13px;color:var(--coral);">
+          💡 Doubles as tomorrow's lunch! Saves 30 min on Wednesday.
+        </div>
+        <button class="start-cooking-btn" onclick="closeRecipe();goTo('cookmode')">🍳 Start Cooking</button>
+      </div>
+    </div>
+
+    <!-- Kids recipe -->
+    <div class="kids-content" id="kidsContent">
+      <div class="kids-note">🧒 <div>Kid-friendly version using the same pantry ingredients — milder flavours, fun presentation!</div></div>
+      <div class="kids-recipe-name">🐟 Salmon Bites with Sweet Potato Mash</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:16px;">No strong spices · Bite-sized pieces · Ready in 25 min</div>
+      <div class="ingredients-title">Ingredients</div>
+      <div class="ingredient-row"><div class="ingredient-dot dot-green"></div><div class="ingredient-name">Salmon fillet (150g)</div><div class="ingredient-status status-have">✓ Have it</div></div>
+      <div class="ingredient-row"><div class="ingredient-dot dot-amber"></div><div class="ingredient-name">Sweet potato (1 medium)</div><div class="ingredient-status status-need">+ Buy this</div></div>
+      <div class="ingredient-row"><div class="ingredient-dot dot-green"></div><div class="ingredient-name">Butter (1 tbsp)</div><div class="ingredient-status status-have">✓ Have it</div></div>
+      <div class="ingredient-row"><div class="ingredient-dot dot-green"></div><div class="ingredient-name">Cucumber (for sticks)</div><div class="ingredient-status status-have">✓ Have it</div></div>
+      <button class="start-cooking-btn" onclick="closeRecipe();goTo('cookmode')">🍳 Cook Kids Version</button>
+    </div>
+  </div>
+
+  <!-- SWAP SHEET -->
+  <div class="bottom-sheet-overlay" id="swapOverlay" onclick="closeSwap()"></div>
+  <div class="bottom-sheet" id="swapSheet" style="display:none;position:absolute;bottom:0;left:0;right:0;z-index:52;background:var(--bg);border-radius:28px 28px 0 0;padding:20px 24px 32px;">
+    <div class="bs-handle"></div>
+    <div style="margin:16px 0 20px;">
+      <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--text);margin-bottom:4px;">Swap this meal 🔄</div>
+      <div style="font-size:13px;color:var(--muted);">Filtered to match your time & preferences</div>
+    </div>
+    <div style="display:flex;gap:14px;align-items:center;padding:14px;background:var(--card);border-radius:16px;margin-bottom:10px;cursor:pointer;box-shadow:var(--shadow);" onclick="closeSwap()">
+      <div style="width:52px;height:52px;border-radius:12px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;">🥗</div>
+      <div style="flex:1">
+        <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:2px;">Chickpea & Spinach Curry</div>
+        <div style="font-size:12px;color:var(--muted);">⏱ 28 min · Vegetarian · 420 kcal</div>
+      </div>
+      <div style="color:var(--coral);font-size:18px;">→</div>
+    </div>
+    <div style="display:flex;gap:14px;align-items:center;padding:14px;background:var(--card);border-radius:16px;margin-bottom:10px;cursor:pointer;box-shadow:var(--shadow);" onclick="closeSwap()">
+      <div style="width:52px;height:52px;border-radius:12px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;">🍳</div>
+      <div style="flex:1">
+        <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:2px;">Veggie Omelette Bowl</div>
+        <div style="font-size:12px;color:var(--muted);">⏱ 15 min · High Protein · 380 kcal</div>
+      </div>
+      <div style="color:var(--coral);font-size:18px;">→</div>
+    </div>
+    <div style="display:flex;gap:14px;align-items:center;padding:14px;background:var(--card);border-radius:16px;margin-bottom:10px;cursor:pointer;box-shadow:var(--shadow);" onclick="closeSwap()">
+      <div style="width:52px;height:52px;border-radius:12px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;">🥙</div>
+      <div style="flex:1">
+        <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:2px;">Chicken Shawarma Wrap</div>
+        <div style="font-size:12px;color:var(--muted);">⏱ 25 min · High Protein · 510 kcal</div>
+      </div>
+      <div style="color:var(--coral);font-size:18px;">→</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       SCREEN 9 — COOK MODE
+  ══════════════════════════════════ -->
+  <div class="screen" id="cookmode">
+    <div class="status-bar" style="background:var(--deep);">
+      <span class="status-time" style="color:rgba(255,255,255,0.8)">9:41</span>
+      <div class="status-icons" style="color:rgba(255,255,255,0.8)"><span>🔋</span></div>
+    </div>
+    <div class="cook-header">
+      <button class="back-btn" onclick="exitCookMode()">←</button>
+      <div style="flex:1;">
+        <div class="cook-title">Lemon Herb Salmon</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:2px;">Tap ← to exit cook mode</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.15);border-radius:20px;padding:5px 12px;font-size:11px;color:white;font-weight:600;">🧒 Kids</div>
+    </div>
+    <div class="cook-progress-wrap">
+      <div class="cook-progress-bar"><div class="cook-progress-fill" id="cookProgress" style="width:40%"></div></div>
+      <div class="cook-step-count" id="cookStepCount">Step 2 of 5</div>
+    </div>
+    <div class="scroll-content" style="background:var(--bg);border-radius:28px 28px 0 0;padding-top:20px;">
+      <div class="cook-step-card">
+        <div class="step-num" id="stepNum">Step 2 of 5</div>
+        <div class="step-instruction" id="stepInstruction">Season the salmon fillet with salt, pepper, and a drizzle of olive oil. Let it rest at room temperature for 5 minutes before cooking.</div>
+        <div class="timer-display">
+          <div>
+            <div class="timer-label">Timer</div>
+            <div class="timer-time" id="timerDisplay">5:00</div>
+          </div>
+          <button class="timer-btn" id="timerBtn" onclick="toggleTimer()">▶</button>
+        </div>
+      </div>
+      <div class="cook-tips" style="margin-top:16px;">
+        <div class="cook-tip-text">💡 <strong>Chef's tip:</strong> Room temperature fish cooks more evenly and gets a better sear.</div>
+      </div>
+
+      <!-- Kids version note -->
+      <div style="margin:16px 24px 0;background:#EDE9FE;border-radius:14px;padding:14px 16px;display:flex;gap:12px;align-items:center;">
+        <div style="font-size:24px;">🧒</div>
+        <div style="flex:1;">
+          <div style="font-size:13px;font-weight:700;color:#5B21B6;margin-bottom:2px;">Kids Version Available</div>
+          <div style="font-size:12px;color:#7C3AED;">Salmon Bites with Sweet Potato Mash — milder, bite-sized, fun!</div>
+        </div>
+        <button onclick="goTo('kidsrecipe')" style="background:#5B21B6;color:white;border:none;padding:7px 12px;border-radius:10px;font-size:11px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;">Switch</button>
+      </div>
+    </div>
+    <div class="cook-nav-row">
+      <button class="cook-prev-btn" onclick="prevStep()">← Prev</button>
+      <button class="cook-next-btn" onclick="nextStep()">Next Step →</button>
+    </div>
+  </div>
+
+  <!-- Kids Recipe Cook Mode -->
+  <div class="screen" id="kidsrecipe">
+    <div class="status-bar" style="background:#5B21B6;">
+      <span class="status-time" style="color:rgba(255,255,255,0.8)">9:41</span>
+      <div class="status-icons" style="color:rgba(255,255,255,0.8)"><span>🔋</span></div>
+    </div>
+    <div class="cook-header" style="background:#5B21B6;">
+      <button class="back-btn" onclick="goTo('cookmode')" style="background:rgba(255,255,255,0.2);">←</button>
+      <div style="flex:1;">
+        <div style="font-size:11px;color:rgba(255,255,255,0.7);margin-bottom:2px;">🧒 Kids Version</div>
+        <div class="cook-title">Salmon Bites & Sweet Potato Mash</div>
+      </div>
+    </div>
+    <div class="cook-progress-wrap" style="background:#5B21B6;padding-bottom:16px;">
+      <div class="cook-progress-bar"><div class="cook-progress-fill" style="width:33%;background:#A78BFA;"></div></div>
+      <div class="cook-step-count" style="color:rgba(255,255,255,0.7);">Step 1 of 4 · Kid-friendly mode 🎉</div>
+    </div>
+    <div class="scroll-content" style="background:var(--bg);border-radius:28px 28px 0 0;padding-top:20px;">
+      <div style="margin:0 24px;background:#EDE9FE;border-radius:16px;padding:14px 16px;margin-bottom:16px;display:flex;gap:10px;align-items:center;">
+        <div style="font-size:20px;">⚠️</div>
+        <div style="font-size:13px;color:#5B21B6;line-height:1.4;">No strong spices · Bite-sized pieces · No allergens · Kid-approved!</div>
+      </div>
+      <div class="cook-step-card" style="border-left:4px solid #A78BFA;">
+        <div class="step-num" style="color:#7C3AED;">Step 1 of 4 — Kids Version</div>
+        <div class="step-instruction">Peel and cube the sweet potato into small pieces. Boil in lightly salted water until soft — about 10 minutes. Drain and mash with a little butter until smooth and creamy.</div>
+        <div class="timer-display" style="background:#5B21B6;">
+          <div>
+            <div class="timer-label">Timer</div>
+            <div class="timer-time">10:00</div>
+          </div>
+          <button class="timer-btn" style="background:#A78BFA;">▶</button>
+        </div>
+      </div>
+      <div style="margin:16px 24px 0;background:#F5F3FF;border-radius:12px;padding:12px 14px;">
+        <div style="font-size:13px;color:#7C3AED;">🌟 <strong>Fun tip for kids:</strong> Let them mash the potato themselves — they'll love eating what they helped make!</div>
+      </div>
+    </div>
+    <div class="cook-nav-row">
+      <button class="cook-prev-btn" onclick="goTo('cookmode')">← Adult Version</button>
+      <button class="cook-next-btn" style="background:#5B21B6;" onclick="goTo('complete')">Next Step →</button>
+    </div>
+  </div>
+
+  <!-- Meal Complete Screen -->
+  <div class="screen" id="complete">
+    <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span>🔋</span></div></div>
+    <div id="confettiContainer" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1;"></div>
+    <div class="cook-complete">
+      <div class="complete-emoji">🎉</div>
+      <div class="complete-title">Nailed it!</div>
+      <div class="complete-sub">Your pantry has been updated.<br>Lemon Herb Salmon is marked as cooked.<br><br><strong style="color:var(--deep)">You've cooked 3 of 7 meals this week!</strong></div>
+      <button class="btn-primary" style="animation:none;background:var(--deep);" onclick="goTo('home')">Back to My Plan</button>
+      <button style="margin-top:12px;width:100%;padding:15px;background:transparent;border:2px solid var(--border);border-radius:14px;font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;color:var(--text);" onclick="goTo('shopping')">View Shopping List 🛒</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       SCREEN 10 — SHOPPING LIST
+  ══════════════════════════════════ -->
+  <div class="screen" id="shopping">
+    <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span>🔋</span></div></div>
+    <div class="shop-header">
+      <div class="page-title">Shopping List 🛒</div>
+      <div class="page-sub">Auto-generated from your week's plan</div>
+
+      <!-- Pantry sync banner -->
+      <div style="background:linear-gradient(135deg,var(--deep),var(--deep2));border-radius:14px;padding:12px 16px;display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+        <div style="font-size:24px;">🔄</div>
+        <div style="flex:1;">
+          <div style="font-size:13px;font-weight:700;color:white;">Auto Pantry Sync is ON</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.7);margin-top:2px;">Tick an item = bought = added to your pantry automatically</div>
+        </div>
+        <div style="width:36px;height:20px;background:var(--coral);border-radius:10px;display:flex;align-items:center;padding:2px 3px;">
+          <div style="width:16px;height:16px;background:white;border-radius:50%;margin-left:auto;"></div>
+        </div>
+      </div>
+
+      <div class="shop-summary">
+        <div class="shop-sum-left">
+          <div class="shop-sum-count" id="itemCount">8 items</div>
+          <div class="shop-sum-label">needed · 1 grocery run</div>
+        </div>
+        <button class="share-btn">📤 Share</button>
+      </div>
+    </div>
+    <div class="scroll-content">
+      <!-- Proteins -->
+      <div class="shop-category">
+        <div class="category-header"><span class="category-emoji">🥩</span><span class="category-title">Proteins</span></div>
+        <div class="shop-item" onclick="toggleShopItem(this,'Salmon fillet')"><div class="shop-checkbox"></div><div class="shop-item-name">Salmon fillet</div><div class="shop-item-qty">400g</div></div>
+        <div class="shop-item" onclick="toggleShopItem(this,'Chicken breast')"><div class="shop-checkbox"></div><div class="shop-item-name">Chicken breast</div><div class="shop-item-qty">500g</div></div>
+      </div>
+      <!-- Vegetables -->
+      <div class="shop-category">
+        <div class="category-header"><span class="category-emoji">🥦</span><span class="category-title">Vegetables</span></div>
+        <div class="shop-item" onclick="toggleShopItem(this,'Sweet potato')"><div class="shop-checkbox"></div><div class="shop-item-name">Sweet potato</div><div class="shop-item-qty">2 medium</div></div>
+        <div class="shop-item" onclick="toggleShopItem(this,'Lemon')"><div class="shop-checkbox"></div><div class="shop-item-name">Lemon</div><div class="shop-item-qty">3 whole</div></div>
+        <div class="shop-item" onclick="toggleShopItem(this,'Fresh dill')"><div class="shop-checkbox"></div><div class="shop-item-name">Fresh dill</div><div class="shop-item-qty">1 bunch</div></div>
+      </div>
+      <!-- Grains -->
+      <div class="shop-category">
+        <div class="category-header"><span class="category-emoji">🌾</span><span class="category-title">Grains</span></div>
+        <div class="shop-item" onclick="toggleShopItem(this,'Quinoa')"><div class="shop-checkbox"></div><div class="shop-item-name">Quinoa</div><div class="shop-item-qty">250g</div></div>
+        <div class="shop-item" onclick="toggleShopItem(this,'Brown rice')"><div class="shop-checkbox"></div><div class="shop-item-name">Brown rice</div><div class="shop-item-qty">500g</div></div>
+      </div>
+      <!-- Dairy -->
+      <div class="shop-category">
+        <div class="category-header"><span class="category-emoji">🥛</span><span class="category-title">Dairy</span></div>
+        <div class="shop-item" onclick="toggleShopItem(this,'Greek yogurt')"><div class="shop-checkbox"></div><div class="shop-item-name">Greek yogurt</div><div class="shop-item-qty">200g</div></div>
+      </div>
+
+      <!-- Pantry Updated Section (appears as items are checked) -->
+      <div id="pantryUpdatedSection" style="display:none;margin-bottom:24px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+          <span style="font-size:14px;font-weight:700;color:#22C55E;text-transform:uppercase;letter-spacing:0.5px;">✓ Added to Pantry</span>
+        </div>
+        <div id="pantryUpdatedList"></div>
+        <div style="background:#E8F5EE;border-radius:12px;padding:12px 14px;margin-top:8px;">
+          <div style="font-size:13px;color:var(--deep);line-height:1.5;">🎉 Your pantry is up to date! Next week's meal plan will use these new ingredients first.</div>
+        </div>
+      </div>
+      <div style="background:var(--coral-light);border-radius:16px;padding:16px;margin:0 0 24px;">
+        <div style="font-size:14px;font-weight:700;color:var(--coral);margin-bottom:4px;">🔔 Mid-week reminder set</div>
+        <div style="font-size:13px;color:var(--muted);">We'll remind you Thursday if you're running low on key ingredients.</div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <div class="nav-item" onclick="goTo('home')"><div class="nav-icon">🏠</div><div class="nav-label">Home</div></div>
+      <div class="nav-item" onclick="goTo('nutrition')"><div class="nav-icon">📊</div><div class="nav-label">Nutrition</div></div>
+      <div class="nav-item active"><div class="nav-icon">🛒</div><div class="nav-label">Shopping</div></div>
+      <div class="nav-item" onclick="goTo('profile')"><div class="nav-icon">👤</div><div class="nav-label">Profile</div></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       SCREEN 11 — NUTRITION
+  ══════════════════════════════════ -->
+  <div class="screen" id="nutrition">
+    <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span>🔋</span></div></div>
+    <div class="nutrition-header">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+        <button class="back-btn dark" onclick="goTo('home')">←</button>
+        <div class="page-title" style="margin:0;">Nutrition 📊</div>
+      </div>
+    </div>
+    <div class="scroll-content">
+      <div style="padding:0 24px 24px;">
+        <div class="macro-ring-card">
+          <div class="ring-wrap">
+            <svg width="100" height="100" viewBox="0 0 100 100" class="ring-svg">
+              <circle class="ring-circle-bg" cx="50" cy="50" r="45"/>
+              <circle class="ring-circle ring-protein" cx="50" cy="50" r="45" style="stroke-dasharray:113 283;"/>
+              <circle class="ring-circle ring-carbs" cx="50" cy="50" r="45" style="stroke-dasharray:102 283;stroke-dashoffset:-113;"/>
+              <circle class="ring-circle ring-fat" cx="50" cy="50" r="45" style="stroke-dasharray:68 283;stroke-dashoffset:-215;"/>
+            </svg>
+            <div class="ring-center-abs">
+              <div class="ring-kcal">1,890</div>
+              <div class="ring-kcal-lbl">kcal/day</div>
+            </div>
+          </div>
+          <div class="macro-details">
+            <div class="macro-row"><div class="macro-color-dot" style="background:#FF6B35"></div><div class="macro-info"><div class="macro-name">Protein</div><div><span class="macro-amount">142g</span> <span class="macro-pct">40%</span></div></div></div>
+            <div class="macro-row"><div class="macro-color-dot" style="background:#FCD34D"></div><div class="macro-info"><div class="macro-name">Carbs</div><div><span class="macro-amount">180g</span> <span class="macro-pct">36%</span></div></div></div>
+            <div class="macro-row"><div class="macro-color-dot" style="background:#86EFAC"></div><div class="macro-info"><div class="macro-name">Fat</div><div><span class="macro-amount">62g</span> <span class="macro-pct">24%</span></div></div></div>
+          </div>
+        </div>
+
+        <div class="day-bars-card">
+          <div class="day-bars-title">Daily Calories This Week</div>
+          <div class="day-bar-row"><div class="day-bar-label">Mon</div><div class="day-bar-track"><div class="day-bar-fill" style="width:85%"></div></div><div class="day-bar-val">1,607 kcal</div></div>
+          <div class="day-bar-row"><div class="day-bar-label">Tue</div><div class="day-bar-track"><div class="day-bar-fill" style="width:100%"></div></div><div class="day-bar-val">1,890 kcal</div></div>
+          <div class="day-bar-row"><div class="day-bar-label">Wed</div><div class="day-bar-track"><div class="day-bar-fill warning" style="width:60%"></div></div><div class="day-bar-val">1,134 kcal</div></div>
+          <div class="day-bar-row"><div class="day-bar-label">Thu</div><div class="day-bar-track"><div class="day-bar-fill" style="width:92%"></div></div><div class="day-bar-val">1,738 kcal</div></div>
+          <div class="day-bar-row"><div class="day-bar-label">Fri</div><div class="day-bar-track"><div class="day-bar-fill" style="width:88%"></div></div><div class="day-bar-val">1,663 kcal</div></div>
+          <div class="day-bar-row"><div class="day-bar-label">Sat</div><div class="day-bar-track"><div class="day-bar-fill" style="width:0%"></div></div><div class="day-bar-val">—</div></div>
+          <div class="day-bar-row"><div class="day-bar-label">Sun</div><div class="day-bar-track"><div class="day-bar-fill" style="width:0%"></div></div><div class="day-bar-val">—</div></div>
+        </div>
+
+        <div class="suggestion-card">
+          <div class="suggestion-icon">⚠️</div>
+          <div class="suggestion-text">
+            <div class="suggestion-title">Wednesday is low on protein</div>
+            <div class="suggestion-sub">Tap to swap Wednesday lunch for a high-protein option</div>
+          </div>
+          <div class="suggestion-arrow">→</div>
+        </div>
+
+        <div style="background:var(--card);border-radius:16px;padding:16px;margin-top:16px;box-shadow:var(--shadow);">
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;">🏆 Weekly Goal Progress</div>
+          <div style="font-size:22px;font-weight:700;color:var(--deep);margin-bottom:4px;">On Track</div>
+          <div style="font-size:13px;color:var(--muted);">You're averaging 142g protein/day — right on target for your muscle gain goal.</div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <div class="nav-item" onclick="goTo('home')"><div class="nav-icon">🏠</div><div class="nav-label">Home</div></div>
+      <div class="nav-item active"><div class="nav-icon">📊</div><div class="nav-label">Nutrition</div></div>
+      <div class="nav-item" onclick="goTo('shopping')"><div class="nav-icon">🛒</div><div class="nav-label">Shopping</div></div>
+      <div class="nav-item" onclick="goTo('profile')"><div class="nav-icon">👤</div><div class="nav-label">Profile</div></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       SCREEN 12 — PROFILE
+  ══════════════════════════════════ -->
+  <div class="screen" id="profile">
+    <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span>🔋</span></div></div>
+    <div class="profile-header">
+      <div class="page-title">My Profile</div>
+      <div class="page-sub">Week 3 of your journey</div>
+    </div>
+    <div class="scroll-content">
+      <div style="padding:0 24px 24px;">
+        <div class="profile-card">
+          <div class="profile-avatar">M</div>
+          <div>
+            <div class="profile-name">Maya Sharma</div>
+            <div class="profile-meta">31 · Female · Build Muscle Goal</div>
+            <div class="profile-meta" style="margin-top:4px;">🌱 Vegetarian · 💪 High Protein</div>
+          </div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-card"><div class="stat-val">15</div><div class="stat-label">Meals Cooked</div></div>
+          <div class="stat-card"><div class="stat-val">₹2.4k</div><div class="stat-label">Saved</div></div>
+          <div class="stat-card"><div class="stat-val">3</div><div class="stat-label">Week Streak</div></div>
+        </div>
+
+        <div class="weekly-summary-card">
+          <div class="ws-title">This Week's Summary 🎉</div>
+          <div class="ws-val">5 of 7 meals cooked</div>
+          <div class="ws-sub">What a week, Maya! You cooked 5 home meals and kept ₹800 in your pocket. Your protein average was 138g/day — almost at your goal!</div>
+        </div>
+
+        <div class="settings-group">
+          <div class="settings-group-title">Preferences</div>
+          <div class="settings-item"><div class="settings-icon">🧒</div><div class="settings-label">Kids Mode</div><div class="toggle-switch" style="background:var(--deep)"><div class="toggle-knob"></div></div></div>
+          <div class="settings-item"><div class="settings-icon">📊</div><div class="settings-label">Nutrition Tracking</div><div class="toggle-switch" style="background:var(--deep)"><div class="toggle-knob"></div></div></div>
+          <div class="settings-item"><div class="settings-icon">🔔</div><div class="settings-label">Smart Reminders</div><div class="toggle-switch" style="background:var(--deep)"><div class="toggle-knob"></div></div></div>
+        </div>
+
+        <div class="settings-group">
+          <div class="settings-group-title">Account</div>
+          <div class="settings-item"><div class="settings-icon">🥘</div><div class="settings-label">Dietary Preferences</div><div class="settings-arrow">›</div></div>
+          <div class="settings-item"><div class="settings-icon">🧺</div><div class="settings-label">My Pantry</div><div class="settings-arrow">›</div></div>
+          <div class="settings-item"><div class="settings-icon">⭐</div><div class="settings-label">Saved Recipes</div><div class="settings-arrow">›</div></div>
+          <div class="settings-item"><div class="settings-icon">👑</div><div class="settings-label" style="color:var(--coral);font-weight:700;">Upgrade to Premium</div><div class="settings-arrow" style="color:var(--coral);">›</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-nav">
+      <div class="nav-item" onclick="goTo('home')"><div class="nav-icon">🏠</div><div class="nav-label">Home</div></div>
+      <div class="nav-item" onclick="goTo('nutrition')"><div class="nav-icon">📊</div><div class="nav-label">Nutrition</div></div>
+      <div class="nav-item" onclick="goTo('shopping')"><div class="nav-icon">🛒</div><div class="nav-label">Shopping</div></div>
+      <div class="nav-item active"><div class="nav-icon">👤</div><div class="nav-label">Profile</div></div>
+    </div>
+  </div>
+
+  <!-- Exit Cook Mode Confirmation -->
+  <div id="exitCookOverlay" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,0.6);z-index:70;align-items:center;justify-content:center;padding:32px;animation:fadeIn 0.2s ease;">
+    <div style="background:white;border-radius:24px;padding:28px 24px;text-align:center;width:100%;">
+      <div style="font-size:48px;margin-bottom:16px;">🍳</div>
+      <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--text);margin-bottom:8px;">Leave cook mode?</div>
+      <div style="font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:24px;">Your progress won't be saved. Are you sure you want to go back?</div>
+      <button onclick="confirmExitCook()" style="width:100%;padding:14px;background:var(--coral);color:white;border:none;border-radius:14px;font-size:15px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;margin-bottom:10px;">Yes, go back to my plan</button>
+      <button onclick="cancelExitCook()" style="width:100%;padding:14px;background:var(--border);color:var(--text);border:none;border-radius:14px;font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;">Continue cooking 👨‍🍳</button>
+    </div>
+  </div>
+
+  <!-- Toast notification -->
+  <div class="pantry-toast" id="pantryToast">
+    <div class="toast-icon">🛒→🧺</div>
+    <div>
+      <div class="toast-text" id="toastText">Added to pantry!</div>
+      <div class="toast-sub">Your pantry has been updated automatically</div>
+    </div>
+  </div>
+  ══════════════════════════════════ -->
+  <div class="time-picker-overlay" id="timePickerOverlay" onclick="closeTimePicker()">
+    <div class="time-picker-sheet" onclick="event.stopPropagation()">
+      <div class="bs-handle"></div>
+      <div style="margin:16px 0 6px;">
+        <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--text);margin-bottom:4px;">How much time do you have? ⏱️</div>
+        <div style="font-size:13px;color:var(--muted);margin-bottom:20px;">We'll show you the perfect recipe for right now.</div>
+      </div>
+      <div class="time-option-card selected" onclick="selectTimeOption(this,'cookmode')">
+        <div class="time-option-emoji">⚡</div>
+        <div>
+          <div class="time-option-title">Super Quick — 10 to 15 min</div>
+          <div class="time-option-sub">Minimal prep, maximum speed</div>
+        </div>
+      </div>
+      <div class="time-option-card" onclick="selectTimeOption(this,'cookmode')">
+        <div class="time-option-emoji">🏃</div>
+        <div>
+          <div class="time-option-title">Quick — 20 to 25 min</div>
+          <div class="time-option-sub">Fast but still delicious</div>
+        </div>
+      </div>
+      <div class="time-option-card" onclick="selectTimeOption(this,'cookmode')">
+        <div class="time-option-emoji">⚖️</div>
+        <div>
+          <div class="time-option-title">Moderate — 30 to 40 min</div>
+          <div class="time-option-sub">Balanced effort and flavour</div>
+        </div>
+      </div>
+      <div class="time-option-card" onclick="selectTimeOption(this,'cookmode')">
+        <div class="time-option-emoji">👨‍🍳</div>
+        <div>
+          <div class="time-option-title">Relaxed — 45 min or more</div>
+          <div class="time-option-sub">Full recipe, full flavour</div>
+        </div>
+      </div>
+      <button style="width:100%;margin-top:12px;padding:16px;background:var(--deep);color:white;border:none;border-radius:14px;font-size:15px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;" onclick="confirmTimePicker()">Show Me Recipes →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       QUICK MEAL PREP OVERLAY
+  ══════════════════════════════════ -->
+  <div class="qmp-overlay" id="qmpOverlay" onclick="closeQMP()">
+    <div class="qmp-sheet" onclick="event.stopPropagation()">
+      <div class="bs-handle"></div>
+      <div style="margin:16px 0 4px;">
+        <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--text);margin-bottom:2px;">⚡ Quick Meal Prep</div>
+        <div style="font-size:13px;color:var(--muted);margin-bottom:16px;">Short on time? Here's what you can make right now using only what's in your pantry.</div>
+      </div>
+
+      <!-- Time filter chips -->
+      <div style="display:flex;gap:8px;margin-bottom:16px;">
+        <div class="chip selected" onclick="toggleQMPTime(this)" style="font-size:12px;">⚡ Under 10 min</div>
+        <div class="chip" onclick="toggleQMPTime(this)" style="font-size:12px;">🏃 15 min</div>
+        <div class="chip" onclick="toggleQMPTime(this)" style="font-size:12px;">⚖️ 20 min</div>
+      </div>
+
+      <!-- Quick meal options -->
+      <div class="qmp-meal-card" onclick="closeQMP();goTo('cookmode')">
+        <div class="qmp-emoji">🍳</div>
+        <div class="qmp-info">
+          <div class="qmp-name">Scrambled Eggs with Spinach</div>
+          <div class="qmp-meta">
+            <span class="meta-tag tag-time" style="font-size:10px;">⚡ 8 min</span>
+            <span class="meta-tag tag-protein" style="font-size:10px;">🔥 High Protein</span>
+            <span class="meta-tag" style="font-size:10px;background:#E8F5EE;color:var(--deep);">✓ Pantry only</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="qmp-meal-card" onclick="closeQMP();goTo('cookmode')">
+        <div class="qmp-emoji">🥗</div>
+        <div class="qmp-info">
+          <div class="qmp-name">Quick Chickpea Salad</div>
+          <div class="qmp-meta">
+            <span class="meta-tag tag-time" style="font-size:10px;">⚡ 5 min</span>
+            <span class="meta-tag tag-diet" style="font-size:10px;">🌱 Vegan</span>
+            <span class="meta-tag" style="font-size:10px;background:#E8F5EE;color:var(--deep);">✓ Pantry only</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="qmp-meal-card" onclick="closeQMP();goTo('cookmode')">
+        <div class="qmp-emoji">🍝</div>
+        <div class="qmp-info">
+          <div class="qmp-name">Garlic Pasta with Olive Oil</div>
+          <div class="qmp-meta">
+            <span class="meta-tag tag-time" style="font-size:10px;">🏃 12 min</span>
+            <span class="meta-tag tag-diet" style="font-size:10px;">🌱 Vegetarian</span>
+            <span class="meta-tag" style="font-size:10px;background:#E8F5EE;color:var(--deep);">✓ Pantry only</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="qmp-meal-card" onclick="closeQMP();goTo('cookmode')">
+        <div class="qmp-emoji">🥚</div>
+        <div class="qmp-info">
+          <div class="qmp-name">Avocado Toast with Egg</div>
+          <div class="qmp-meta">
+            <span class="meta-tag tag-time" style="font-size:10px;">🏃 10 min</span>
+            <span class="meta-tag tag-protein" style="font-size:10px;">🔥 High Protein</span>
+            <span class="meta-tag" style="font-size:10px;background:#E8F5EE;color:var(--deep);">✓ Pantry only</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end phone-shell -->
+
+<script>
+  // ── NAVIGATION ──
+  function goTo(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    const target = document.getElementById(id);
+    if (target) target.classList.add('active');
+
+    if (id === 'loading') {
+      setTimeout(() => {
+        document.getElementById('ls3').classList.add('done');
+        document.getElementById('ls3').querySelector('.step-icon').textContent = '✓';
+      }, 1500);
+      setTimeout(() => goTo('home'), 3000);
+    }
+    if (id === 'complete') spawnConfetti();
+  }
+
+  // ── DAY SELECTION ──
+  function selectDay(el) {
+    document.querySelectorAll('.day-pill').forEach(d => d.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // ── CARD SELECTION (single) ──
+  function selectCard(el) {
+    el.closest('.select-grid').querySelectorAll('.select-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  // ── CHIP TOGGLE (multi) ──
+  function toggleChip(el) { el.classList.toggle('selected'); }
+
+  // ── PANTRY TOGGLE ──
+  function togglePantry(el) { el.classList.toggle('selected'); }
+
+  // ── TIME SELECTION ──
+  function selectTime(el) {
+    el.closest('.time-options').querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  // ── PACE SELECTION (single select) ──
+  function selectPace(el) {
+    el.closest('.ob-body').querySelectorAll('.pace-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  // ── TIME PICKER ──
+  let timePickerDestination = 'cookmode';
+  let timePickerMealName = '';
+  let timePickerEmoji = '';
+  let timePickerBg = '';
+
+  function openTimePickerThen(dest, name, emoji, bg) {
+    timePickerDestination = dest;
+    timePickerMealName = name || '';
+    timePickerEmoji = emoji || '';
+    timePickerBg = bg || '';
+    document.getElementById('timePickerOverlay').classList.add('open');
+  }
+
+  function closeTimePicker() {
+    document.getElementById('timePickerOverlay').classList.remove('open');
+  }
+
+  function selectTimeOption(el, dest) {
+    document.querySelectorAll('.time-option-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  function confirmTimePicker() {
+    closeTimePicker();
+    if (timePickerDestination === 'recipe' && timePickerMealName) {
+      openRecipe(timePickerMealName, timePickerEmoji, timePickerBg);
+    } else {
+      goTo('cookmode');
+    }
+  }
+
+  // ── QUICK MEAL PREP ──
+  function openQuickMealPrep() {
+    document.getElementById('qmpOverlay').classList.add('open');
+  }
+
+  function closeQMP() {
+    document.getElementById('qmpOverlay').classList.remove('open');
+  }
+
+  function toggleQMPTime(el) {
+    document.querySelectorAll('.qmp-overlay .chip').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  // ── RECIPE BOTTOM SHEET ──
+  function openRecipe(name, emoji, bg) {
+    document.getElementById('bsMealName').textContent = name;
+    document.getElementById('bsMealEmoji').textContent = emoji;
+    document.getElementById('bsMealBg').style.background = bg;
+    document.getElementById('recipeOverlay').classList.add('open');
+    document.getElementById('recipeSheet').style.display = 'block';
+  }
+  function closeRecipe() {
+    document.getElementById('recipeOverlay').classList.remove('open');
+    document.getElementById('recipeSheet').style.display = 'none';
+    document.querySelectorAll('.kids-tab').forEach((t,i) => t.classList.toggle('active', i===0));
+    document.querySelectorAll('.kids-content').forEach((c,i) => c.classList.toggle('active', i===0));
+    document.querySelectorAll('.recipe-tab').forEach((t,i) => t.classList.toggle('active', i===0));
+    document.querySelectorAll('.recipe-content').forEach((c,i) => c.classList.toggle('active', i===0));
+  }
+
+  // ── KIDS TAB ──
+  function switchKidsTab(type, el) {
+    document.querySelectorAll('.kids-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('adultContent').classList.toggle('active', type==='adult');
+    document.getElementById('kidsContent').classList.toggle('active', type==='kids');
+  }
+
+  // ── RECIPE TAB ──
+  function switchRecipeTab(idx, el) {
+    document.querySelectorAll('.recipe-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelectorAll('.recipe-content').forEach((c,i) => c.classList.toggle('active', i===idx));
+  }
+
+  // ── SWAP SHEET ──
+  function openSwap() {
+    document.getElementById('swapOverlay').classList.add('open');
+    document.getElementById('swapSheet').style.display = 'block';
+  }
+  function closeSwap() {
+    document.getElementById('swapOverlay').classList.remove('open');
+    document.getElementById('swapSheet').style.display = 'none';
+  }
+
+  // ── NAV TABS ──
+  function switchTab(screen, el) {
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // ── SHOPPING LIST with PANTRY AUTO-SYNC ──
+  let pantryItems = [];
+  let toastTimeout = null;
+
+  function toggleShopItem(el, itemName) {
+    el.classList.toggle('checked');
+    const isChecked = el.classList.contains('checked');
+
+    if (isChecked) {
+      el.querySelector('.shop-checkbox').textContent = '✓';
+      el.querySelector('.shop-checkbox').style.background = '#22C55E';
+      el.querySelector('.shop-checkbox').style.borderColor = '#22C55E';
+      el.querySelector('.shop-checkbox').style.color = 'white';
+
+      // Add to pantry list
+      if (itemName && !pantryItems.includes(itemName)) {
+        pantryItems.push(itemName);
+        addToPantryUpdatedSection(itemName);
+      }
+
+      // Show pantry toast
+      showPantryToast(itemName);
+
+    } else {
+      el.querySelector('.shop-checkbox').textContent = '';
+      el.querySelector('.shop-checkbox').style.background = '';
+      el.querySelector('.shop-checkbox').style.borderColor = '';
+      el.querySelector('.shop-checkbox').style.color = '';
+
+      // Remove from pantry list
+      pantryItems = pantryItems.filter(i => i !== itemName);
+      removeFromPantryUpdatedSection(itemName);
+    }
+
+    // Update item count
+    const total = document.querySelectorAll('.shop-item').length;
+    const checked = document.querySelectorAll('.shop-item.checked').length;
+    const remaining = total - checked;
+    const countEl = document.getElementById('itemCount');
+    if (countEl) {
+      countEl.textContent = remaining === 0 ? 'All done! 🎉' : remaining + ' item' + (remaining !== 1 ? 's' : '');
+    }
+  }
+
+  function addToPantryUpdatedSection(itemName) {
+    const section = document.getElementById('pantryUpdatedSection');
+    const list = document.getElementById('pantryUpdatedList');
+    section.style.display = 'block';
+
+    const row = document.createElement('div');
+    row.id = 'pantry-' + itemName.replace(/\s/g, '-');
+    row.style.cssText = 'display:flex;align-items:center;gap:10px;padding:10px 14px;background:white;border-radius:10px;margin-bottom:8px;box-shadow:0 2px 8px rgba(0,0,0,0.04);animation:fadeUp 0.3s ease;';
+    row.innerHTML = '<div style="width:8px;height:8px;border-radius:50%;background:#22C55E;flex-shrink:0;"></div><div style="font-size:14px;font-weight:600;color:var(--text);flex:1;">' + itemName + '</div><div style="font-size:11px;color:#22C55E;font-weight:700;">✓ In pantry</div>';
+    list.appendChild(row);
+  }
+
+  function removeFromPantryUpdatedSection(itemName) {
+    const row = document.getElementById('pantry-' + itemName.replace(/\s/g, '-'));
+    if (row) row.remove();
+    if (pantryItems.length === 0) {
+      document.getElementById('pantryUpdatedSection').style.display = 'none';
+    }
+  }
+
+  function showPantryToast(itemName) {
+    const toast = document.getElementById('pantryToast');
+    const toastText = document.getElementById('toastText');
+    toastText.textContent = (itemName || 'Item') + ' added to your pantry!';
+    toast.classList.add('show');
+    if (toastTimeout) clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => toast.classList.remove('show'), 2800);
+  }
+
+  // ── PANTRY CARDS ──
+  function togglePantryCard(el) {
+    el.classList.toggle('selected');
+    updatePantryCount();
+  }
+
+  function updatePantryCount() {
+    const count = document.querySelectorAll('.pantry-card.selected').length;
+    const el = document.getElementById('pantryCount');
+    if (el) el.textContent = `${count} ingredient${count!==1?'s':''} selected ✓`;
+  }
+
+  function showPantryCategory(cat, tabEl) {
+    document.querySelectorAll('.pantry-cat-tab').forEach(t => t.classList.remove('active'));
+    tabEl.classList.add('active');
+    document.querySelectorAll('.pantry-card').forEach(card => {
+      card.style.display = (cat === 'all' || card.dataset.cat === cat) ? 'flex' : 'none';
+    });
+  }
+
+  function filterPantry(query) {
+    const q = query.toLowerCase();
+    document.querySelectorAll('.pantry-card').forEach(card => {
+      const name = card.querySelector('.pantry-card-name').textContent.toLowerCase();
+      card.style.display = name.includes(q) ? 'flex' : 'none';
+    });
+  }
+
+  // ── CUISINE FLOW ──
+  function selectCuisineRegion(region, el) {
+    // Toggle selection on region card
+    el.classList.toggle('selected');
+
+    // If Indian or Asian — drill into sub-selection
+    if (region === 'indian' && el.classList.contains('selected')) {
+      showCuisineStage2('Indian');
+    } else if (region === 'asian' && el.classList.contains('selected')) {
+      showCuisineStage2('Asian');
+    }
+  }
+
+  function showCuisineStage2(region) {
+    document.getElementById('cuisineStage1').style.display = 'none';
+    document.getElementById('cuisineQuestion').textContent = `Tell us more about ${region} food 🍽️`;
+    document.getElementById('cuisineSub').textContent = 'Pick your favourites — we\'ll personalise your plan!';
+    if (region === 'Indian') {
+      document.getElementById('cuisineStage2Indian').style.display = 'block';
+    } else if (region === 'Asian') {
+      document.getElementById('cuisineStage2Asian').style.display = 'block';
+    }
+  }
+
+  function backToCuisineStage1() {
+    document.getElementById('cuisineStage1').style.display = 'grid';
+    document.getElementById('cuisineStage2Indian').style.display = 'none';
+    document.getElementById('cuisineStage2Asian').style.display = 'none';
+    document.getElementById('cuisineQuestion').textContent = 'What cuisines do you love? 🌍';
+    document.getElementById('cuisineSub').textContent = 'We\'ll suggest meals that actually excite you. Pick all you love!';
+  }
+
+  function toggleCuisineSubCard(el) {
+    el.closest('#cuisineStage2Indian').querySelectorAll('.cuisine-sub-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  function toggleCuisineSubCardSm(el) { el.classList.toggle('selected'); }
+  // ── EXIT COOK MODE ──
+  function exitCookMode() {
+    document.getElementById('exitCookOverlay').style.display = 'flex';
+  }
+  function confirmExitCook() {
+    document.getElementById('exitCookOverlay').style.display = 'none';
+    clearInterval(timerInterval);
+    timerRunning = false;
+    currentStep = 1;
+    goTo('home');
+  }
+  function cancelExitCook() {
+    document.getElementById('exitCookOverlay').style.display = 'none';
+  }
+
+  const cookSteps = [
+    { instruction: "Preheat your pan over medium-high heat and pat the salmon fillets dry with a paper towel.", timer: 120 },
+    { instruction: "Season the salmon fillet with salt, pepper, and a drizzle of olive oil. Let it rest at room temperature for 5 minutes before cooking.", timer: 300 },
+    { instruction: "Place the salmon skin-side down in the hot pan. Press gently with a spatula for 10 seconds to ensure full contact with the pan.", timer: 240 },
+    { instruction: "Flip the salmon and cook for 2 more minutes. The fish should flake easily when pressed with a fork.", timer: 120 },
+    { instruction: "Remove from heat and squeeze fresh lemon juice over the top. Garnish with fresh herbs and serve immediately!", timer: 0 }
+  ];
+  let currentStep = 1;
+  let timerInterval = null;
+  let timerSeconds = 300;
+  let timerRunning = false;
+
+  function updateCookDisplay() {
+    const step = cookSteps[currentStep];
+    document.getElementById('stepNum').textContent = `Step ${currentStep+1} of ${cookSteps.length}`;
+    document.getElementById('cookStepCount').textContent = `Step ${currentStep+1} of ${cookSteps.length}`;
+    document.getElementById('stepInstruction').textContent = step.instruction;
+    document.getElementById('cookProgress').style.width = `${((currentStep+1)/cookSteps.length)*100}%`;
+    timerSeconds = step.timer;
+    timerRunning = false;
+    clearInterval(timerInterval);
+    document.getElementById('timerBtn').textContent = '▶';
+    updateTimerDisplay();
+  }
+
+  function updateTimerDisplay() {
+    const m = Math.floor(timerSeconds/60);
+    const s = timerSeconds % 60;
+    document.getElementById('timerDisplay').textContent = `${m}:${s.toString().padStart(2,'0')}`;
+  }
+
+  function toggleTimer() {
+    if (timerRunning) {
+      clearInterval(timerInterval);
+      timerRunning = false;
+      document.getElementById('timerBtn').textContent = '▶';
+    } else {
+      timerRunning = true;
+      document.getElementById('timerBtn').textContent = '⏸';
+      timerInterval = setInterval(() => {
+        if (timerSeconds > 0) { timerSeconds--; updateTimerDisplay(); }
+        else { clearInterval(timerInterval); timerRunning = false; document.getElementById('timerBtn').textContent = '▶'; }
+      }, 1000);
+    }
+  }
+
+  function nextStep() {
+    if (currentStep < cookSteps.length - 1) {
+      currentStep++;
+      updateCookDisplay();
+    } else {
+      goTo('complete');
+    }
+  }
+
+  function prevStep() {
+    if (currentStep > 0) { currentStep--; updateCookDisplay(); }
+  }
+
+  // ── CONFETTI ──
+  function spawnConfetti() {
+    const container = document.getElementById('confettiContainer');
+    container.innerHTML = '';
+    const colors = ['#FF6B35','#1B4332','#FCD34D','#86EFAC','#74c0fc'];
+    for (let i = 0; i < 30; i++) {
+      const piece = document.createElement('div');
+      piece.className = 'confetti-piece';
+      piece.style.cssText = `
+        left:${Math.random()*100}%;
+        top:${60+Math.random()*40}%;
+        background:${colors[Math.floor(Math.random()*colors.length)]};
+        animation-delay:${Math.random()*0.5}s;
+        animation-duration:${0.8+Math.random()*0.6}s;
+        width:${6+Math.random()*8}px;
+        height:${6+Math.random()*8}px;
+        border-radius:${Math.random()>0.5?'50%':'2px'};
+      `;
+      container.appendChild(piece);
+    }
+  }
+</script>
+</body>
+</html>
