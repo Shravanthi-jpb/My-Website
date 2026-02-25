@@ -2052,9 +2052,19 @@
           </div>
         </div>
 
-        <!-- DINNER — Kids Mode inside recipe only, NO card on screen -->
-        <div class="meal-type-label">🌙 Dinner</div>
-        <div class="meal-card" onclick="openTimePickerThen('recipe','Lemon Herb Salmon','🐟','linear-gradient(135deg,#cce5ff,#74c0fc)')">
+        <!-- DINNER — Kids Mode toggle, same pattern as Evening Snack -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;margin-top:20px;">
+          <div class="meal-type-label" style="margin:0;">🌙 Dinner</div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:11px;font-weight:600;color:var(--muted);" id="dinnerKidsLabel">Kids Mode</span>
+            <div id="dinnerKidsToggle" onclick="toggleKidsDinner()" style="width:44px;height:24px;background:var(--border);border-radius:12px;position:relative;cursor:pointer;transition:background 0.3s;">
+              <div id="dinnerKidsKnob" style="width:20px;height:20px;background:white;border-radius:50%;position:absolute;top:2px;left:2px;transition:left 0.3s;box-shadow:0 2px 4px rgba(0,0,0,0.2);"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Adult Dinner Card (default) -->
+        <div id="adultDinnerCard" class="meal-card" onclick="openTimePickerThen('recipe','Lemon Herb Salmon','🐟','linear-gradient(135deg,#cce5ff,#74c0fc)')">
           <div class="meal-img">
             <div class="meal-img-bg" style="background:linear-gradient(135deg,#cce5ff,#74c0fc)"></div>
             <div class="meal-img-emoji">🐟</div>
@@ -2064,11 +2074,32 @@
             <div class="meal-meta">
               <span class="meta-tag tag-protein">🔥 High Protein</span>
               <span class="meta-tag tag-cal">480 kcal</span>
-              <span class="meta-tag" style="background:#EDE9FE;color:#5B21B6;font-size:11px;">🧒 Kids inside ↗</span>
             </div>
             <div class="meal-bottom-row" style="margin-top:12px;">
               <button class="swap-visible-btn" onclick="event.stopPropagation();openSwap()">🔄 Swap</button>
               <button class="cook-btn" onclick="event.stopPropagation();openTimePickerThen('cookmode')">Cook Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Kids Dinner Card (shown when toggle ON) -->
+        <div id="kidsDinnerCard" style="display:none;" class="meal-card" onclick="openTimePickerThen('recipe','Salmon Bites & Mash','🐟','linear-gradient(135deg,#EDE9FE,#DDD6FE)')">
+          <div class="meal-img">
+            <div class="meal-img-bg" style="background:linear-gradient(135deg,#EDE9FE,#c4b5fd)"></div>
+            <div class="meal-img-emoji">🐟</div>
+            <div style="position:absolute;top:10px;right:10px;background:#5B21B6;color:white;font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px;z-index:2;">🧒 Kids</div>
+            <div class="pantry-hero-badge" style="background:#5B21B6;">✓ Same ingredients</div>
+          </div>
+          <div class="meal-info">
+            <div class="meal-name" style="color:#5B21B6;">Salmon Bites with Sweet Potato Mash</div>
+            <div class="meal-meta">
+              <span class="meta-tag" style="background:#EDE9FE;color:#5B21B6;">⚡ 25 min</span>
+              <span class="meta-tag" style="background:#FEF3C7;color:#92400E;">No strong spices</span>
+              <span class="meta-tag tag-cal">320 kcal</span>
+            </div>
+            <div class="meal-bottom-row" style="margin-top:12px;">
+              <button class="swap-visible-btn" style="border-color:#DDD6FE;color:#5B21B6;" onclick="event.stopPropagation();openSwap()">🔄 Swap</button>
+              <button class="cook-btn" style="background:#5B21B6;" onclick="event.stopPropagation();goTo('kidsrecipe')">Cook Kids!</button>
             </div>
           </div>
         </div>
@@ -2202,7 +2233,9 @@
       <div class="status-icons" style="color:rgba(255,255,255,0.8)"><span>🔋</span></div>
     </div>
     <div class="cook-header">
-      <button class="back-btn" onclick="exitCookMode()">←</button>
+      <button onclick="exitCookMode()" style="background:rgba(255,255,255,0.2);border:2px solid rgba(255,255,255,0.4);border-radius:20px;padding:7px 14px;color:white;font-size:13px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;gap:6px;flex-shrink:0;transition:all 0.2s;backdrop-filter:blur(8px);">
+        ← Exit
+      </button>
       <div style="flex:1;">
         <div class="cook-title">Lemon Herb Salmon</div>
         <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:2px;">Tap ← to exit cook mode</div>
@@ -2922,8 +2955,35 @@
     const label = document.getElementById('kidsToggleLabel');
     const adult = document.getElementById('adultSnackCard');
     const kids = document.getElementById('kidsSnackCard');
-
     if (kidsSnackOn) {
+      toggle.style.background = '#5B21B6';
+      knob.style.left = '22px';
+      label.style.color = '#5B21B6';
+      label.style.fontWeight = '700';
+      adult.style.display = 'none';
+      kids.style.display = 'block';
+      kids.style.animation = 'fadeUp 0.3s ease';
+    } else {
+      toggle.style.background = 'var(--border)';
+      knob.style.left = '2px';
+      label.style.color = 'var(--muted)';
+      label.style.fontWeight = '600';
+      adult.style.display = 'block';
+      adult.style.animation = 'fadeUp 0.3s ease';
+      kids.style.display = 'none';
+    }
+  }
+
+  // ── KIDS DINNER TOGGLE ──
+  let kidsDinnerOn = false;
+  function toggleKidsDinner() {
+    kidsDinnerOn = !kidsDinnerOn;
+    const toggle = document.getElementById('dinnerKidsToggle');
+    const knob = document.getElementById('dinnerKidsKnob');
+    const label = document.getElementById('dinnerKidsLabel');
+    const adult = document.getElementById('adultDinnerCard');
+    const kids = document.getElementById('kidsDinnerCard');
+    if (kidsDinnerOn) {
       toggle.style.background = '#5B21B6';
       knob.style.left = '22px';
       label.style.color = '#5B21B6';
