@@ -1912,48 +1912,52 @@
   ══════════════════════════════════ -->
   <div class="screen" id="home">
     <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span>●●● WiFi 🔋</span></div></div>
-    <div class="home-header">
-      <div class="home-greeting-row">
-        <div>
-          <div class="home-greeting">Good morning,<br><span>Maya.</span> 👋</div>
-          <div class="home-sub">Tuesday · Your plan is ready</div>
+    <!-- COMPACT HEADER -->
+    <div style="padding:10px 20px 0;flex-shrink:0;">
+
+      <!-- Row 1: greeting + avatar + quick prep -->
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <div style="flex:1;">
+          <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--text);line-height:1.2;">Good morning, <span style="color:var(--coral);">Maya.</span> 👋</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:1px;">Tuesday · Your plan is ready</div>
         </div>
-        <div class="avatar">M</div>
-      </div>
-      <div class="nutrition-banner" onclick="goTo('nutrition')">
-        <div class="nb-left">
-          <div class="nb-label">This week averages</div>
-          <div class="nb-value">1,890 kcal/day</div>
-          <div class="nb-sub">On track for your goal ✓</div>
-        </div>
-        <div class="nb-right">
-          <div class="macro-pill"><div class="macro-val">142g</div><div class="macro-lbl">Protein</div></div>
-          <div class="macro-pill"><div class="macro-val">180g</div><div class="macro-lbl">Carbs</div></div>
-          <div class="macro-pill"><div class="macro-val">62g</div><div class="macro-lbl">Fat</div></div>
+        <div class="avatar" style="width:36px;height:36px;font-size:15px;">M</div>
+        <div onclick="openQuickMealPrep()" style="background:var(--coral);border-radius:12px;padding:8px 12px;cursor:pointer;display:flex;align-items:center;gap:5px;flex-shrink:0;">
+          <span style="font-size:14px;">⚡</span>
+          <span style="font-size:11px;font-weight:700;color:white;">Quick Meal</span>
         </div>
       </div>
-    </div>
-    <div class="day-strip">
-      <div class="day-pill" onclick="selectDay(this)"><div class="day-name">MON</div><div class="day-num">24</div><div class="day-dot"></div></div>
-      <div class="day-pill active today" onclick="selectDay(this)"><div class="day-name">TUE</div><div class="day-num">25</div><div class="day-dot"></div></div>
-      <div class="day-pill" onclick="selectDay(this)"><div class="day-name">WED</div><div class="day-num">26</div><div class="day-dot"></div></div>
-      <div class="day-pill" onclick="selectDay(this)"><div class="day-name">THU</div><div class="day-num">27</div><div class="day-dot"></div></div>
-      <div class="day-pill" onclick="selectDay(this)"><div class="day-name">FRI</div><div class="day-num">28</div><div class="day-dot"></div></div>
-      <div class="day-pill" onclick="selectDay(this)"><div class="day-name">SAT</div><div class="day-num">1</div><div class="day-dot"></div></div>
-      <div class="day-pill" onclick="selectDay(this)"><div class="day-name">SUN</div><div class="day-num">2</div><div class="day-dot"></div></div>
-    </div>
-    <!-- Quick Meal Prep Banner -->
-    <div style="margin:0 24px 16px;background:linear-gradient(135deg,#FF6B35,#e85d2a);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;" onclick="openQuickMealPrep()">
-      <div style="font-size:32px;">⚡</div>
-      <div style="flex:1;">
-        <div style="font-size:15px;font-weight:700;color:white;">Quick Meal Prep</div>
-        <div style="font-size:12px;color:rgba(255,255,255,0.8);">Short on time right now? We'll find something fast!</div>
+
+      <!-- Row 2: compact nutrition strip -->
+      <div onclick="goTo('nutrition')" style="background:var(--deep);border-radius:12px;padding:9px 14px;display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;cursor:pointer;">
+        <div style="display:flex;align-items:center;gap:6px;">
+          <div style="font-size:13px;font-weight:700;color:white;">1,890 kcal</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.6);">On track ✓</div>
+        </div>
+        <div style="display:flex;gap:12px;">
+          <div style="text-align:center;"><div style="font-size:12px;font-weight:700;color:white;">142g</div><div style="font-size:9px;color:rgba(255,255,255,0.6);">Protein</div></div>
+          <div style="text-align:center;"><div style="font-size:12px;font-weight:700;color:white;">180g</div><div style="font-size:9px;color:rgba(255,255,255,0.6);">Carbs</div></div>
+          <div style="text-align:center;"><div style="font-size:12px;font-weight:700;color:white;">62g</div><div style="font-size:9px;color:rgba(255,255,255,0.6);">Fat</div></div>
+        </div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.5);">›</div>
       </div>
-      <div style="color:white;font-size:20px;">→</div>
+
+      <!-- Row 3: compact day strip -->
+      <div style="display:flex;gap:4px;overflow-x:auto;padding-bottom:10px;scrollbar-width:none;">
+        <div class="day-pill" onclick="selectDay(this)" style="padding:6px 10px;"><div class="day-name" style="font-size:9px;">MON</div><div class="day-num" style="font-size:15px;">24</div><div class="day-dot"></div></div>
+        <div class="day-pill active today" onclick="selectDay(this)" style="padding:6px 10px;"><div class="day-name" style="font-size:9px;">TUE</div><div class="day-num" style="font-size:15px;">25</div><div class="day-dot"></div></div>
+        <div class="day-pill" onclick="selectDay(this)" style="padding:6px 10px;"><div class="day-name" style="font-size:9px;">WED</div><div class="day-num" style="font-size:15px;">26</div><div class="day-dot"></div></div>
+        <div class="day-pill" onclick="selectDay(this)" style="padding:6px 10px;"><div class="day-name" style="font-size:9px;">THU</div><div class="day-num" style="font-size:15px;">27</div><div class="day-dot"></div></div>
+        <div class="day-pill" onclick="selectDay(this)" style="padding:6px 10px;"><div class="day-name" style="font-size:9px;">FRI</div><div class="day-num" style="font-size:15px;">28</div><div class="day-dot"></div></div>
+        <div class="day-pill" onclick="selectDay(this)" style="padding:6px 10px;"><div class="day-name" style="font-size:9px;">SAT</div><div class="day-num" style="font-size:15px;">1</div><div class="day-dot"></div></div>
+        <div class="day-pill" onclick="selectDay(this)" style="padding:6px 10px;"><div class="day-name" style="font-size:9px;">SUN</div><div class="day-num" style="font-size:15px;">2</div><div class="day-dot"></div></div>
+      </div>
     </div>
 
     <div class="scroll-content">
       <div class="meal-section">
+
+        <!-- BREAKFAST — Kids Mode inside recipe only -->
         <div class="meal-type-label">🌅 Breakfast</div>
         <div class="meal-card" onclick="openTimePickerThen('recipe','Avocado Toast with Poached Eggs','🥑','linear-gradient(135deg,#d4edda,#a8d5b5)')">
           <div class="meal-img">
@@ -1969,12 +1973,13 @@
               <span class="meta-tag tag-protein">🔥 High Protein</span>
             </div>
             <div class="meal-bottom-row" style="margin-top:12px;">
-              <button class="swap-visible-btn" onclick="event.stopPropagation();openSwap()">🔄 Swap Meal</button>
+              <button class="swap-visible-btn" onclick="event.stopPropagation();openSwap()">🔄 Swap</button>
               <button class="cook-btn" onclick="event.stopPropagation();openTimePickerThen('cookmode')">Cook Now</button>
             </div>
           </div>
         </div>
 
+        <!-- LUNCH — Kids Mode inside recipe only -->
         <div class="meal-type-label">☀️ Lunch</div>
         <div class="meal-card" onclick="openTimePickerThen('recipe','Grilled Chicken Bowl','🍗','linear-gradient(135deg,#fff3cd,#ffc107)')">
           <div class="meal-img">
@@ -1988,59 +1993,86 @@
               <span class="meta-tag tag-cal">520 kcal</span>
             </div>
             <div class="meal-bottom-row" style="margin-top:12px;">
-              <button class="swap-visible-btn" onclick="event.stopPropagation();openSwap()">🔄 Swap Meal</button>
+              <button class="swap-visible-btn" onclick="event.stopPropagation();openSwap()">🔄 Swap</button>
               <button class="cook-btn" onclick="event.stopPropagation();openTimePickerThen('cookmode')">Cook Now</button>
             </div>
           </div>
         </div>
 
+        <!-- EVENING SNACK — with Kids Mode toggle -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;margin-top:20px;">
+          <div class="meal-type-label" style="margin:0;">🌤️ Evening Snack</div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:11px;font-weight:600;color:var(--muted);" id="kidsToggleLabel">Kids Mode</span>
+            <div id="kidsToggle" onclick="toggleKidsSnack()" style="width:44px;height:24px;background:var(--border);border-radius:12px;position:relative;cursor:pointer;transition:background 0.3s;">
+              <div id="kidsToggleKnob" style="width:20px;height:20px;background:white;border-radius:50%;position:absolute;top:2px;left:2px;transition:left 0.3s;box-shadow:0 2px 4px rgba(0,0,0,0.2);"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Adult Snack Card (default) -->
+        <div id="adultSnackCard" class="meal-card" onclick="openTimePickerThen('recipe','Fruit & Yogurt Bowl','🍓','linear-gradient(135deg,#fce4ec,#f48fb1)')">
+          <div class="meal-img">
+            <div class="meal-img-bg" style="background:linear-gradient(135deg,#fce4ec,#f48fb1)"></div>
+            <div class="meal-img-emoji">🍓</div>
+            <div class="pantry-hero-badge">✓ No shopping needed</div>
+          </div>
+          <div class="meal-info">
+            <div class="meal-name">Fruit & Yogurt Bowl with Honey</div>
+            <div class="meal-meta">
+              <span class="meta-tag tag-diet">🌱 Vegetarian</span>
+              <span class="meta-tag tag-cal">180 kcal</span>
+            </div>
+            <div class="meal-bottom-row" style="margin-top:12px;">
+              <button class="swap-visible-btn" onclick="event.stopPropagation();openSwap()">🔄 Swap</button>
+              <button class="cook-btn" onclick="event.stopPropagation();openTimePickerThen('cookmode')">Prep Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Kids Snack Card (hidden until toggle ON) -->
+        <div id="kidsSnackCard" style="display:none;" class="meal-card" onclick="openTimePickerThen('recipe','Banana Bites with Peanut Butter','🍌','linear-gradient(135deg,#EDE9FE,#DDD6FE)')">
+          <div class="meal-img">
+            <div class="meal-img-bg" style="background:linear-gradient(135deg,#EDE9FE,#c4b5fd)"></div>
+            <div class="meal-img-emoji">🍌</div>
+            <div style="position:absolute;top:10px;right:10px;background:#5B21B6;color:white;font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px;z-index:2;">🧒 Kids</div>
+            <div class="pantry-hero-badge" style="background:#5B21B6;">✓ Pantry only</div>
+          </div>
+          <div class="meal-info">
+            <div class="meal-name" style="color:#5B21B6;">Banana Bites with Peanut Butter</div>
+            <div class="meal-meta">
+              <span class="meta-tag" style="background:#EDE9FE;color:#5B21B6;">⚡ 5 min</span>
+              <span class="meta-tag" style="background:#FEF3C7;color:#92400E;">No added sugar</span>
+              <span class="meta-tag tag-cal">140 kcal</span>
+            </div>
+            <div class="meal-bottom-row" style="margin-top:12px;">
+              <button class="swap-visible-btn" style="border-color:#DDD6FE;color:#5B21B6;" onclick="event.stopPropagation();openSwap()">🔄 Swap</button>
+              <button class="cook-btn" style="background:#5B21B6;" onclick="event.stopPropagation();goTo('kidsrecipe')">Make It!</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- DINNER — Kids Mode inside recipe only, NO card on screen -->
         <div class="meal-type-label">🌙 Dinner</div>
         <div class="meal-card" onclick="openTimePickerThen('recipe','Lemon Herb Salmon','🐟','linear-gradient(135deg,#cce5ff,#74c0fc)')">
           <div class="meal-img">
             <div class="meal-img-bg" style="background:linear-gradient(135deg,#cce5ff,#74c0fc)"></div>
             <div class="meal-img-emoji">🐟</div>
-            <span class="meta-tag tag-kids" style="position:absolute;top:10px;right:10px;z-index:2;">🧒 Kids Version</span>
           </div>
           <div class="meal-info">
             <div class="meal-name">Lemon Herb Salmon with Roasted Vegetables</div>
             <div class="meal-meta">
               <span class="meta-tag tag-protein">🔥 High Protein</span>
               <span class="meta-tag tag-cal">480 kcal</span>
-              <span class="meta-tag tag-kids">🧒 Kids Mode</span>
+              <span class="meta-tag" style="background:#EDE9FE;color:#5B21B6;font-size:11px;">🧒 Kids inside ↗</span>
             </div>
             <div class="meal-bottom-row" style="margin-top:12px;">
-              <button class="swap-visible-btn" onclick="event.stopPropagation();openSwap()">🔄 Swap Meal</button>
+              <button class="swap-visible-btn" onclick="event.stopPropagation();openSwap()">🔄 Swap</button>
               <button class="cook-btn" onclick="event.stopPropagation();openTimePickerThen('cookmode')">Cook Now</button>
             </div>
           </div>
         </div>
 
-        <!-- Kids Mode Card — shown when Kids Mode is ON -->
-        <div style="background:linear-gradient(135deg,#EDE9FE,#F5F3FF);border-radius:20px;padding:16px;margin-bottom:14px;border:2px solid #DDD6FE;">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
-            <div style="font-size:24px;">🧒</div>
-            <div style="flex:1;">
-              <div style="font-size:14px;font-weight:700;color:#5B21B6;">Kids Dinner Tonight</div>
-              <div style="font-size:12px;color:#7C3AED;">Same ingredients · Kid-friendly version</div>
-            </div>
-            <span style="background:#5B21B6;color:white;font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px;">KIDS MODE</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:12px;background:white;border-radius:14px;padding:12px 14px;margin-bottom:12px;">
-            <div style="font-size:32px;">🐟</div>
-            <div style="flex:1;">
-              <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px;">Salmon Bites with Sweet Potato Mash</div>
-              <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                <span class="meta-tag" style="background:#EDE9FE;color:#5B21B6;font-size:10px;">⚡ 25 min</span>
-                <span class="meta-tag" style="background:#E8F5EE;color:var(--deep);font-size:10px;">✓ Pantry only</span>
-                <span class="meta-tag" style="background:#FEF3C7;color:#92400E;font-size:10px;">No strong spices</span>
-              </div>
-            </div>
-          </div>
-          <div style="display:flex;gap:10px;">
-            <button onclick="goTo('kidsrecipe')" style="flex:1;padding:11px;background:#5B21B6;color:white;border:none;border-radius:12px;font-size:13px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;">🧒 Cook Kids Version</button>
-            <button onclick="openSwap()" style="padding:11px 14px;background:white;border:2px solid #DDD6FE;border-radius:12px;font-size:13px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;color:#5B21B6;">🔄 Swap</button>
-          </div>
-        </div>
       </div>
     </div>
     <div class="bottom-nav">
@@ -2881,6 +2913,35 @@
   }
 
   function toggleCuisineSubCardSm(el) { el.classList.toggle('selected'); }
+  // ── KIDS SNACK TOGGLE ──
+  let kidsSnackOn = false;
+  function toggleKidsSnack() {
+    kidsSnackOn = !kidsSnackOn;
+    const toggle = document.getElementById('kidsToggle');
+    const knob = document.getElementById('kidsToggleKnob');
+    const label = document.getElementById('kidsToggleLabel');
+    const adult = document.getElementById('adultSnackCard');
+    const kids = document.getElementById('kidsSnackCard');
+
+    if (kidsSnackOn) {
+      toggle.style.background = '#5B21B6';
+      knob.style.left = '22px';
+      label.style.color = '#5B21B6';
+      label.style.fontWeight = '700';
+      adult.style.display = 'none';
+      kids.style.display = 'block';
+      kids.style.animation = 'fadeUp 0.3s ease';
+    } else {
+      toggle.style.background = 'var(--border)';
+      knob.style.left = '2px';
+      label.style.color = 'var(--muted)';
+      label.style.fontWeight = '600';
+      adult.style.display = 'block';
+      adult.style.animation = 'fadeUp 0.3s ease';
+      kids.style.display = 'none';
+    }
+  }
+
   // ── EXIT COOK MODE ──
   function exitCookMode() {
     document.getElementById('exitCookOverlay').style.display = 'flex';
