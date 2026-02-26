@@ -1120,6 +1120,43 @@
   }
   .cuisine-sub-card-sm.selected .sub-check-sm { opacity: 1; transform: scale(1); }
 
+  /* ── LANGUAGE CARDS ── */
+  .lang-card {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 14px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .lang-card:active { transform: scale(0.95); }
+  .lang-card.selected { border-color: var(--deep); background: #E8F5EE; }
+  .lang-flag { font-size: 28px; line-height: 1; }
+  .lang-name { font-size: 13px; font-weight: 700; color: var(--text); }
+  .lang-card.selected .lang-name { color: var(--deep); }
+  .lang-native { font-size: 12px; color: var(--muted); font-weight: 500; }
+  .lang-card.selected .lang-native { color: var(--deep2); }
+  .lang-check {
+    position: absolute;
+    top: 8px; right: 8px;
+    width: 20px; height: 20px;
+    background: var(--deep);
+    border-radius: 50%;
+    color: white;
+    font-size: 11px;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transform: scale(0);
+    transition: all 0.2s;
+  }
+  .lang-card.selected .lang-check { opacity: 1; transform: scale(1); }
+
   /* ── PACE CARDS ── */
   .pace-card {
     background: var(--card);
@@ -1305,7 +1342,7 @@
       <div class="splash-logo">WeekBite</div>
       <div class="splash-tagline">Bite into a better week.</div>
       <div class="splash-desc">Your pantry. Your schedule. Your perfect week of meals — planned in seconds.</div>
-      <button class="btn-primary" onclick="goTo('ob1')">Get Started →</button>
+      <button class="btn-primary" onclick="goTo('ob0')" data-t="getStarted">Get Started →</button>
       <button class="btn-secondary" onclick="goTo('home')">I already have an account</button>
       <div class="splash-dots">
         <div class="dot active"></div>
@@ -1317,41 +1354,179 @@
   </div>
 
   <!-- ══════════════════════════════════
-       SCREEN 2 — ONBOARDING 1: Name/Age
+       SCREEN 2 — ONBOARDING 0: Language
+  ══════════════════════════════════ -->
+  <div class="screen" id="ob0">
+    <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span>🔋</span></div></div>
+    <div class="ob-header">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+        <button class="back-btn dark" onclick="goTo('splash')" style="width:36px;height:36px;background:var(--border);border:none;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">←</button>
+        <div style="flex:1"><div class="progress-bar" style="margin:0;"><div class="progress-fill" style="width:12%"></div></div></div>
+      </div>
+      <div class="ob-step">Step 1 of 8</div>
+      <div class="ob-question">Choose your language 🌍</div>
+      <div class="ob-sub">WeekBite will display everything in your preferred language — recipes, instructions, and all.</div>
+    </div>
+    <div class="ob-body" style="padding-bottom:16px;">
+
+      <!-- Indian Languages -->
+      <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">🇮🇳 Indian Languages</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;">
+
+        <div class="lang-card selected" onclick="selectLanguage(this,'english')">
+          <div class="lang-check">✓</div>
+          <div class="lang-flag">🇬🇧</div>
+          <div class="lang-name">English</div>
+          <div class="lang-native">English</div>
+        </div>
+
+        <div class="lang-card" onclick="selectLanguage(this,'hindi')">
+          <div class="lang-check">✓</div>
+          <div class="lang-flag">🇮🇳</div>
+          <div class="lang-name">Hindi</div>
+          <div class="lang-native">हिंदी</div>
+        </div>
+
+        <div class="lang-card" onclick="selectLanguage(this,'tamil')">
+          <div class="lang-check">✓</div>
+          <div class="lang-flag">🇮🇳</div>
+          <div class="lang-name">Tamil</div>
+          <div class="lang-native">தமிழ்</div>
+        </div>
+
+        <div class="lang-card" onclick="selectLanguage(this,'telugu')">
+          <div class="lang-check">✓</div>
+          <div class="lang-flag">🇮🇳</div>
+          <div class="lang-name">Telugu</div>
+          <div class="lang-native">తెలుగు</div>
+        </div>
+
+        <div class="lang-card" onclick="selectLanguage(this,'kannada')">
+          <div class="lang-check">✓</div>
+          <div class="lang-flag">🇮🇳</div>
+          <div class="lang-name">Kannada</div>
+          <div class="lang-native">ಕನ್ನಡ</div>
+        </div>
+
+        <div class="lang-card" onclick="selectLanguage(this,'malayalam')">
+          <div class="lang-check">✓</div>
+          <div class="lang-flag">🇮🇳</div>
+          <div class="lang-name">Malayalam</div>
+          <div class="lang-native">മലയാളം</div>
+        </div>
+
+        <div class="lang-card" onclick="selectLanguage(this,'bengali')">
+          <div class="lang-check">✓</div>
+          <div class="lang-flag">🇮🇳</div>
+          <div class="lang-name">Bengali</div>
+          <div class="lang-native">বাংলা</div>
+        </div>
+
+        <div class="lang-card" onclick="selectLanguage(this,'marathi')">
+          <div class="lang-check">✓</div>
+          <div class="lang-flag">🇮🇳</div>
+          <div class="lang-name">Marathi</div>
+          <div class="lang-native">मराठी</div>
+        </div>
+
+      </div>
+
+      <!-- Global Languages -->
+      <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">🌍 Global Languages</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+
+        <div class="lang-card" onclick="selectLanguage(this,'spanish')">
+          <div class="lang-check">✓</div>
+          <div class="lang-flag">🇪🇸</div>
+          <div class="lang-name">Spanish</div>
+          <div class="lang-native">Español</div>
+        </div>
+
+        <div class="lang-card" onclick="selectLanguage(this,'french')">
+          <div class="lang-check">✓</div>
+          <div class="lang-flag">🇫🇷</div>
+          <div class="lang-name">French</div>
+          <div class="lang-native">Français</div>
+        </div>
+
+        <div class="lang-card" onclick="selectLanguage(this,'arabic')">
+          <div class="lang-check">✓</div>
+          <div class="lang-flag">🇸🇦</div>
+          <div class="lang-name">Arabic</div>
+          <div class="lang-native">العربية</div>
+        </div>
+
+        <div class="lang-card" onclick="selectLanguage(this,'mandarin')">
+          <div class="lang-check">✓</div>
+          <div class="lang-flag">🇨🇳</div>
+          <div class="lang-name">Mandarin</div>
+          <div class="lang-native">普通话</div>
+        </div>
+
+        <div class="lang-card" onclick="selectLanguage(this,'portuguese')">
+          <div class="lang-check">✓</div>
+          <div class="lang-flag">🇧🇷</div>
+          <div class="lang-name">Portuguese</div>
+          <div class="lang-native">Português</div>
+        </div>
+
+        <div class="lang-card" onclick="selectLanguage(this,'german')">
+          <div class="lang-check">✓</div>
+          <div class="lang-flag">🇩🇪</div>
+          <div class="lang-name">German</div>
+          <div class="lang-native">Deutsch</div>
+        </div>
+
+      </div>
+
+      <!-- Selected language confirmation -->
+      <div id="langConfirm" style="background:var(--coral-light);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:10px;">
+        <div style="font-size:20px;">✓</div>
+        <div style="font-size:13px;color:var(--coral);font-weight:600;" id="langConfirmText">WeekBite will be in English</div>
+      </div>
+
+    </div>
+    <div class="ob-footer">
+      <button class="btn-primary" style="background:var(--deep);animation:none;" onclick="goTo('ob1')" data-t="continue">Continue →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       SCREEN 3 — ONBOARDING 1: Name/Age
   ══════════════════════════════════ -->
   <div class="screen" id="ob1">
     <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span>🔋</span></div></div>
     <div class="ob-header">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
-        <button class="back-btn dark" onclick="goTo('splash')" style="width:36px;height:36px;background:var(--border);border:none;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">←</button>
-        <div style="flex:1"><div class="progress-bar" style="margin:0;"><div class="progress-fill" style="width:14%"></div></div></div>
+        <button class="back-btn dark" onclick="goTo('ob0')" style="width:36px;height:36px;background:var(--border);border:none;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">←</button>
+        <div style="flex:1"><div class="progress-bar" style="margin:0;"><div class="progress-fill" style="width:25%"></div></div></div>
       </div>
-      <div class="ob-step">Step 1 of 7</div>
-      <div class="ob-question">What should we call you? 👋</div>
-      <div class="ob-sub">Help us make WeekBite feel like yours.</div>
+      <div class="ob-step">Step 2 of 8</div>
+      <div class="ob-question" id="t-ob1-q">What should we call you? 👋</div>
+      <div class="ob-sub" id="t-ob1-s">Help us make WeekBite feel like yours.</div>
     </div>
     <div class="ob-body">
       <div class="input-group">
-        <label class="input-label">First Name</label>
+        <label class="input-label" id="t-fn">First Name</label>
         <input class="input-field" type="text" placeholder="e.g. Maya" id="userName" value="Maya">
       </div>
       <div class="input-row">
         <div class="input-group">
-          <label class="input-label">Age</label>
+          <label class="input-label" id="t-age">Age</label>
           <input class="input-field" type="number" placeholder="31" id="userAge" value="31">
         </div>
         <div class="input-group">
-          <label class="input-label">Weight (kg)</label>
+          <label class="input-label" id="t-wt">Weight (kg)</label>
           <input class="input-field" type="number" placeholder="60" value="60">
         </div>
       </div>
       <div class="input-row">
         <div class="input-group">
-          <label class="input-label">Height (cm)</label>
+          <label class="input-label" id="t-ht">Height (cm)</label>
           <input class="input-field" type="number" placeholder="165" value="165">
         </div>
         <div class="input-group">
-          <label class="input-label">Sex</label>
+          <label class="input-label" id="t-sx">Sex</label>
           <select class="input-field" style="appearance:none">
             <option>Female</option>
             <option>Male</option>
@@ -1366,7 +1541,7 @@
       </div>
     </div>
     <div class="ob-footer">
-      <button class="btn-primary" style="background:var(--deep);animation:none;" onclick="goTo('ob2')">Continue →</button>
+      <button class="btn-primary" style="background:var(--deep);animation:none;" onclick="goTo('ob2')" data-t="continue">Continue →</button>
     </div>
   </div>
 
@@ -1378,25 +1553,25 @@
     <div class="ob-header">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
         <button class="back-btn dark" onclick="goTo('ob1')" style="width:36px;height:36px;background:var(--border);border:none;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">←</button>
-        <div style="flex:1"><div class="progress-bar" style="margin:0;"><div class="progress-fill" style="width:28%"></div></div></div>
+        <div style="flex:1"><div class="progress-bar" style="margin:0;"><div class="progress-fill" style="width:37%"></div></div></div>
       </div>
-      <div class="ob-step">Step 2 of 7</div>
-      <div class="ob-question">Who's eating with you? 🏡</div>
-      <div class="ob-sub">We'll scale portions and plan accordingly.</div>
+      <div class="ob-step">Step 3 of 8</div>
+      <div class="ob-question" id="t-ob2-q">Who's eating with you? 🏡</div>
+      <div class="ob-sub" id="t-ob2-s">Portions scaled to your household.</div>
     </div>
     <div class="ob-body">
       <div class="select-grid">
         <div class="select-card" onclick="selectCard(this)">
           <div class="check-badge">✓</div>
           <div class="card-icon">🧑</div>
-          <div class="card-label">Just Me</div>
-          <div class="card-sub">Solo planning</div>
+          <div class="card-label" id="t-hh1">Just Me</div>
+          <div class="card-sub" id="t-hh1s">Solo planning</div>
         </div>
         <div class="select-card" onclick="selectCard(this)">
           <div class="check-badge">✓</div>
           <div class="card-icon">👫</div>
-          <div class="card-label">Couple</div>
-          <div class="card-sub">2 people</div>
+          <div class="card-label" id="t-hh2">Couple</div>
+          <div class="card-sub" id="t-hh2s">2 people</div>
         </div>
         <div class="select-card selected" onclick="selectCard(this)">
           <div class="check-badge">✓</div>
@@ -1414,18 +1589,18 @@
       <div style="background:var(--card);border-radius:16px;padding:16px;box-shadow:var(--shadow);margin-top:8px;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
           <div>
-            <div style="font-size:15px;font-weight:700;color:var(--text);">Kids under 12?</div>
-            <div style="font-size:12px;color:var(--muted);">Activates kids-friendly meal mode 🧒</div>
+            <div style="font-size:15px;font-weight:700;color:var(--text);" id="t-kids12">Kids under 12?</div>
+            <div style="font-size:12px;color:var(--muted);"><span id="t-kids12-sub">Activates kids-friendly meal mode 🧒</span></div>
           </div>
           <div class="toggle-switch" onclick="this.querySelector('.toggle-knob').style.left='2px'; this.style.background='var(--border)'">
             <div class="toggle-knob"></div>
           </div>
         </div>
-        <div style="font-size:13px;color:var(--muted);line-height:1.5;">Kids Mode adds child-friendly recipe variants to every meal — same ingredients, milder flavours, fun names.</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.5;" id="t-kids-desc">Kids Mode adds child-friendly recipe variants to every meal — same ingredients, milder flavours, fun names.</div>
       </div>
     </div>
     <div class="ob-footer">
-      <button class="btn-primary" style="background:var(--deep);animation:none;" onclick="goTo('ob3')">Continue →</button>
+      <button class="btn-primary" style="background:var(--deep);animation:none;" onclick="goTo('ob3')" data-t="continue">Continue →</button>
     </div>
   </div>
 
@@ -1437,11 +1612,11 @@
     <div class="ob-header">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
         <button class="back-btn dark" onclick="goTo('ob2')" style="width:36px;height:36px;background:var(--border);border:none;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">←</button>
-        <div style="flex:1"><div class="progress-bar" style="margin:0;"><div class="progress-fill" style="width:43%"></div></div></div>
+        <div style="flex:1"><div class="progress-bar" style="margin:0;"><div class="progress-fill" style="width:50%"></div></div></div>
       </div>
-      <div class="ob-step">Step 3 of 7</div>
-      <div class="ob-question">What does your body love? 🥗</div>
-      <div class="ob-sub">Select all that apply. We'll never suggest anything that doesn't work for you.</div>
+      <div class="ob-step">Step 4 of 8</div>
+      <div class="ob-question" id="t-ob3-q">What does your body love? 🥗</div>
+      <div class="ob-sub" id="t-ob3-s">Select all that apply.</div>
     </div>
     <div class="ob-body">
       <div class="chip-grid">
@@ -1465,7 +1640,7 @@
       </div>
     </div>
     <div class="ob-footer">
-      <button class="btn-primary" style="background:var(--deep);animation:none;" onclick="goTo('ob4')">Continue →</button>
+      <button class="btn-primary" style="background:var(--deep);animation:none;" onclick="goTo('ob4')" data-t="continue">Continue →</button>
     </div>
   </div>
 
@@ -1477,11 +1652,11 @@
     <div class="ob-header">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
         <button class="back-btn dark" onclick="goTo('ob3')" style="width:36px;height:36px;background:var(--border);border:none;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">←</button>
-        <div style="flex:1"><div class="progress-bar" style="margin:0;"><div class="progress-fill" style="width:57%"></div></div></div>
+        <div style="flex:1"><div class="progress-bar" style="margin:0;"><div class="progress-fill" style="width:62%"></div></div></div>
       </div>
-      <div class="ob-step">Step 4 of 7</div>
-      <div class="ob-question">How does your day usually look? 📅</div>
-      <div class="ob-sub">This helps us suggest the right meal pace for you. You can always adjust in the moment when you open the app each day!</div>
+      <div class="ob-step">Step 5 of 8</div>
+      <div class="ob-question" id="t-ob4-q">How does your day usually look? 📅</div>
+      <div class="ob-sub" id="t-ob4-s">Helps us suggest the right meal pace for you.</div>
     </div>
     <div class="ob-body" style="padding-bottom:16px;">
       <div style="display:grid;grid-template-columns:1fr;gap:14px;">
@@ -1489,7 +1664,7 @@
         <div class="pace-card selected" onclick="selectPace(this)">
           <div class="pace-emoji">🏃</div>
           <div class="pace-info">
-            <div class="pace-title">Super Busy</div>
+            <div class="pace-title" id="t-p1">Super Busy</div>
             <div class="pace-sub">Under 20 minutes — quick and easy always</div>
           </div>
           <div class="pace-check">✓</div>
@@ -1498,7 +1673,7 @@
         <div class="pace-card" onclick="selectPace(this)">
           <div class="pace-emoji">⚖️</div>
           <div class="pace-info">
-            <div class="pace-title">Moderate</div>
+            <div class="pace-title" id="t-p2">Moderate</div>
             <div class="pace-sub">Around 30 minutes — I can manage most nights</div>
           </div>
           <div class="pace-check">✓</div>
@@ -1507,7 +1682,7 @@
         <div class="pace-card" onclick="selectPace(this)">
           <div class="pace-emoji">😌</div>
           <div class="pace-info">
-            <div class="pace-title">Relaxed</div>
+            <div class="pace-title" id="t-p3">Relaxed</div>
             <div class="pace-sub">45 minutes is fine — I enjoy the process</div>
           </div>
           <div class="pace-check">✓</div>
@@ -1516,7 +1691,7 @@
         <div class="pace-card" onclick="selectPace(this)">
           <div class="pace-emoji">👨‍🍳</div>
           <div class="pace-info">
-            <div class="pace-title">I Love Cooking</div>
+            <div class="pace-title" id="t-p4">I Love Cooking</div>
             <div class="pace-sub">An hour or more — cooking is my therapy</div>
           </div>
           <div class="pace-check">✓</div>
@@ -1532,7 +1707,7 @@
       </div>
     </div>
     <div class="ob-footer">
-      <button class="btn-primary" style="background:var(--deep);animation:none;" onclick="goTo('ob5')">Continue →</button>
+      <button class="btn-primary" style="background:var(--deep);animation:none;" onclick="goTo('ob5')" data-t="continue">Continue →</button>
     </div>
   </div>
 
@@ -1542,10 +1717,10 @@
   <div class="screen" id="ob5">
     <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span>🔋</span></div></div>
     <div class="ob-header">
-      <div class="progress-bar"><div class="progress-fill" style="width:71%"></div></div>
-      <div class="ob-step">Step 5 of 7</div>
-      <div class="ob-question">What's hiding in your fridge? 🧊</div>
-      <div class="ob-sub">Tap everything you have. We'll build meals around these first.</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:75%"></div></div>
+      <div class="ob-step">Step 6 of 8</div>
+      <div class="ob-question" id="t-ob5-q">What's hiding in your fridge? 🧊</div>
+      <div class="ob-sub" id="t-ob5-s">Tap everything you have.</div>
     </div>
     <div class="ob-body" style="padding-bottom:8px;">
       <input class="input-field" type="text" placeholder="🔍  Search ingredients..." style="margin-bottom:16px;" oninput="filterPantry(this.value)">
@@ -1725,7 +1900,7 @@
       </div>
     </div>
     <div class="ob-footer">
-      <button class="btn-primary" style="background:var(--deep);animation:none;" onclick="goTo('ob6')">Continue →</button>
+      <button class="btn-primary" style="background:var(--deep);animation:none;" onclick="goTo('ob6')" data-t="continue">Continue →</button>
     </div>
   </div>
 
@@ -1735,8 +1910,8 @@
   <div class="screen" id="ob6">
     <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span>🔋</span></div></div>
     <div class="ob-header">
-      <div class="progress-bar"><div class="progress-fill" style="width:86%"></div></div>
-      <div class="ob-step">Step 6 of 7</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:87%"></div></div>
+      <div class="ob-step">Step 7 of 8</div>
       <div class="ob-question" id="cuisineQuestion">What cuisines do you love? 🌍</div>
       <div class="ob-sub" id="cuisineSub">We'll suggest meals that actually excite you. Pick all you love!</div>
     </div>
@@ -1871,7 +2046,7 @@
 
     </div>
     <div class="ob-footer">
-      <button class="btn-primary" style="background:var(--deep);animation:none;" id="cuisineNextBtn" onclick="goTo('loading')">Almost there! →</button>
+      <button class="btn-primary" style="background:var(--deep);animation:none;" id="cuisineNextBtn" data-t="almostThere" onclick="goTo('loading')">Almost there! →</button>
     </div>
   </div>
 
@@ -1918,13 +2093,13 @@
       <!-- Row 1: greeting + avatar + quick prep -->
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
         <div style="flex:1;">
-          <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--text);line-height:1.2;">Good morning, <span style="color:var(--coral);">Maya.</span> 👋</div>
-          <div style="font-size:11px;color:var(--muted);margin-top:1px;">Tuesday · Your plan is ready</div>
+          <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--text);line-height:1.2;" id="ui-greeting">Good morning, <span style="color:var(--coral);">Maya.</span> 👋</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:1px;" id="ui-plan-ready">Tuesday · Your plan is ready</div>
         </div>
         <div class="avatar" style="width:36px;height:36px;font-size:15px;">M</div>
         <div onclick="openQuickMealPrep()" style="background:var(--coral);border-radius:12px;padding:8px 12px;cursor:pointer;display:flex;align-items:center;gap:5px;flex-shrink:0;">
           <span style="font-size:14px;">⚡</span>
-          <span style="font-size:11px;font-weight:700;color:white;">Quick Meal</span>
+          <span style="font-size:11px;font-weight:700;color:white;" id="t-qm">Quick Meal</span>
         </div>
       </div>
 
@@ -1958,36 +2133,37 @@
       <div class="meal-section">
 
         <!-- BREAKFAST — Kids Mode inside recipe only -->
-        <div class="meal-type-label">🌅 Breakfast</div>
-        <div class="meal-card" onclick="openTimePickerThen('recipe','Avocado Toast with Poached Eggs','🥑','linear-gradient(135deg,#d4edda,#a8d5b5)')">
+        <!-- BREAKFAST -->
+        <div class="meal-type-label" id="ui-breakfast-label">🌅 Breakfast</div>
+        <div class="meal-card" id="breakfastCard" onclick="openTimePickerThen('recipe','Avocado Toast with Poached Eggs','🥑','linear-gradient(135deg,#d4edda,#a8d5b5)')">
           <div class="meal-img">
-            <div class="meal-img-bg" style="background:linear-gradient(135deg,#d4edda,#a8d5b5)"></div>
-            <div class="meal-img-emoji">🥑</div>
-            <div class="pantry-hero-badge">✓ No shopping needed</div>
+            <div class="meal-img-bg" id="breakfastBg" style="background:linear-gradient(135deg,#d4edda,#a8d5b5)"></div>
+            <div class="meal-img-emoji" id="breakfastEmoji">🥑</div>
+            <div class="pantry-hero-badge" id="ui-no-shop">✓ No shopping needed</div>
           </div>
           <div class="meal-info">
-            <div class="meal-name">Avocado Toast with Poached Eggs</div>
+            <div class="meal-name" id="ui-breakfast-name">Avocado Toast with Poached Eggs</div>
             <div class="meal-meta">
               <span class="meta-tag tag-diet">🌱 Vegetarian</span>
               <span class="meta-tag tag-cal">380 kcal</span>
               <span class="meta-tag tag-protein">🔥 High Protein</span>
             </div>
             <div class="meal-bottom-row" style="margin-top:12px;">
-              <button class="swap-visible-btn" onclick="event.stopPropagation();openSwap()">🔄 Swap</button>
-              <button class="cook-btn" onclick="event.stopPropagation();openTimePickerThen('cookmode')">Cook Now</button>
+              <button class="swap-visible-btn" onclick="event.stopPropagation();openSwap()">🔄 <span id="ui-swap-txt">Swap</span></button>
+              <button class="cook-btn" onclick="event.stopPropagation();openTimePickerThen('cookmode')" id="ui-cook-now">Cook Now</button>
             </div>
           </div>
         </div>
 
-        <!-- LUNCH — Kids Mode inside recipe only -->
-        <div class="meal-type-label">☀️ Lunch</div>
-        <div class="meal-card" onclick="openTimePickerThen('recipe','Grilled Chicken Bowl','🍗','linear-gradient(135deg,#fff3cd,#ffc107)')">
+        <!-- LUNCH -->
+        <div class="meal-type-label" id="ui-lunch-label">☀️ Lunch</div>
+        <div class="meal-card" id="lunchCard" onclick="openTimePickerThen('recipe','Grilled Chicken Bowl','🍗','linear-gradient(135deg,#fff3cd,#ffc107)')">
           <div class="meal-img">
-            <div class="meal-img-bg" style="background:linear-gradient(135deg,#fff3cd,#ffc107)"></div>
-            <div class="meal-img-emoji">🍗</div>
+            <div class="meal-img-bg" id="lunchBg" style="background:linear-gradient(135deg,#fff3cd,#ffc107)"></div>
+            <div class="meal-img-emoji" id="lunchEmoji">🍗</div>
           </div>
           <div class="meal-info">
-            <div class="meal-name">Grilled Chicken & Quinoa Bowl</div>
+            <div class="meal-name" id="ui-lunch-name">Grilled Chicken & Quinoa Bowl</div>
             <div class="meal-meta">
               <span class="meta-tag tag-protein">🔥 High Protein</span>
               <span class="meta-tag tag-cal">520 kcal</span>
@@ -2001,7 +2177,7 @@
 
         <!-- EVENING SNACK — with Kids Mode toggle -->
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;margin-top:20px;">
-          <div class="meal-type-label" style="margin:0;">🌤️ Evening Snack</div>
+          <div class="meal-type-label" style="margin:0;" id="ui-snack-label">🌤️ Evening Snack</div>
           <div style="display:flex;align-items:center;gap:8px;">
             <span style="font-size:11px;font-weight:600;color:var(--muted);" id="kidsToggleLabel">Kids Mode</span>
             <div id="kidsToggle" onclick="toggleKidsSnack()" style="width:44px;height:24px;background:var(--border);border-radius:12px;position:relative;cursor:pointer;transition:background 0.3s;">
@@ -2009,28 +2185,24 @@
             </div>
           </div>
         </div>
-
-        <!-- Adult Snack Card (default) -->
         <div id="adultSnackCard" class="meal-card" onclick="openTimePickerThen('recipe','Fruit & Yogurt Bowl','🍓','linear-gradient(135deg,#fce4ec,#f48fb1)')">
           <div class="meal-img">
-            <div class="meal-img-bg" style="background:linear-gradient(135deg,#fce4ec,#f48fb1)"></div>
-            <div class="meal-img-emoji">🍓</div>
+            <div class="meal-img-bg" id="snackBg" style="background:linear-gradient(135deg,#fce4ec,#f48fb1)"></div>
+            <div class="meal-img-emoji" id="snackEmoji">🍓</div>
             <div class="pantry-hero-badge">✓ No shopping needed</div>
           </div>
           <div class="meal-info">
-            <div class="meal-name">Fruit & Yogurt Bowl with Honey</div>
+            <div class="meal-name" id="ui-snack-name">Fruit & Yogurt Bowl with Honey</div>
             <div class="meal-meta">
               <span class="meta-tag tag-diet">🌱 Vegetarian</span>
               <span class="meta-tag tag-cal">180 kcal</span>
             </div>
             <div class="meal-bottom-row" style="margin-top:12px;">
               <button class="swap-visible-btn" onclick="event.stopPropagation();openSwap()">🔄 Swap</button>
-              <button class="cook-btn" onclick="event.stopPropagation();openTimePickerThen('cookmode')">Prep Now</button>
+              <button class="cook-btn" onclick="event.stopPropagation();openTimePickerThen('cookmode')" id="ui-prep-now">Prep Now</button>
             </div>
           </div>
         </div>
-
-        <!-- Kids Snack Card (hidden until toggle ON) -->
         <div id="kidsSnackCard" style="display:none;" class="meal-card" onclick="openTimePickerThen('recipe','Banana Bites with Peanut Butter','🍌','linear-gradient(135deg,#EDE9FE,#DDD6FE)')">
           <div class="meal-img">
             <div class="meal-img-bg" style="background:linear-gradient(135deg,#EDE9FE,#c4b5fd)"></div>
@@ -2052,9 +2224,9 @@
           </div>
         </div>
 
-        <!-- DINNER — Kids Mode toggle, same pattern as Evening Snack -->
+        <!-- DINNER — Kids Mode toggle -->
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;margin-top:20px;">
-          <div class="meal-type-label" style="margin:0;">🌙 Dinner</div>
+          <div class="meal-type-label" style="margin:0;" id="ui-dinner-label">🌙 Dinner</div>
           <div style="display:flex;align-items:center;gap:8px;">
             <span style="font-size:11px;font-weight:600;color:var(--muted);" id="dinnerKidsLabel">Kids Mode</span>
             <div id="dinnerKidsToggle" onclick="toggleKidsDinner()" style="width:44px;height:24px;background:var(--border);border-radius:12px;position:relative;cursor:pointer;transition:background 0.3s;">
@@ -2062,15 +2234,13 @@
             </div>
           </div>
         </div>
-
-        <!-- Adult Dinner Card (default) -->
         <div id="adultDinnerCard" class="meal-card" onclick="openTimePickerThen('recipe','Lemon Herb Salmon','🐟','linear-gradient(135deg,#cce5ff,#74c0fc)')">
           <div class="meal-img">
-            <div class="meal-img-bg" style="background:linear-gradient(135deg,#cce5ff,#74c0fc)"></div>
-            <div class="meal-img-emoji">🐟</div>
+            <div class="meal-img-bg" id="dinnerBg" style="background:linear-gradient(135deg,#cce5ff,#74c0fc)"></div>
+            <div class="meal-img-emoji" id="dinnerEmoji">🐟</div>
           </div>
           <div class="meal-info">
-            <div class="meal-name">Lemon Herb Salmon with Roasted Vegetables</div>
+            <div class="meal-name" id="ui-dinner-name">Lemon Herb Salmon with Roasted Vegetables</div>
             <div class="meal-meta">
               <span class="meta-tag tag-protein">🔥 High Protein</span>
               <span class="meta-tag tag-cal">480 kcal</span>
@@ -2081,8 +2251,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Kids Dinner Card (shown when toggle ON) -->
         <div id="kidsDinnerCard" style="display:none;" class="meal-card" onclick="openTimePickerThen('recipe','Salmon Bites & Mash','🐟','linear-gradient(135deg,#EDE9FE,#DDD6FE)')">
           <div class="meal-img">
             <div class="meal-img-bg" style="background:linear-gradient(135deg,#EDE9FE,#c4b5fd)"></div>
@@ -2107,10 +2275,10 @@
       </div>
     </div>
     <div class="bottom-nav">
-      <div class="nav-item active" onclick="switchTab('home',this)"><div class="nav-icon">🏠</div><div class="nav-label">Home</div></div>
-      <div class="nav-item" onclick="goTo('nutrition');switchTab('nutrition',this)"><div class="nav-icon">📊</div><div class="nav-label">Nutrition</div></div>
-      <div class="nav-item" onclick="goTo('shopping');switchTab('shopping',this)"><div class="nav-icon">🛒</div><div class="nav-label">Shopping</div></div>
-      <div class="nav-item" onclick="goTo('profile');switchTab('profile',this)"><div class="nav-icon">👤</div><div class="nav-label">Profile</div></div>
+      <div class="nav-item active" onclick="switchTab('home',this)"><div class="nav-icon">🏠</div><div class="nav-label" id="t-nav-home">Home</div></div>
+      <div class="nav-item" onclick="goTo('nutrition');switchTab('nutrition',this)"><div class="nav-icon">📊</div><div class="nav-label" id="t-nav-nut">Nutrition</div></div>
+      <div class="nav-item" onclick="goTo('shopping');switchTab('shopping',this)"><div class="nav-icon">🛒</div><div class="nav-label" id="t-nav-shop">Shopping</div></div>
+      <div class="nav-item" onclick="goTo('profile');switchTab('profile',this)"><div class="nav-icon">👤</div><div class="nav-label" id="t-nav-prof">Profile</div></div>
     </div>
   </div>
 
@@ -2134,27 +2302,40 @@
       </div>
     </div>
 
+    <!-- Video + Audio action row -->
+    <div style="display:flex;gap:10px;padding:0 24px;margin-bottom:16px;">
+      <button onclick="openVideo('short')" style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:11px;background:var(--deep);color:white;border:none;border-radius:14px;font-size:13px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all 0.2s;">
+        📱 30s Reel
+      </button>
+      <button onclick="openVideo('full')" style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:11px;background:var(--card);color:var(--text);border:2px solid var(--border);border-radius:14px;font-size:13px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all 0.2s;">
+        🎬 Full Tutorial
+      </button>
+      <button onclick="playAudioRecipe()" id="audioRecipeBtn" style="width:48px;height:48px;background:var(--coral-light);color:var(--coral);border:2px solid var(--coral);border-radius:14px;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s;">
+        🔊
+      </button>
+    </div>
+
     <!-- Kids tabs (for dinner) -->
     <div class="kids-tabs">
-      <button class="kids-tab active" onclick="switchKidsTab('adult',this)">👤 Adult Recipe</button>
-      <button class="kids-tab" onclick="switchKidsTab('kids',this)">🧒 Kids Version</button>
+      <button class="kids-tab active" onclick="switchKidsTab('adult',this)" data-t="adultRecipe">👤 Adult Recipe</button>
+      <button class="kids-tab" onclick="switchKidsTab('kids',this)" data-t="kidsVersion">🧒 Kids Version</button>
     </div>
 
     <!-- Adult recipe -->
     <div class="kids-content active" id="adultContent">
       <div class="recipe-tabs">
-        <button class="recipe-tab active" onclick="switchRecipeTab(0,this)">⚡ Fastest<br><small>20 min</small></button>
-        <button class="recipe-tab" onclick="switchRecipeTab(1,this)">⚖️ Balanced<br><small>30 min</small></button>
-        <button class="recipe-tab" onclick="switchRecipeTab(2,this)">📦 Meal Prep<br><small>45 min</small></button>
+        <button class="recipe-tab active" onclick="switchRecipeTab(0,this)" id="t-rv1">⚡ Fastest<br><small>20 min</small></button>
+        <button class="recipe-tab" onclick="switchRecipeTab(1,this)" id="t-rv2">⚖️ Balanced<br><small>30 min</small></button>
+        <button class="recipe-tab" onclick="switchRecipeTab(2,this)" id="t-rv3">📦 Meal Prep<br><small>45 min</small></button>
       </div>
       <div class="recipe-content active" id="recipe0">
-        <div class="ingredients-title">Ingredients</div>
+        <div class="ingredients-title" data-t="ingredients">Ingredients</div>
         <div class="ingredient-row"><div class="ingredient-dot dot-green"></div><div class="ingredient-name">Salmon fillet (200g)</div><div class="ingredient-status status-have">✓ Have it</div></div>
         <div class="ingredient-row"><div class="ingredient-dot dot-green"></div><div class="ingredient-name">Broccoli (1 cup)</div><div class="ingredient-status status-have">✓ Have it</div></div>
         <div class="ingredient-row"><div class="ingredient-dot dot-green"></div><div class="ingredient-name">Olive oil (2 tbsp)</div><div class="ingredient-status status-have">✓ Have it</div></div>
         <div class="ingredient-row"><div class="ingredient-dot dot-amber"></div><div class="ingredient-name">Lemon (1 whole)</div><div class="ingredient-status status-need">+ Buy this</div></div>
         <div class="ingredient-row"><div class="ingredient-dot dot-green"></div><div class="ingredient-name">Garlic (3 cloves)</div><div class="ingredient-status status-have">✓ Have it</div></div>
-        <button class="start-cooking-btn" onclick="closeRecipe();goTo('cookmode')">🍳 Start Cooking</button>
+        <button class="start-cooking-btn" onclick="closeRecipe();goTo('cookmode')" data-t="startCooking">🍳 Start Cooking</button>
       </div>
       <div class="recipe-content" id="recipe1">
         <div class="ingredients-title">Balanced Version — 30 min</div>
@@ -2186,7 +2367,7 @@
       <div class="ingredient-row"><div class="ingredient-dot dot-amber"></div><div class="ingredient-name">Sweet potato (1 medium)</div><div class="ingredient-status status-need">+ Buy this</div></div>
       <div class="ingredient-row"><div class="ingredient-dot dot-green"></div><div class="ingredient-name">Butter (1 tbsp)</div><div class="ingredient-status status-have">✓ Have it</div></div>
       <div class="ingredient-row"><div class="ingredient-dot dot-green"></div><div class="ingredient-name">Cucumber (for sticks)</div><div class="ingredient-status status-have">✓ Have it</div></div>
-      <button class="start-cooking-btn" onclick="closeRecipe();goTo('cookmode')">🍳 Cook Kids Version</button>
+      <button class="start-cooking-btn" onclick="closeRecipe();goTo('cookmode')" data-t="cookKids">🍳 Cook Kids Version</button>
     </div>
   </div>
 
@@ -2248,7 +2429,12 @@
     </div>
     <div class="scroll-content" style="background:var(--bg);border-radius:28px 28px 0 0;padding-top:20px;">
       <div class="cook-step-card">
-        <div class="step-num" id="stepNum">Step 2 of 5</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <div class="step-num" id="stepNum">Step 2 of 5</div>
+          <button onclick="playAudioStep()" id="audioStepBtn" style="display:flex;align-items:center;gap:5px;padding:6px 12px;background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.3);border-radius:20px;color:white;font-size:12px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all 0.2s;">
+            🔊 <span id="audioStepLabel">Listen in English</span>
+          </button>
+        </div>
         <div class="step-instruction" id="stepInstruction">Season the salmon fillet with salt, pepper, and a drizzle of olive oil. Let it rest at room temperature for 5 minutes before cooking.</div>
         <div class="timer-display">
           <div>
@@ -2258,6 +2444,13 @@
           <button class="timer-btn" id="timerBtn" onclick="toggleTimer()">▶</button>
         </div>
       </div>
+      <div style="display:flex;gap:10px;margin:16px 24px 0;">
+        <button onclick="playAudioStep()" id="audioStepBtn" style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:14px 16px;background:var(--deep);color:white;border:none;border-radius:14px;font-size:14px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.2);">
+          🔊 <span id="audioStepLabel">Listen in English</span>
+        </button>
+        <button onclick="openVideo('short')" style="width:54px;height:54px;background:#FF6B35;color:white;border:none;border-radius:14px;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 12px rgba(255,107,53,0.4);">🎬</button>
+      </div>
+
       <div class="cook-tips" style="margin-top:16px;">
         <div class="cook-tip-text">💡 <strong>Chef's tip:</strong> Room temperature fish cooks more evenly and gets a better sear.</div>
       </div>
@@ -2274,7 +2467,7 @@
     </div>
     <div class="cook-nav-row">
       <button class="cook-prev-btn" onclick="prevStep()">← Prev</button>
-      <button class="cook-next-btn" onclick="nextStep()">Next Step →</button>
+      <button class="cook-next-btn" onclick="nextStep()" data-t="nextStep">Next Step →</button>
     </div>
   </div>
 
@@ -2327,10 +2520,10 @@
     <div id="confettiContainer" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1;"></div>
     <div class="cook-complete">
       <div class="complete-emoji">🎉</div>
-      <div class="complete-title">Nailed it!</div>
-      <div class="complete-sub">Your pantry has been updated.<br>Lemon Herb Salmon is marked as cooked.<br><br><strong style="color:var(--deep)">You've cooked 3 of 7 meals this week!</strong></div>
-      <button class="btn-primary" style="animation:none;background:var(--deep);" onclick="goTo('home')">Back to My Plan</button>
-      <button style="margin-top:12px;width:100%;padding:15px;background:transparent;border:2px solid var(--border);border-radius:14px;font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;color:var(--text);" onclick="goTo('shopping')">View Shopping List 🛒</button>
+      <div class="complete-title" id="t-complete">Nailed it!</div>
+      <div class="complete-sub" id="t-complete-sub">Your pantry has been updated.<br>Lemon Herb Salmon is marked as cooked.<br><br><strong style="color:var(--deep)">You've cooked 3 of 7 meals this week!</strong></div>
+      <button class="btn-primary" style="animation:none;background:var(--deep);" onclick="goTo('home')" data-t="backToPlan">Back to My Plan</button>
+      <button style="margin-top:12px;width:100%;padding:15px;background:transparent;border:2px solid var(--border);border-radius:14px;font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;color:var(--text);" onclick="goTo('shopping')" data-t="viewShop">View Shopping List 🛒</button>
     </div>
   </div>
 
@@ -2340,14 +2533,14 @@
   <div class="screen" id="shopping">
     <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span>🔋</span></div></div>
     <div class="shop-header">
-      <div class="page-title">Shopping List 🛒</div>
-      <div class="page-sub">Auto-generated from your week's plan</div>
+      <div class="page-title" id="t-shop-title">Shopping List 🛒</div>
+      <div class="page-sub" id="t-shop-sub">Auto-generated from your week's plan</div>
 
       <!-- Pantry sync banner -->
       <div style="background:linear-gradient(135deg,var(--deep),var(--deep2));border-radius:14px;padding:12px 16px;display:flex;align-items:center;gap:12px;margin-bottom:12px;">
         <div style="font-size:24px;">🔄</div>
         <div style="flex:1;">
-          <div style="font-size:13px;font-weight:700;color:white;">Auto Pantry Sync is ON</div>
+          <div style="font-size:13px;font-weight:700;color:white;" id="t-sync-on">Auto Pantry Sync is ON</div>
           <div style="font-size:11px;color:rgba(255,255,255,0.7);margin-top:2px;">Tick an item = bought = added to your pantry automatically</div>
         </div>
         <div style="width:36px;height:20px;background:var(--coral);border-radius:10px;display:flex;align-items:center;padding:2px 3px;">
@@ -2420,7 +2613,7 @@
     <div class="nutrition-header">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
         <button class="back-btn dark" onclick="goTo('home')">←</button>
-        <div class="page-title" style="margin:0;">Nutrition 📊</div>
+        <div class="page-title" style="margin:0;" id="t-nut-title">Nutrition 📊</div>
       </div>
     </div>
     <div class="scroll-content">
@@ -2486,8 +2679,8 @@
   <div class="screen" id="profile">
     <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span>🔋</span></div></div>
     <div class="profile-header">
-      <div class="page-title">My Profile</div>
-      <div class="page-sub">Week 3 of your journey</div>
+      <div class="page-title" id="t-prof-title">My Profile</div>
+      <div class="page-sub" id="t-prof-sub">Week 3 of your journey</div>
     </div>
     <div class="scroll-content">
       <div style="padding:0 24px 24px;">
@@ -2521,6 +2714,7 @@
 
         <div class="settings-group">
           <div class="settings-group-title">Account</div>
+          <div class="settings-item"><div class="settings-icon">🌍</div><div class="settings-label">Language</div><div style="font-size:12px;color:var(--muted);margin-right:8px;">English</div><div class="settings-arrow">›</div></div>
           <div class="settings-item"><div class="settings-icon">🥘</div><div class="settings-label">Dietary Preferences</div><div class="settings-arrow">›</div></div>
           <div class="settings-item"><div class="settings-icon">🧺</div><div class="settings-label">My Pantry</div><div class="settings-arrow">›</div></div>
           <div class="settings-item"><div class="settings-icon">⭐</div><div class="settings-label">Saved Recipes</div><div class="settings-arrow">›</div></div>
@@ -2556,42 +2750,108 @@
     </div>
   </div>
   ══════════════════════════════════ -->
+  <!-- ══════════════════════════════════
+       VIDEO PLAYER OVERLAY
+  ══════════════════════════════════ -->
+  <div id="videoOverlay" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,0.95);z-index:80;flex-direction:column;animation:fadeIn 0.3s ease;">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;flex-shrink:0;">
+      <div>
+        <div id="videoTypeLabel" style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;">📱 30s Reel</div>
+        <div style="font-size:15px;font-weight:700;color:white;">Lemon Herb Salmon</div>
+      </div>
+      <button onclick="closeVideo()" style="width:36px;height:36px;background:rgba(255,255,255,0.15);border:none;border-radius:50%;color:white;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+    </div>
+    <div id="videoFrame" style="flex:1;display:flex;align-items:center;justify-content:center;padding:0 20px;position:relative;">
+      <!-- Short reel (vertical) -->
+      <div id="shortVideoFrame" style="width:220px;height:380px;background:linear-gradient(135deg,#1a1a2e,#16213e);border-radius:20px;overflow:hidden;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.5);">
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.3) 0%,transparent 30%,transparent 60%,rgba(0,0,0,0.8) 100%);z-index:2;"></div>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:72px;z-index:1;">🐟</div>
+        <div id="playOverlayShort" onclick="toggleVideoPlay('short')" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:3;cursor:pointer;">
+          <div style="width:56px;height:56px;background:rgba(255,255,255,0.2);backdrop-filter:blur(8px);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;" id="playBtnShort">▶</div>
+        </div>
+        <div style="position:absolute;bottom:60px;left:12px;right:12px;z-index:4;">
+          <div style="height:3px;background:rgba(255,255,255,0.3);border-radius:2px;overflow:hidden;">
+            <div id="shortProgress" style="height:100%;background:white;width:0%;transition:width 0.5s linear;border-radius:2px;"></div>
+          </div>
+        </div>
+        <div style="position:absolute;bottom:14px;left:12px;right:12px;z-index:4;">
+          <div style="font-size:12px;font-weight:700;color:white;margin-bottom:2px;">Lemon Herb Salmon 🐟</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.7);">30 sec · WeekBite Recipe Reel</div>
+        </div>
+        <div id="videoLangBadge" style="position:absolute;top:12px;right:10px;background:var(--coral);color:white;font-size:9px;font-weight:700;padding:3px 8px;border-radius:20px;z-index:4;">🔊 English</div>
+        <div style="position:absolute;top:12px;left:10px;background:rgba(0,0,0,0.5);color:white;font-size:9px;font-weight:700;padding:3px 7px;border-radius:8px;z-index:4;" id="shortTimerDisplay">0:30</div>
+      </div>
+      <!-- Full tutorial (horizontal) -->
+      <div id="fullVideoFrame" style="display:none;width:100%;max-width:340px;background:#111;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.5);">
+        <div style="width:100%;aspect-ratio:16/9;position:relative;background:#111;">
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:56px;">🐟</div>
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.2),rgba(0,0,0,0.6));"></div>
+          <div onclick="toggleVideoPlay('full')" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2;">
+            <div style="width:56px;height:56px;background:rgba(255,255,255,0.2);backdrop-filter:blur(8px);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;" id="playBtnFull">▶</div>
+          </div>
+          <div style="position:absolute;bottom:8px;left:12px;right:12px;z-index:3;">
+            <div style="height:3px;background:rgba(255,255,255,0.3);border-radius:2px;overflow:hidden;">
+              <div id="fullProgress" style="height:100%;background:white;width:0%;transition:width 0.5s linear;border-radius:2px;"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-top:4px;">
+              <span id="fullCurrentTime" style="font-size:10px;color:rgba(255,255,255,0.7);">0:00</span>
+              <span style="font-size:10px;color:rgba(255,255,255,0.7);">2:45</span>
+            </div>
+          </div>
+        </div>
+        <div style="padding:12px 14px;background:#1a1a2e;">
+          <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Chapters</div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div onclick="jumpToChapter(0,165)" style="display:flex;gap:10px;align-items:center;cursor:pointer;padding:4px 0;" id="ch0"><div style="font-size:10px;color:var(--coral);font-weight:700;width:28px;">0:00</div><div style="font-size:12px;color:white;font-weight:600;">Ingredients Overview</div></div>
+            <div onclick="jumpToChapter(30,165)" style="display:flex;gap:10px;align-items:center;cursor:pointer;padding:4px 0;" id="ch1"><div style="font-size:10px;color:rgba(255,255,255,0.4);font-weight:700;width:28px;">0:30</div><div style="font-size:12px;color:rgba(255,255,255,0.6);">Prep & Marinate</div></div>
+            <div onclick="jumpToChapter(80,165)" style="display:flex;gap:10px;align-items:center;cursor:pointer;padding:4px 0;" id="ch2"><div style="font-size:10px;color:rgba(255,255,255,0.4);font-weight:700;width:28px;">1:20</div><div style="font-size:12px;color:rgba(255,255,255,0.6);">Cooking the Salmon</div></div>
+            <div onclick="jumpToChapter(140,165)" style="display:flex;gap:10px;align-items:center;cursor:pointer;padding:4px 0;" id="ch3"><div style="font-size:10px;color:rgba(255,255,255,0.4);font-weight:700;width:28px;">2:20</div><div style="font-size:12px;color:rgba(255,255,255,0.6);">Plating & Serving</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;padding:16px 20px;flex-shrink:0;">
+      <button id="shortTabBtn" onclick="switchVideoType('short')" style="flex:1;padding:12px;background:var(--deep);color:white;border:none;border-radius:12px;font-size:13px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;">📱 30s Reel</button>
+      <button id="fullTabBtn" onclick="switchVideoType('full')" style="flex:1;padding:12px;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);border:none;border-radius:12px;font-size:13px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;">🎬 Full Tutorial</button>
+    </div>
+  </div>
+
   <div class="time-picker-overlay" id="timePickerOverlay" onclick="closeTimePicker()">
     <div class="time-picker-sheet" onclick="event.stopPropagation()">
       <div class="bs-handle"></div>
       <div style="margin:16px 0 6px;">
-        <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--text);margin-bottom:4px;">How much time do you have? ⏱️</div>
-        <div style="font-size:13px;color:var(--muted);margin-bottom:20px;">We'll show you the perfect recipe for right now.</div>
+        <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--text);margin-bottom:4px;" id="t-time-q">How much time do you have? ⏱️</div>
+        <div style="font-size:13px;color:var(--muted);margin-bottom:20px;" id="t-time-sub">We'll show you the perfect recipe for right now.</div>
       </div>
       <div class="time-option-card selected" onclick="selectTimeOption(this,'cookmode')">
         <div class="time-option-emoji">⚡</div>
         <div>
-          <div class="time-option-title">Super Quick — 10 to 15 min</div>
-          <div class="time-option-sub">Minimal prep, maximum speed</div>
+          <div class="time-option-title" id="t-time-1">Super Quick — 10 to 15 min</div>
+          <div class="time-option-sub" id="t-time-1s">Minimal prep, maximum speed</div>
         </div>
       </div>
       <div class="time-option-card" onclick="selectTimeOption(this,'cookmode')">
         <div class="time-option-emoji">🏃</div>
         <div>
-          <div class="time-option-title">Quick — 20 to 25 min</div>
-          <div class="time-option-sub">Fast but still delicious</div>
+          <div class="time-option-title" id="t-time-2">Quick — 20 to 25 min</div>
+          <div class="time-option-sub" id="t-time-2s">Fast but still delicious</div>
         </div>
       </div>
       <div class="time-option-card" onclick="selectTimeOption(this,'cookmode')">
         <div class="time-option-emoji">⚖️</div>
         <div>
-          <div class="time-option-title">Moderate — 30 to 40 min</div>
-          <div class="time-option-sub">Balanced effort and flavour</div>
+          <div class="time-option-title" id="t-time-3">Moderate — 30 to 40 min</div>
+          <div class="time-option-sub" id="t-time-3s">Balanced effort and flavour</div>
         </div>
       </div>
       <div class="time-option-card" onclick="selectTimeOption(this,'cookmode')">
         <div class="time-option-emoji">👨‍🍳</div>
         <div>
-          <div class="time-option-title">Relaxed — 45 min or more</div>
-          <div class="time-option-sub">Full recipe, full flavour</div>
+          <div class="time-option-title" id="t-time-4">Relaxed — 45 min or more</div>
+          <div class="time-option-sub" id="t-time-4s">Full recipe, full flavour</div>
         </div>
       </div>
-      <button style="width:100%;margin-top:12px;padding:16px;background:var(--deep);color:white;border:none;border-radius:14px;font-size:15px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;" onclick="confirmTimePicker()">Show Me Recipes →</button>
+      <button style="width:100%;margin-top:12px;padding:16px;background:var(--deep);color:white;border:none;border-radius:14px;font-size:15px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;" onclick="confirmTimePicker()" data-t="showRecipes">Show Me Recipes →</button>
     </div>
   </div>
 
@@ -2602,7 +2862,7 @@
     <div class="qmp-sheet" onclick="event.stopPropagation()">
       <div class="bs-handle"></div>
       <div style="margin:16px 0 4px;">
-        <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--text);margin-bottom:2px;">⚡ Quick Meal Prep</div>
+        <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--text);margin-bottom:2px;" id="t-qmp-title">⚡ Quick Meal Prep</div>
         <div style="font-size:13px;color:var(--muted);margin-bottom:16px;">Short on time? Here's what you can make right now using only what's in your pantry.</div>
       </div>
 
@@ -2672,6 +2932,8 @@
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     const target = document.getElementById(id);
     if (target) target.classList.add('active');
+    // Re-apply language on every screen navigation
+    if (currentLang && currentLang !== 'english') applyLanguage(currentLang);
 
     if (id === 'loading') {
       setTimeout(() => {
@@ -2706,6 +2968,152 @@
     el.closest('.time-options').querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected'));
     el.classList.add('selected');
   }
+
+  // ── LANGUAGE SELECTION ──
+  // ══════════════════════════════════════════════════════
+  // LANGUAGE + CUISINE DATA (all strings use double quotes)
+  // ══════════════════════════════════════════════════════
+  const langNames = {
+    english:"English",hindi:"Hindi — हिंदी",tamil:"Tamil — தமிழ்",
+    telugu:"Telugu — తెలుగు",kannada:"Kannada — ಕನ್ನಡ",
+    malayalam:"Malayalam — മലയാളം",bengali:"Bengali — বাংলা",
+    marathi:"Marathi — मराठी",spanish:"Spanish — Español",
+    french:"French — Français",arabic:"Arabic — العربية",
+    mandarin:"Mandarin — 普通话",portuguese:"Portuguese — Português",
+    german:"German — Deutsch"
+  };
+
+  const TR = {
+    en:{ greeting:`Good morning, <span style="color:var(--coral)">Maya.</span> 👋`,plan:"Tuesday · Your plan is ready",bf:"🌅 Breakfast",lu:"☀️ Lunch",sn:"🌤️ Evening Snack",di:"🌙 Dinner",sw:"Swap",cn:"Cook Now",pn:"Prep Now",ns:"✓ No shopping needed",km:"Kids Mode",li:"Listen in English",ob1q:"What should we call you? 👋",ob1s:"Help us make WeekBite feel like yours.",ob2q:"Who's eating with you? 🏡",ob2s:"Portions scaled to your household.",ob3q:"What does your body love? 🥗",ob3s:"Select all that apply.",ob4q:"How does your day usually look? 📅",ob4s:"Helps us suggest the right meal pace.",ob5q:"What's hiding in your fridge? 🧊",ob5s:"Tap everything you have.",fn:"First Name",age:"Age",wt:"Weight (kg)",ht:"Height (cm)",sx:"Sex",hh1:"Just Me",hh1s:"Solo planning",hh2:"Couple",hh2s:"2 people",p1:"Super Busy",p2:"Moderate",p3:"Relaxed",p4:"I Love Cooking",cont:"Continue →",go:"Get Started →",ah:"Almost there! →",sc:"🍳 Start Cooking",ck:"🍳 Cook Kids Version",bp:"Back to My Plan",ing:"Ingredients",qm:"Quick Meal",sh:"Shopping List",dn:"Your estimated daily need",ct:"Nailed it! 🎉",ld:"Building your personalised plan",home:"Home",shop:"Shopping",nut:"Nutrition",prof:"Profile"},
+    hi:{ greeting:`सुप्रभात, <span style="color:var(--coral)">माया।</span> 👋`,plan:"मंगलवार · आपकी योजना तैयार है",bf:"🌅 नाश्ता",lu:"☀️ दोपहर का खाना",sn:"🌤️ शाम का नाश्ता",di:"🌙 रात का खाना",sw:"बदलें",cn:"अभी पकाएं",pn:"तैयार करें",ns:"✓ खरीदारी की जरूरत नहीं",km:"बच्चों का मोड",li:"हिंदी में सुनें",ob1q:"आपको हम क्या बुलाएं? 👋",ob1s:"WeekBite को अपना बनाने में मदद करें।",ob2q:"आपके साथ कौन खाता है? 🏡",ob2s:"हम उसी के अनुसार मात्रा बनाएंगे।",ob3q:"आपका शरीर क्या पसंद करता है? 🥗",ob3s:"सभी लागू विकल्प चुनें।",ob4q:"आपका दिन आमतौर पर कैसा होता है? 📅",ob4s:"सही भोजन गति सुझाने में मदद करता है।",ob5q:"आपके फ्रिज में क्या है? 🧊",ob5s:"जो भी है उसे टैप करें।",fn:"पहला नाम",age:"उम्र",wt:"वजन (किग्रा)",ht:"ऊंचाई (सेमी)",sx:"लिंग",hh1:"सिर्फ मैं",hh1s:"अकेला",hh2:"जोड़ा",hh2s:"2 लोग",p1:"बहुत व्यस्त",p2:"सामान्य",p3:"आरामदेह",p4:"खाना बनाना पसंद है",cont:"जारी रखें →",go:"शुरू करें →",ah:"लगभग हो गया! →",sc:"🍳 खाना बनाना शुरू करें",ck:"🍳 बच्चों का संस्करण",bp:"मेरी योजना पर वापस",ing:"सामग्री",qm:"जल्दी खाना",sh:"खरीदारी सूची",dn:"आपकी अनुमानित दैनिक जरूरत",ct:"शाबाश! 🎉",ld:"आपकी योजना बन रही है",home:"होम",shop:"खरीदारी",nut:"पोषण",prof:"प्रोफ़ाइल"},
+    te:{ greeting:`శుభోదయం, <span style="color:var(--coral)">మాయ.</span> 👋`,plan:"మంగళవారం · మీ ప్రణాళిక సిద్ధంగా ఉంది",bf:"🌅 అల్పాహారం",lu:"☀️ మధ్యాహ్న భోజనం",sn:"🌤️ సాయంత్రం అల్పాహారం",di:"🌙 రాత్రి భోజనం",sw:"మార్చు",cn:"ఇప్పుడు వండు",pn:"సిద్ధం చేయి",ns:"✓ షాపింగ్ అవసరం లేదు",km:"పిల్లల మోడ్",li:"తెలుగులో వినండి",ob1q:"మీకు ఏమని పిలవాలి? 👋",ob1s:"WeekBite ని మీదిగా చేయడంలో సహాయపడండి.",ob2q:"మీతో ఎవరు తింటారు? 🏡",ob2s:"మేము దానికి అనుగుణంగా ప్రణాళిక రూపొందిస్తాం.",ob3q:"మీ శరీరానికి ఏమి ఇష్టం? 🥗",ob3s:"వర్తించే అన్నీ ఎంచుకోండి.",ob4q:"మీ రోజు సాధారణంగా ఎలా ఉంటుంది? 📅",ob4s:"సరైన భోజన వేగాన్ని సూచించడంలో సహాయపడుతుంది.",ob5q:"మీ ఫ్రిజ్‌లో ఏముంది? 🧊",ob5s:"మీకు ఉన్నవన్నీ నొక్కండి.",fn:"మొదటి పేరు",age:"వయసు",wt:"బరువు (కిలో)",ht:"ఎత్తు (సెమీ)",sx:"లింగం",hh1:"నేను మాత్రమే",hh1s:"ఒంటరిగా",hh2:"జంట",hh2s:"2 మంది",p1:"చాలా బిజీ",p2:"సాధారణ",p3:"రిలాక్స్డ్",p4:"వంట చేయడం ఇష్టం",cont:"కొనసాగించు →",go:"ప్రారంభించు →",ah:"దాదాపు అయింది! →",sc:"🍳 వంట ప్రారంభించండి",ck:"🍳 పిల్లల వెర్షన్",bp:"నా ప్రణాళికకు తిరిగి",ing:"పదార్థాలు",qm:"త్వరిత వంట",sh:"షాపింగ్ జాబితా",dn:"మీ అంచనా రోజువారీ అవసరం",ct:"చేసారు! 🎉",ld:"మీ ప్రణాళిక రూపొందుతోంది",home:"హోమ్",shop:"షాపింగ్",nut:"పోషణ",prof:"ప్రొఫైల్"},
+    ta:{ greeting:`காலை வணக்கம், <span style="color:var(--coral)">மாயா.</span> 👋`,plan:"செவ்வாய் · உங்கள் திட்டம் தயார்",bf:"🌅 காலை உணவு",lu:"☀️ மதிய உணவு",sn:"🌤️ மாலை சிற்றுண்டி",di:"🌙 இரவு உணவு",sw:"மாற்று",cn:"இப்போது சமை",pn:"தயார் செய்",ns:"✓ கடை தேவையில்லை",km:"குழந்தை பயன்முறை",li:"தமிழில் கேளுங்கள்",ob1q:"உங்களை என்னவென்று அழைக்கலாம்? 👋",ob1s:"WeekBite ஐ உங்களுடையதாக மாற்ற உதவுங்கள்.",ob2q:"உங்களுடன் யார் சாப்பிடுகிறார்கள்? 🏡",ob2s:"அதற்கேற்ப அளவுகளை திட்டமிடுவோம்.",ob3q:"உங்கள் உடல் எதை விரும்புகிறது? 🥗",ob3s:"பொருந்தும் அனைத்தையும் தேர்ந்தெடுங்கள்.",ob4q:"உங்கள் நாள் எப்படி இருக்கும்? 📅",ob4s:"சரியான உணவு வேகத்தை பரிந்துரைக்க உதவுகிறது.",ob5q:"குளிர்சாதன பெட்டியில் என்னிருக்கிறது? 🧊",ob5s:"உங்களிடம் உள்ளவற்றை தட்டவும்.",fn:"முதல் பெயர்",age:"வயது",wt:"எடை (கிலோ)",ht:"உயரம் (செமீ)",sx:"பாலினம்",hh1:"நான் மட்டுமே",hh1s:"தனியாக",hh2:"ஜோடி",hh2s:"2 பேர்",p1:"மிகவும் பிஸி",p2:"மிதமான",p3:"ஓய்வான",p4:"சமைக்க விரும்புகிறேன்",cont:"தொடரவும் →",go:"தொடங்கவும் →",ah:"கிட்டத்தட்ட முடிந்தது! →",sc:"🍳 சமையல் தொடங்கு",ck:"🍳 குழந்தை பதிப்பு",bp:"என் திட்டத்திற்கு திரும்பு",ing:"பொருட்கள்",qm:"விரைவு உணவு",sh:"கடை பட்டியல்",dn:"உங்கள் தினசரி தேவை",ct:"செய்துவிட்டீர்கள்! 🎉",ld:"உங்கள் திட்டம் உருவாக்கப்படுகிறது",home:"முகப்பு",shop:"கடை",nut:"ஊட்டச்சத்து",prof:"சுயவிவரம்"},
+    kn:{ greeting:`ಶುಭೋದಯ, <span style="color:var(--coral)">ಮಾಯಾ.</span> 👋`,plan:"ಮಂಗಳವಾರ · ನಿಮ್ಮ ಯೋಜನೆ ಸಿದ್ಧ",bf:"🌅 ಉಪಾಹಾರ",lu:"☀️ ಮಧ್ಯಾಹ್ನದ ಊಟ",sn:"🌤️ ಸಂಜೆ ತಿಂಡಿ",di:"🌙 ರಾತ್ರಿ ಊಟ",sw:"ಬದಲಿಸಿ",cn:"ಈಗ ಅಡುಗೆ ಮಾಡಿ",pn:"ತಯಾರಿಸಿ",ns:"✓ ಶಾಪಿಂಗ್ ಅಗತ್ಯವಿಲ್ಲ",km:"ಮಕ್ಕಳ ಮೋಡ್",li:"ಕನ್ನಡದಲ್ಲಿ ಕೇಳಿ",ob1q:"ನಿಮ್ಮನ್ನು ಏನೆಂದು ಕರೆಯಲಿ? 👋",ob1s:"WeekBite ಅನ್ನು ನಿಮ್ಮದಾಗಿ ಮಾಡಲು ಸಹಾಯ ಮಾಡಿ.",ob2q:"ನಿಮ್ಮೊಂದಿಗೆ ಯಾರು ತಿನ್ನುತ್ತಾರೆ? 🏡",ob2s:"ಅದಕ್ಕನುಗುಣವಾಗಿ ಭಾಗಗಳನ್ನು ಯೋಜಿಸುತ್ತೇವೆ.",ob3q:"ನಿಮ್ಮ ದೇಹ ಏನು ಇಷ್ಟಪಡುತ್ತದೆ? 🥗",ob3s:"ಅನ್ವಯಿಸುವ ಎಲ್ಲವನ್ನೂ ಆಯ್ಕೆ ಮಾಡಿ.",ob4q:"ನಿಮ್ಮ ದಿನ ಸಾಮಾನ್ಯವಾಗಿ ಹೇಗಿರುತ್ತದೆ? 📅",ob4s:"ಸರಿಯಾದ ಅಡುಗೆ ವೇಗ ಸೂಚಿಸಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ.",ob5q:"ನಿಮ್ಮ ಫ್ರಿಜ್‌ನಲ್ಲಿ ಏನಿದೆ? 🧊",ob5s:"ನಿಮ್ಮ ಬಳಿ ಇರುವುದನ್ನು ಟ್ಯಾಪ್ ಮಾಡಿ.",fn:"ಮೊದಲ ಹೆಸರು",age:"ವಯಸ್ಸು",wt:"ತೂಕ (ಕಿಲೋ)",ht:"ಎತ್ತರ (ಸೆಮೀ)",sx:"ಲಿಂಗ",hh1:"ನಾನು ಮಾತ್ರ",hh1s:"ಒಬ್ಬಂಟಿ",hh2:"ಜೋಡಿ",hh2s:"2 ಜನ",p1:"ತುಂಬಾ ಬ್ಯುಸಿ",p2:"ಮಧ್ಯಮ",p3:"ವಿಶ್ರಾಂತ",p4:"ಅಡುಗೆ ಇಷ್ಟ",cont:"ಮುಂದುವರಿಸಿ →",go:"ಪ್ರಾರಂಭಿಸಿ →",ah:"ಬಹುತೇಕ ಮುಗಿಯಿತು! →",sc:"🍳 ಅಡುಗೆ ಪ್ರಾರಂಭಿಸಿ",ck:"🍳 ಮಕ್ಕಳ ಆವೃತ್ತಿ",bp:"ನನ್ನ ಯೋಜನೆಗೆ ಹಿಂತಿರುಗಿ",ing:"ಪದಾರ್ಥಗಳು",qm:"ತ್ವರಿತ ಅಡುಗೆ",sh:"ಶಾಪಿಂಗ್ ಪಟ್ಟಿ",dn:"ನಿಮ್ಮ ದೈನಂದಿನ ಅಗತ್ಯ",ct:"ಮಾಡಿದ್ದೀರಿ! 🎉",ld:"ನಿಮ್ಮ ಯೋಜನೆ ರಚಿಸಲಾಗುತ್ತಿದೆ",home:"ಹೋಮ್",shop:"ಶಾಪಿಂಗ್",nut:"ಪೋಷಣೆ",prof:"ಪ್ರೊಫೈಲ್"},
+    ml:{ greeting:`സുപ്രഭാതം, <span style="color:var(--coral)">മായ.</span> 👋`,plan:"ചൊവ്വ · നിങ്ങളുടെ പ്ലാൻ തയ്യാർ",bf:"🌅 പ്രഭാത ഭക്ഷണം",lu:"☀️ ഉച്ച ഭക്ഷണം",sn:"🌤️ വൈകുന്നേര പലഹാരം",di:"🌙 രാത്രി ഭക്ഷണം",sw:"മാറ്റുക",cn:"ഇപ്പോൾ പാചകം",pn:"ഒരുക്കുക",ns:"✓ ഷോപ്പിംഗ് ആവശ്യമില്ല",km:"കുട്ടികൾ മോഡ്",li:"മലയാളത്തിൽ കേൾക്കുക",ob1q:"നിങ്ങളെ എന്ത് വിളിക്കണം? 👋",ob1s:"WeekBite നിങ്ങളുടേതാക്കാൻ സഹായിക്കൂ.",ob2q:"നിങ്ങളോടൊപ്പം ആർ കഴിക്കും? 🏡",ob2s:"അതനുസരിച്ച് ഭക്ഷണ അളവ് ക്രമീകരിക്കും.",ob3q:"നിങ്ങളുടെ ശരീരം ഇഷ്ടപ്പെടുന്നത്? 🥗",ob3s:"ബാധകമായ എല്ലാം തിരഞ്ഞെടുക്കൂ.",ob4q:"നിങ്ങളുടെ ദിവസം സാധാരണ എങ്ങനെ? 📅",ob4s:"ശരിയായ ഭക്ഷണ വേഗം നിർദ്ദേശിക്കാൻ സഹായിക്കുന്നു.",ob5q:"ഫ്രിഡ്ജിൽ എന്തുണ്ട്? 🧊",ob5s:"ഉള്ളത് ടാപ്പ് ചെയ്യൂ.",fn:"ആദ്യ പേര്",age:"പ്രായം",wt:"ഭാരം (കിലോ)",ht:"ഉയരം (സെമീ)",sx:"ലിംഗം",hh1:"ഞാൻ മാത്രം",hh1s:"ഒറ്റക്ക്",hh2:"ജോഡി",hh2s:"2 പേർ",p1:"വളരെ തിരക്കുള്ള",p2:"മിതമായ",p3:"റിലാക്സ്ഡ്",p4:"പാചകം ഇഷ്ടം",cont:"തുടരുക →",go:"ആരംഭിക്കൂ →",ah:"ഏതാണ്ട് ആയി! →",sc:"🍳 പാചകം തുടങ്ങൂ",ck:"🍳 കുട്ടികളുടെ പതിപ്പ്",bp:"എൻ്റെ പ്ലാനിലേക്ക്",ing:"ചേരുവകൾ",qm:"വേഗം ഭക്ഷണം",sh:"ഷോപ്പിംഗ് ലിസ്റ്റ്",dn:"നിങ്ങളുടെ ദൈനംദിന ആവശ്യം",ct:"ചെയ്തു! 🎉",ld:"നിങ്ങളുടെ പ്ലാൻ തയ്യാറാകുന്നു",home:"ഹോം",shop:"ഷോപ്പിംഗ്",nut:"പോഷണം",prof:"പ്രൊഫൈൽ"},
+    bn:{ greeting:`সুপ্রভাত, <span style="color:var(--coral)">মায়া।</span> 👋`,plan:"মঙ্গলবার · আপনার পরিকল্পনা তৈরি",bf:"🌅 সকালের নাস্তা",lu:"☀️ দুপুরের খাবার",sn:"🌤️ বিকালের নাস্তা",di:"🌙 রাতের খাবার",sw:"বদলান",cn:"এখনই রান্না",pn:"প্রস্তুত করুন",ns:"✓ কেনাকাটার দরকার নেই",km:"শিশু মোড",li:"বাংলায় শুনুন",ob1q:"আপনাকে কী বলে ডাকব? 👋",ob1s:"WeekBite কে আপনার করে তুলতে সাহায্য করুন।",ob2q:"আপনার সাথে কে খায়? 🏡",ob2s:"সেই অনুযায়ী পরিমাণ করব।",ob3q:"আপনার শরীর কী পছন্দ করে? 🥗",ob3s:"প্রযোজ্য সব কিছু বেছে নিন।",ob4q:"আপনার দিন সাধারণত কেমন হয়? 📅",ob4s:"সঠিক রান্নার গতি পরামর্শ দিতে সাহায্য করে।",ob5q:"আপনার ফ্রিজে কী আছে? 🧊",ob5s:"যা আছে তা ট্যাপ করুন।",fn:"প্রথম নাম",age:"বয়স",wt:"ওজন (কেজি)",ht:"উচ্চতা (সেমি)",sx:"লিঙ্গ",hh1:"শুধু আমি",hh1s:"একা",hh2:"জুটি",hh2s:"২ জন",p1:"খুব ব্যস্ত",p2:"মাঝারি",p3:"আরামদায়ক",p4:"রান্না ভালোবাসি",cont:"চালিয়ে যান →",go:"শুরু করুন →",ah:"প্রায় শেষ! →",sc:"🍳 রান্না শুরু করুন",ck:"🍳 শিশুদের সংস্করণ",bp:"আমার পরিকল্পনায় ফিরুন",ing:"উপকরণ",qm:"দ্রুত রান্না",sh:"কেনাকাটার তালিকা",dn:"আপনার দৈনিক চাহিদা",ct:"করেছেন! 🎉",ld:"আপনার পরিকল্পনা তৈরি হচ্ছে",home:"হোম",shop:"কেনাকাটা",nut:"পুষ্টি",prof:"প্রোফাইল"},
+    mr:{ greeting:`सुप्रभात, <span style="color:var(--coral)">माया.</span> 👋`,plan:"मंगळवार · तुमची योजना तयार आहे",bf:"🌅 नाश्ता",lu:"☀️ दुपारचे जेवण",sn:"🌤️ संध्याकाळचा नाश्ता",di:"🌙 रात्रीचे जेवण",sw:"बदला",cn:"आता शिजवा",pn:"तयार करा",ns:"✓ खरेदीची गरज नाही",km:"मुलांचा मोड",li:"मराठीत ऐका",ob1q:"तुम्हाला काय म्हणायचे? 👋",ob1s:"WeekBite तुमचे बनवण्यास मदत करा.",ob2q:"तुमच्यासोबत कोण जेवते? 🏡",ob2s:"त्यानुसार भाग आणि योजना करू.",ob3q:"तुमच्या शरीराला काय आवडते? 🥗",ob3s:"लागू होणारे सर्व निवडा.",ob4q:"तुमचा दिवस साधारण कसा असतो? 📅",ob4s:"योग्य जेवणाचा वेग सुचवण्यास मदत करते.",ob5q:"तुमच्या फ्रिजमध्ये काय आहे? 🧊",ob5s:"जे आहे ते टॅप करा.",fn:"पहिले नाव",age:"वय",wt:"वजन (किलो)",ht:"उंची (सेमी)",sx:"लिंग",hh1:"फक्त मी",hh1s:"एकटा",hh2:"जोडपे",hh2s:"2 लोक",p1:"खूप व्यस्त",p2:"मध्यम",p3:"आरामदायक",p4:"स्वयंपाक आवडतो",cont:"पुढे जा →",go:"सुरू करा →",ah:"जवळजवळ झाले! →",sc:"🍳 स्वयंपाक सुरू करा",ck:"🍳 मुलांची आवृत्ती",bp:"माझ्या योजनेकडे परत",ing:"साहित्य",qm:"झटपट जेवण",sh:"खरेदी यादी",dn:"तुमची दैनिक गरज",ct:"केले! 🎉",ld:"तुमची योजना तयार होत आहे",home:"होम",shop:"खरेदी",nut:"पोषण",prof:"प्रोफाइल"},
+    es:{ greeting:`Buenos días, <span style="color:var(--coral)">Maya.</span> 👋`,plan:"Martes · Tu plan está listo",bf:"🌅 Desayuno",lu:"☀️ Almuerzo",sn:"🌤️ Merienda",di:"🌙 Cena",sw:"Cambiar",cn:"Cocinar",pn:"Preparar",ns:"✓ Sin compras",km:"Modo Niños",li:"Escuchar en español",ob1q:"¿Cómo te llamamos? 👋",ob1s:"Ayúdanos a personalizar WeekBite.",ob2q:"¿Quién come contigo? 🏡",ob2s:"Ajustaremos las porciones.",ob3q:"¿Qué ama tu cuerpo? 🥗",ob3s:"Selecciona todo lo que aplique.",ob4q:"¿Cómo suele ser tu día? 📅",ob4s:"Nos ayuda a sugerir el ritmo correcto.",ob5q:"¿Qué hay en tu nevera? 🧊",ob5s:"Toca todo lo que tengas.",fn:"Nombre",age:"Edad",wt:"Peso (kg)",ht:"Altura (cm)",sx:"Sexo",hh1:"Solo yo",hh1s:"Individual",hh2:"Pareja",hh2s:"2 personas",p1:"Muy ocupado",p2:"Moderado",p3:"Relajado",p4:"Me encanta cocinar",cont:"Continuar →",go:"Empezar →",ah:"¡Casi listo! →",sc:"🍳 Empezar a cocinar",ck:"🍳 Versión para niños",bp:"Volver a mi plan",ing:"Ingredientes",qm:"Comida rápida",sh:"Lista de compras",dn:"Tu necesidad diaria estimada",ct:"¡Lo lograste! 🎉",ld:"Construyendo tu plan",home:"Inicio",shop:"Compras",nut:"Nutrición",prof:"Perfil"},
+    fr:{ greeting:`Bonjour, <span style="color:var(--coral)">Maya.</span> 👋`,plan:"Mardi · Votre plan est prêt",bf:"🌅 Petit-déjeuner",lu:"☀️ Déjeuner",sn:"🌤️ Goûter",di:"🌙 Dîner",sw:"Changer",cn:"Cuisiner",pn:"Préparer",ns:"✓ Aucun achat",km:"Mode Enfants",li:"Écouter en français",ob1q:"Comment vous appeler? 👋",ob1s:"Aidez-nous à personnaliser WeekBite.",ob2q:"Qui mange avec vous? 🏡",ob2s:"Nous adapterons les portions.",ob3q:"Que préfère votre corps? 🥗",ob3s:"Sélectionnez tout ce qui s'applique.",ob4q:"À quoi ressemble votre journée? 📅",ob4s:"Cela aide à suggérer le bon rythme.",ob5q:"Qu'y a-t-il dans votre frigo? 🧊",ob5s:"Tapez tout ce que vous avez.",fn:"Prénom",age:"Âge",wt:"Poids (kg)",ht:"Taille (cm)",sx:"Sexe",hh1:"Juste moi",hh1s:"Solo",hh2:"Couple",hh2s:"2 personnes",p1:"Très occupé",p2:"Modéré",p3:"Détendu",p4:"J'adore cuisiner",cont:"Continuer →",go:"Commencer →",ah:"Presque là! →",sc:"🍳 Commencer à cuisiner",ck:"🍳 Version enfants",bp:"Retour à mon plan",ing:"Ingrédients",qm:"Repas rapide",sh:"Liste de courses",dn:"Votre besoin quotidien",ct:"Bravo! 🎉",ld:"Construction de votre plan",home:"Accueil",shop:"Courses",nut:"Nutrition",prof:"Profil"},
+    ar:{ greeting:`مرحباً، <span style="color:var(--coral)">مايا.</span> 👋`,plan:"الثلاثاء · خطتك جاهزة",bf:"🌅 الإفطار",lu:"☀️ الغداء",sn:"🌤️ وجبة خفيفة",di:"🌙 العشاء",sw:"تبديل",cn:"اطبخ الآن",pn:"حضّر",ns:"✓ لا حاجة للتسوق",km:"وضع الأطفال",li:"استمع بالعربية",ob1q:"ماذا نسميك؟ 👋",ob1s:"ساعدنا في تخصيص WeekBite.",ob2q:"من يأكل معك؟ 🏡",ob2s:"سنضبط الحصص وفقًا لذلك.",ob3q:"ماذا يحب جسمك؟ 🥗",ob3s:"اختر كل ما ينطبق.",ob4q:"كيف يبدو يومك؟ 📅",ob4s:"يساعدنا في اقتراح الوتيرة المناسبة.",ob5q:"ماذا في ثلاجتك؟ 🧊",ob5s:"اضغط على كل ما لديك.",fn:"الاسم الأول",age:"العمر",wt:"الوزن (كجم)",ht:"الطول (سم)",sx:"الجنس",hh1:"أنا فقط",hh1s:"فردي",hh2:"زوجان",hh2s:"شخصان",p1:"مشغول جداً",p2:"معتدل",p3:"مريح",p4:"أحب الطبخ",cont:"متابعة →",go:"ابدأ →",ah:"تقريباً! →",sc:"🍳 ابدأ الطهي",ck:"🍳 نسخة الأطفال",bp:"العودة لخطتي",ing:"المكونات",qm:"وجبة سريعة",sh:"قائمة التسوق",dn:"احتياجك اليومي المقدر",ct:"أحسنت! 🎉",ld:"بناء خطتك الشخصية",home:"الرئيسية",shop:"التسوق",nut:"التغذية",prof:"الملف"},
+    zh:{ greeting:`早上好, <span style="color:var(--coral)">Maya.</span> 👋`,plan:"星期二 · 您的计划已就绪",bf:"🌅 早餐",lu:"☀️ 午餐",sn:"🌤️ 下午茶",di:"🌙 晚餐",sw:"更换",cn:"立即烹饪",pn:"准备",ns:"✓ 无需购物",km:"儿童模式",li:"用普通话收听",ob1q:"我们叫你什么名字？👋",ob1s:"帮助我们让WeekBite成为您的专属。",ob2q:"和你一起吃饭的有谁？🏡",ob2s:"我们将相应调整份量。",ob3q:"您的身体喜欢什么？🥗",ob3s:"选择所有适用的选项。",ob4q:"您的一天通常是什么样的？📅",ob4s:"有助于我们建议合适的用餐节奏。",ob5q:"您的冰箱里有什么？🧊",ob5s:"点击您拥有的所有食材。",fn:"名字",age:"年龄",wt:"体重(公斤)",ht:"身高(厘米)",sx:"性别",hh1:"只有我",hh1s:"单人",hh2:"情侣",hh2s:"2人",p1:"非常忙碌",p2:"适中",p3:"轻松",p4:"喜欢烹饪",cont:"继续 →",go:"开始 →",ah:"快完成了！→",sc:"🍳 开始烹饪",ck:"🍳 儿童版本",bp:"返回我的计划",ing:"食材",qm:"快速餐",sh:"购物清单",dn:"您的每日预计需求",ct:"完成了！🎉",ld:"正在建立您的个性化计划",home:"首页",shop:"购物",nut:"营养",prof:"个人资料"},
+    pt:{ greeting:`Bom dia, <span style="color:var(--coral)">Maya.</span> 👋`,plan:"Terça-feira · Seu plano está pronto",bf:"🌅 Café da manhã",lu:"☀️ Almoço",sn:"🌤️ Lanche",di:"🌙 Jantar",sw:"Trocar",cn:"Cozinhar",pn:"Preparar",ns:"✓ Sem compras",km:"Modo Crianças",li:"Ouvir em português",ob1q:"Como devemos te chamar? 👋",ob1s:"Ajude-nos a tornar o WeekBite seu.",ob2q:"Quem come com você? 🏡",ob2s:"Vamos ajustar as porções.",ob3q:"O que seu corpo ama? 🥗",ob3s:"Selecione tudo que se aplica.",ob4q:"Como costuma ser seu dia? 📅",ob4s:"Isso nos ajuda a sugerir o ritmo certo.",ob5q:"O que está na sua geladeira? 🧊",ob5s:"Toque tudo que você tem.",fn:"Nome",age:"Idade",wt:"Peso (kg)",ht:"Altura (cm)",sx:"Sexo",hh1:"Só eu",hh1s:"Individual",hh2:"Casal",hh2s:"2 pessoas",p1:"Muito ocupado",p2:"Moderado",p3:"Relaxado",p4:"Adoro cozinhar",cont:"Continuar →",go:"Começar →",ah:"Quase lá! →",sc:"🍳 Começar a cozinhar",ck:"🍳 Versão para crianças",bp:"Voltar ao meu plano",ing:"Ingredientes",qm:"Refeição rápida",sh:"Lista de compras",dn:"Sua necessidade diária",ct:"Conseguiu! 🎉",ld:"Construindo seu plano",home:"Início",shop:"Compras",nut:"Nutrição",prof:"Perfil"},
+    de:{ greeting:`Guten Morgen, <span style="color:var(--coral)">Maya.</span> 👋`,plan:"Dienstag · Ihr Plan ist bereit",bf:"🌅 Frühstück",lu:"☀️ Mittagessen",sn:"🌤️ Nachmittagssnack",di:"🌙 Abendessen",sw:"Tauschen",cn:"Jetzt kochen",pn:"Vorbereiten",ns:"✓ Kein Einkaufen",km:"Kindermodus",li:"Auf Deutsch hören",ob1q:"Wie sollen wir dich nennen? 👋",ob1s:"Hilf uns WeekBite zu deinem zu machen.",ob2q:"Wer isst mit dir? 🏡",ob2s:"Wir passen Portionen entsprechend an.",ob3q:"Was liebt dein Körper? 🥗",ob3s:"Wähle alles Zutreffende aus.",ob4q:"Wie sieht dein Tag normalerweise aus? 📅",ob4s:"Hilft uns das richtige Kochtempo zu empfehlen.",ob5q:"Was steckt in deinem Kühlschrank? 🧊",ob5s:"Tippe auf alles was du hast.",fn:"Vorname",age:"Alter",wt:"Gewicht (kg)",ht:"Größe (cm)",sx:"Geschlecht",hh1:"Nur ich",hh1s:"Allein",hh2:"Pärchen",hh2s:"2 Personen",p1:"Sehr beschäftigt",p2:"Moderat",p3:"Entspannt",p4:"Ich liebe Kochen",cont:"Weiter →",go:"Loslegen →",ah:"Fast fertig! →",sc:"🍳 Kochen beginnen",ck:"🍳 Kinderversion",bp:"Zurück zu meinem Plan",ing:"Zutaten",qm:"Schnellgericht",sh:"Einkaufsliste",dn:"Ihr geschätzter Tagesbedarf",ct:"Geschafft! 🎉",ld:"Ihr Plan wird erstellt",home:"Startseite",shop:"Einkaufen",nut:"Ernährung",prof:"Profil"}
+  };
+
+  // Language code map: full name -> short code
+  const LANG_CODE = {english:"en",hindi:"hi",telugu:"te",tamil:"ta",kannada:"kn",malayalam:"ml",bengali:"bn",marathi:"mr",spanish:"es",french:"fr",arabic:"ar",mandarin:"zh",portuguese:"pt",german:"de"};
+
+  let currentLang = "english";
+
+  function selectLanguage(el, lang) {
+    document.querySelectorAll(".lang-card").forEach(c => c.classList.remove("selected"));
+    el.classList.add("selected");
+    currentLang = lang;
+    const confirm = document.getElementById("langConfirmText");
+    if (confirm) confirm.textContent = "WeekBite will be in " + langNames[lang];
+    applyLanguage(lang);
+  }
+
+  function applyLanguage(lang) {
+    const code = LANG_CODE[lang] || "en";
+    const t = TR[code] || TR.en;
+    const s = (id, val, html) => { const el = document.getElementById(id); if(el) html ? el.innerHTML=val : el.textContent=val; };
+
+    // ── HOME ──
+    s("ui-greeting", t.greeting, true);
+    s("ui-plan-ready", t.plan);
+    s("ui-breakfast-label", t.bf); s("ui-lunch-label", t.lu);
+    s("ui-snack-label", t.sn); s("ui-dinner-label", t.di);
+    s("ui-swap-txt", t.sw); s("ui-cook-now", t.cn); s("ui-prep-now", t.pn); s("ui-no-shop", t.ns);
+    document.querySelectorAll("#kidsToggleLabel,#dinnerKidsLabel").forEach(el => el.textContent = t.km);
+    s("t-qm", t.qm);
+
+    // ── ONBOARDING ──
+    s("t-ob1-q", t.ob1q); s("t-ob1-s", t.ob1s);
+    s("t-ob2-q", t.ob2q); s("t-ob2-s", t.ob2s);
+    s("t-ob3-q", t.ob3q); s("t-ob3-s", t.ob3s);
+    s("t-ob4-q", t.ob4q); s("t-ob4-s", t.ob4s);
+    s("t-ob5-q", t.ob5q); s("t-ob5-s", t.ob5s);
+    s("t-fn", t.fn); s("t-age", t.age); s("t-wt", t.wt); s("t-ht", t.ht); s("t-sx", t.sx);
+    s("t-hh1", t.hh1); s("t-hh1s", t.hh1s); s("t-hh2", t.hh2); s("t-hh2s", t.hh2s);
+    s("t-p1", t.p1); s("t-p2", t.p2); s("t-p3", t.p3); s("t-p4", t.p4);
+    s("t-kids12", t.kids12); s("t-kids12-sub", t.kids12s); s("t-kids-desc", t.kidsDesc);
+
+    // ── TIME PICKER ──
+    s("t-time-q", t.timeQ); s("t-time-sub", t.timeSub);
+    s("t-time-1", t.time1); s("t-time-1s", t.time1s);
+    s("t-time-2", t.time2); s("t-time-2s", t.time2s);
+    s("t-time-3", t.time3); s("t-time-3s", t.time3s);
+    s("t-time-4", t.time4); s("t-time-4s", t.time4s);
+
+    // ── COMPLETE ──
+    s("t-complete", t.complete);
+
+    // ── SHOPPING ──
+    s("t-shop-title", t.shopTitle); s("t-shop-sub", t.shopSub); s("t-sync-on", t.syncOn);
+
+    // ── NUTRITION ──
+    s("t-nut-title", t.nutTitle);
+
+    // ── PROFILE ──
+    s("t-prof-title", t.profTitle); s("t-prof-sub", t.profSub);
+
+    // ── NAV ──
+    s("t-nav-home", t.home); s("t-nav-shop", t.shop); s("t-nav-nut", t.nut); s("t-nav-prof", t.prof);
+
+    // ── COOK MODE ──
+    const al = document.getElementById("audioStepLabel");
+    if(al) al.textContent = t.li;
+    const vb = document.getElementById("videoLangBadge");
+    if(vb) vb.textContent = "🔊 " + (langNames[lang]||"English").split(" — ")[0];
+
+    // ── ALL data-t BUTTONS ──
+    document.querySelectorAll("[data-t]").forEach(el => {
+      const k = el.getAttribute("data-t");
+      if (t[k] !== undefined) el.textContent = t[k];
+    });
+
+    // ── RTL for Arabic ──
+    document.querySelectorAll(".screen").forEach(sc => sc.style.direction = lang === "arabic" ? "rtl" : "ltr");
+  }
+
+  // ── CUISINE REGION SELECTION ──
+  function selectCuisineRegion(region, el) {
+    el.classList.toggle("selected");
+    if (region === "indian" && el.classList.contains("selected")) showCuisineStage2("Indian");
+    else if (region === "asian" && el.classList.contains("selected")) { showCuisineStage2("Asian"); applyCuisineRecipes("asian"); }
+    else if (region === "mediterranean" && el.classList.contains("selected")) applyCuisineRecipes("mediterranean");
+    else if (region === "italian" && el.classList.contains("selected")) applyCuisineRecipes("italian");
+    else if (region === "mexican" && el.classList.contains("selected")) applyCuisineRecipes("mexican");
+    else if (region === "korean" && el.classList.contains("selected")) applyCuisineRecipes("korean");
+  }
+
+  function showCuisineStage2(region) {
+    document.getElementById("cuisineStage1").style.display = "none";
+    document.getElementById("cuisineQuestion").textContent = "Tell us more about " + region + " food 🍽️";
+    document.getElementById("cuisineSub").textContent = "Pick your favourites — we'll personalise your plan!";
+    if (region === "Indian") document.getElementById("cuisineStage2Indian").style.display = "block";
+    else if (region === "Asian") document.getElementById("cuisineStage2Asian").style.display = "block";
+  }
+
+  function backToCuisineStage1() {
+    document.getElementById("cuisineStage1").style.display = "grid";
+    document.getElementById("cuisineStage2Indian").style.display = "none";
+    document.getElementById("cuisineStage2Asian").style.display = "none";
+    document.getElementById("cuisineQuestion").textContent = "What cuisines do you love? 🌍";
+    document.getElementById("cuisineSub").textContent = "We'll suggest meals that actually excite you. Pick all you love!";
+  }
+
+  function toggleCuisineSubCard(el) {
+    el.closest("#cuisineStage2Indian").querySelectorAll(".cuisine-sub-card").forEach(c => c.classList.remove("selected"));
+    el.classList.add("selected");
+    const txt = el.querySelector("div > div").textContent.toLowerCase();
+    if (txt.includes("north")) applyCuisineRecipes("northindian");
+    else if (txt.includes("south")) applyCuisineRecipes("southindian");
+    else applyCuisineRecipes("northindian");
+  }
+
+  function toggleCuisineSubCardSm(el) { el.classList.toggle("selected"); }
 
   // ── PACE SELECTION (single select) ──
   function selectPace(el) {
@@ -2909,43 +3317,6 @@
   }
 
   // ── CUISINE FLOW ──
-  function selectCuisineRegion(region, el) {
-    // Toggle selection on region card
-    el.classList.toggle('selected');
-
-    // If Indian or Asian — drill into sub-selection
-    if (region === 'indian' && el.classList.contains('selected')) {
-      showCuisineStage2('Indian');
-    } else if (region === 'asian' && el.classList.contains('selected')) {
-      showCuisineStage2('Asian');
-    }
-  }
-
-  function showCuisineStage2(region) {
-    document.getElementById('cuisineStage1').style.display = 'none';
-    document.getElementById('cuisineQuestion').textContent = `Tell us more about ${region} food 🍽️`;
-    document.getElementById('cuisineSub').textContent = 'Pick your favourites — we\'ll personalise your plan!';
-    if (region === 'Indian') {
-      document.getElementById('cuisineStage2Indian').style.display = 'block';
-    } else if (region === 'Asian') {
-      document.getElementById('cuisineStage2Asian').style.display = 'block';
-    }
-  }
-
-  function backToCuisineStage1() {
-    document.getElementById('cuisineStage1').style.display = 'grid';
-    document.getElementById('cuisineStage2Indian').style.display = 'none';
-    document.getElementById('cuisineStage2Asian').style.display = 'none';
-    document.getElementById('cuisineQuestion').textContent = 'What cuisines do you love? 🌍';
-    document.getElementById('cuisineSub').textContent = 'We\'ll suggest meals that actually excite you. Pick all you love!';
-  }
-
-  function toggleCuisineSubCard(el) {
-    el.closest('#cuisineStage2Indian').querySelectorAll('.cuisine-sub-card').forEach(c => c.classList.remove('selected'));
-    el.classList.add('selected');
-  }
-
-  function toggleCuisineSubCardSm(el) { el.classList.toggle('selected'); }
   // ── KIDS SNACK TOGGLE ──
   let kidsSnackOn = false;
   function toggleKidsSnack() {
@@ -3001,6 +3372,176 @@
       kids.style.display = 'none';
     }
   }
+
+  // ══════════════════════════════════
+  // VIDEO PLAYER
+  // ══════════════════════════════════
+  let videoPlaying = false;
+  let videoType = 'short';
+  let videoInterval = null;
+  let videoProgress = 0;
+  let videoDuration = 30; // seconds for short
+  let videoSeconds = 0;
+
+  function openVideo(type) {
+    videoOverlay.style.display = 'flex';
+    switchVideoType(type);
+    // Update language badge
+    const langLabel = langNames[currentLang] ? langNames[currentLang].split(' — ')[0] : 'English';
+    const badge = document.getElementById('videoLangBadge');
+    if (badge) badge.textContent = '🔊 ' + langLabel;
+  }
+
+  function closeVideo() {
+    document.getElementById('videoOverlay').style.display = 'none';
+    stopVideo();
+  }
+
+  function switchVideoType(type) {
+    videoType = type;
+    stopVideo();
+    videoProgress = 0;
+    videoSeconds = 0;
+    const short = document.getElementById('shortVideoFrame');
+    const full = document.getElementById('fullVideoFrame');
+    const label = document.getElementById('videoTypeLabel');
+    const shortBtn = document.getElementById('shortTabBtn');
+    const fullBtn = document.getElementById('fullTabBtn');
+    if (type === 'short') {
+      short.style.display = 'block';
+      full.style.display = 'none';
+      label.textContent = '📱 30s Reel';
+      shortBtn.style.background = 'var(--deep)';
+      shortBtn.style.color = 'white';
+      fullBtn.style.background = 'rgba(255,255,255,0.1)';
+      fullBtn.style.color = 'rgba(255,255,255,0.6)';
+      videoDuration = 30;
+      document.getElementById('shortProgress').style.width = '0%';
+      document.getElementById('shortTimerDisplay').textContent = '0:30';
+      document.getElementById('playBtnShort').textContent = '▶';
+    } else {
+      short.style.display = 'none';
+      full.style.display = 'block';
+      label.textContent = '🎬 Full Tutorial';
+      fullBtn.style.background = 'var(--deep)';
+      fullBtn.style.color = 'white';
+      shortBtn.style.background = 'rgba(255,255,255,0.1)';
+      shortBtn.style.color = 'rgba(255,255,255,0.6)';
+      videoDuration = 165;
+      document.getElementById('fullProgress').style.width = '0%';
+      document.getElementById('fullCurrentTime').textContent = '0:00';
+      document.getElementById('playBtnFull').textContent = '▶';
+    }
+  }
+
+  function toggleVideoPlay(type) {
+    if (videoPlaying) {
+      stopVideo();
+    } else {
+      startVideo();
+    }
+  }
+
+  function startVideo() {
+    videoPlaying = true;
+    const btn = document.getElementById(videoType === 'short' ? 'playBtnShort' : 'playBtnFull');
+    if (btn) btn.textContent = '⏸';
+    videoInterval = setInterval(() => {
+      videoSeconds++;
+      const pct = Math.min((videoSeconds / videoDuration) * 100, 100);
+      if (videoType === 'short') {
+        document.getElementById('shortProgress').style.width = pct + '%';
+        const rem = Math.max(videoDuration - videoSeconds, 0);
+        document.getElementById('shortTimerDisplay').textContent = '0:' + String(rem).padStart(2,'0');
+      } else {
+        document.getElementById('fullProgress').style.width = pct + '%';
+        const m = Math.floor(videoSeconds / 60);
+        const s = videoSeconds % 60;
+        document.getElementById('fullCurrentTime').textContent = m + ':' + String(s).padStart(2,'0');
+        // Highlight active chapter
+        const chapters = [0, 30, 80, 140];
+        let active = 0;
+        chapters.forEach((t,i) => { if (videoSeconds >= t) active = i; });
+        for (let i = 0; i < 4; i++) {
+          const ch = document.getElementById('ch' + i);
+          if (ch) {
+            ch.querySelector('div').style.color = i === active ? 'var(--coral)' : 'rgba(255,255,255,0.4)';
+            ch.querySelectorAll('div')[1].style.color = i === active ? 'white' : 'rgba(255,255,255,0.6)';
+          }
+        }
+      }
+      if (videoSeconds >= videoDuration) {
+        stopVideo();
+        const btn2 = document.getElementById(videoType === 'short' ? 'playBtnShort' : 'playBtnFull');
+        if (btn2) btn2.textContent = '↺';
+        videoSeconds = 0;
+      }
+    }, 1000);
+  }
+
+  function stopVideo() {
+    videoPlaying = false;
+    clearInterval(videoInterval);
+    const shortBtn = document.getElementById('playBtnShort');
+    const fullBtn = document.getElementById('playBtnFull');
+    if (shortBtn && shortBtn.textContent === '⏸') shortBtn.textContent = '▶';
+    if (fullBtn && fullBtn.textContent === '⏸') fullBtn.textContent = '▶';
+  }
+
+  function jumpToChapter(sec, total) {
+    videoSeconds = sec;
+    const pct = (sec / total) * 100;
+    document.getElementById('fullProgress').style.width = pct + '%';
+    const m = Math.floor(sec / 60);
+    const s = sec % 60;
+    document.getElementById('fullCurrentTime').textContent = m + ':' + String(s).padStart(2,'0');
+  }
+
+  const videoOverlay = document.getElementById('videoOverlay');
+
+  // ══════════════════════════════════
+  // AUDIO (TTS SIMULATION)
+  // ══════════════════════════════════
+  const langAudioNames = {
+    english:'English', hindi:'Hindi', telugu:'Telugu', tamil:'Tamil',
+    kannada:'Kannada', malayalam:'Malayalam', bengali:'Bengali', marathi:'Marathi',
+    spanish:'Spanish', french:'French', arabic:'Arabic', mandarin:'Mandarin',
+    portuguese:'Portuguese', german:'German'
+  };
+
+  function playAudioRecipe() {
+    const btn = document.getElementById('audioRecipeBtn');
+    const langLabel = langAudioNames[currentLang] || 'English';
+    btn.style.background = 'var(--coral)';
+    btn.style.color = 'white';
+    btn.innerHTML = '🔊';
+    btn.style.animation = 'pulse 0.6s ease infinite';
+    showPantryToast('Reading recipe aloud in ' + langLabel + ' 🔊');
+    setTimeout(() => {
+      btn.style.background = 'var(--coral-light)';
+      btn.style.color = 'var(--coral)';
+      btn.style.animation = 'none';
+    }, 3000);
+  }
+
+  function playAudioStep() {
+    const btn = document.getElementById('audioStepBtn');
+    const langLabel = langAudioNames[currentLang] || 'English';
+    const stepLabel = document.getElementById('audioStepLabel');
+    if (stepLabel) stepLabel.textContent = 'Playing in ' + langLabel + '...';
+    btn.style.background = 'rgba(255,255,255,0.35)';
+    btn.style.borderColor = 'white';
+    showPantryToast('Reading this step in ' + langLabel + ' 🔊');
+    setTimeout(() => {
+      if (stepLabel) stepLabel.textContent = 'Listen in ' + (langLabel);
+      btn.style.background = 'rgba(255,255,255,0.15)';
+      btn.style.borderColor = 'rgba(255,255,255,0.3)';
+    }, 3000);
+  }
+
+  // Update audio button label when language changes
+  const origSelectLanguage = selectLanguage;
+  // selectLanguage defined above
 
   // ── EXIT COOK MODE ──
   function exitCookMode() {
