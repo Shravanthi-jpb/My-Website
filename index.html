@@ -3079,28 +3079,14 @@
 
   // ── CUISINE REGION SELECTION ──
   function selectCuisineRegion(region, el) {
- function selectCuisineRegion(region, el) {
-  el.classList.toggle("selected");
-
-  if (el.classList.contains("selected")) {
-    const translatedName = cuisineTranslations[currentLanguage][region];
-
-    if (region === "indian") {
-      showCuisineStage2(translatedName);
-    } else if (region === "asian") {
-      showCuisineStage2(translatedName);
-      applyCuisineRecipes("asian");
-    } else if (region === "mediterranean") {
-      applyCuisineRecipes("mediterranean");
-    } else if (region === "italian") {
-      applyCuisineRecipes("italian");
-    } else if (region === "mexican") {
-      applyCuisineRecipes("mexican");
-    } else if (region === "korean") {
-      applyCuisineRecipes("korean");
-    }
+    el.classList.toggle("selected");
+    if (region === "indian" && el.classList.contains("selected")) showCuisineStage2("Indian");
+    else if (region === "asian" && el.classList.contains("selected")) { showCuisineStage2("Asian"); applyCuisineRecipes("asian"); }
+    else if (region === "mediterranean" && el.classList.contains("selected")) applyCuisineRecipes("mediterranean");
+    else if (region === "italian" && el.classList.contains("selected")) applyCuisineRecipes("italian");
+    else if (region === "mexican" && el.classList.contains("selected")) applyCuisineRecipes("mexican");
+    else if (region === "korean" && el.classList.contains("selected")) applyCuisineRecipes("korean");
   }
-
 
   function showCuisineStage2(region) {
     document.getElementById("cuisineStage1").style.display = "none";
@@ -3652,8 +3638,6 @@
       container.appendChild(piece);
     }
   }
-<script>
-let currentLanguage = "en";
 </script>
 </body>
 </html>
