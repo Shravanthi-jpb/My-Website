@@ -1313,6 +1313,80 @@
     body { padding: 0; background: var(--bg); }
     .phone-shell { width: 100vw; height: 100vh; border-radius: 0; box-shadow: none; }
   }
+
+  /* ── PANTRY SCREEN ── */
+  .pantry-tab {
+    padding: 7px 14px; border-radius: 20px; border: 2px solid var(--border);
+    background: var(--card); color: var(--muted); font-size: 12px;
+    font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer;
+    white-space: nowrap; transition: all 0.2s; flex-shrink: 0;
+  }
+  .pantry-tab.active { background: var(--coral); color: white; border-color: var(--coral); }
+
+    /* ── SEARCH SCREEN ── */
+  .search-filter {
+    padding: 8px 16px; border-radius: 20px; border: 2px solid var(--border);
+    background: var(--card); color: var(--muted); font-size: 12px; font-weight: 600;
+    cursor: pointer; white-space: nowrap; font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+  }
+  .search-filter.active { background: var(--deep); color: white; border-color: var(--deep); }
+  .search-filter:hover:not(.active) { border-color: var(--coral); color: var(--coral); }
+
+  .recent-chip {
+    padding: 7px 14px; background: var(--card); border: 1.5px solid var(--border);
+    border-radius: 20px; font-size: 12px; color: var(--text); cursor: pointer;
+    transition: all 0.15s;
+  }
+  .recent-chip:hover { border-color: var(--coral); color: var(--coral); }
+
+  .recipe-search-card {
+    background: var(--card); border-radius: 18px; padding: 14px;
+    display: flex; gap: 14px; align-items: center;
+    border: 1.5px solid var(--border); cursor: pointer;
+    transition: all 0.2s; position: relative;
+  }
+  .recipe-search-card:hover { border-color: var(--coral); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+  .recipe-search-card .recipe-emoji { font-size: 36px; width: 60px; height: 60px; background: var(--bg); border-radius: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .recipe-search-card .recipe-info { flex: 1; }
+  .recipe-search-card .recipe-name { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; line-height: 1.3; }
+  .recipe-search-card .recipe-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+  .recipe-search-card .r-tag { padding: 3px 8px; border-radius: 8px; font-size: 10px; font-weight: 600; }
+  .recipe-search-card .audio-play {
+    width: 36px; height: 36px; background: var(--deep); border-radius: 10px;
+    display: flex; align-items: center; justify-content: center; font-size: 14px;
+    cursor: pointer; flex-shrink: 0; transition: all 0.15s;
+  }
+  .recipe-search-card .audio-play:hover { background: var(--coral); transform: scale(1.1); }
+
+  /* Voice bars */
+  @keyframes voiceBar {
+    0%, 100% { transform: scaleY(0.4); opacity: 0.5; }
+    50% { transform: scaleY(1); opacity: 1; }
+  }
+  .voice-bar { display: inline-block; transform-origin: bottom; }
+
+  /* Audio mode overlay */
+  #audioModeOverlay {
+    position: fixed; inset: 0; background: linear-gradient(135deg, #0f0523, #1a0a3d);
+    z-index: 1000; display: none; flex-direction: column;
+    align-items: center; justify-content: center; padding: 40px;
+  }
+  .audio-wave { display: flex; gap: 6px; align-items: center; height: 60px; }
+  .audio-wave span {
+    width: 5px; background: var(--coral); border-radius: 3px;
+    animation: voiceBar 0.6s ease-in-out infinite;
+  }
+  .audio-wave span:nth-child(2) { animation-delay: 0.1s; height: 35px; }
+  .audio-wave span:nth-child(3) { animation-delay: 0.2s; height: 50px; }
+  .audio-wave span:nth-child(4) { animation-delay: 0.15s; height: 40px; }
+  .audio-wave span:nth-child(5) { animation-delay: 0.3s; height: 28px; }
+
+  /* Pulse animation for voice button */
+  @keyframes pulse {
+    0%, 100% { opacity: 0.8; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(1.1); }
+  }
 </style>
 </head>
 <body>
@@ -1363,7 +1437,7 @@
         <button class="back-btn dark" onclick="goTo('splash')" style="width:36px;height:36px;background:var(--border);border:none;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">←</button>
         <div style="flex:1"><div class="progress-bar" style="margin:0;"><div class="progress-fill" style="width:12%"></div></div></div>
       </div>
-      <div class="ob-step">Step 1 of 8</div>
+      <div class="ob-step">Step 1 of 7</div>
       <div class="ob-question">Choose your language 🌍</div>
       <div class="ob-sub">WeekBite will display everything in your preferred language — recipes, instructions, and all.</div>
     </div>
@@ -1501,7 +1575,7 @@
         <button class="back-btn dark" onclick="goTo('ob0')" style="width:36px;height:36px;background:var(--border);border:none;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">←</button>
         <div style="flex:1"><div class="progress-bar" style="margin:0;"><div class="progress-fill" style="width:25%"></div></div></div>
       </div>
-      <div class="ob-step">Step 2 of 8</div>
+      <div class="ob-step">Step 2 of 7</div>
       <div class="ob-question" id="t-ob1-q">What should we call you? 👋</div>
       <div class="ob-sub" id="t-ob1-s">Help us make WeekBite feel like yours.</div>
     </div>
@@ -1555,7 +1629,7 @@
         <button class="back-btn dark" onclick="goTo('ob1')" style="width:36px;height:36px;background:var(--border);border:none;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">←</button>
         <div style="flex:1"><div class="progress-bar" style="margin:0;"><div class="progress-fill" style="width:37%"></div></div></div>
       </div>
-      <div class="ob-step">Step 3 of 8</div>
+      <div class="ob-step">Step 3 of 7</div>
       <div class="ob-question" id="t-ob2-q">Who's eating with you? 🏡</div>
       <div class="ob-sub" id="t-ob2-s">Portions scaled to your household.</div>
     </div>
@@ -1614,7 +1688,7 @@
         <button class="back-btn dark" onclick="goTo('ob2')" style="width:36px;height:36px;background:var(--border);border:none;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">←</button>
         <div style="flex:1"><div class="progress-bar" style="margin:0;"><div class="progress-fill" style="width:50%"></div></div></div>
       </div>
-      <div class="ob-step" id="t-ob3-step">Step 4 of 8</div>
+      <div class="ob-step" id="t-ob3-step">Step 4 of 7</div>
       <div class="ob-question" id="t-ob3-q">What does your body love? 🥗</div>
       <div class="ob-sub" id="t-ob3-s">Select all that apply.</div>
     </div>
@@ -1654,7 +1728,7 @@
         <button class="back-btn dark" onclick="goTo('ob3')" style="width:36px;height:36px;background:var(--border);border:none;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">←</button>
         <div style="flex:1"><div class="progress-bar" style="margin:0;"><div class="progress-fill" style="width:62%"></div></div></div>
       </div>
-      <div class="ob-step" id="t-ob4-step">Step 5 of 8</div>
+      <div class="ob-step" id="t-ob4-step">Step 5 of 7</div>
       <div class="ob-question" id="t-ob4-q">How does your day usually look? 📅</div>
       <div class="ob-sub" id="t-ob4-s">Helps us suggest the right meal pace for you.</div>
     </div>
@@ -1707,211 +1781,18 @@
       </div>
     </div>
     <div class="ob-footer">
-      <button class="btn-primary" style="background:var(--deep);animation:none;" onclick="goTo('ob5')" data-t="continue">Continue →</button>
+      <button class="btn-primary" style="background:var(--deep);animation:none;" onclick="goTo('ob6')" data-t="continue">Continue →</button>
     </div>
   </div>
 
   <!-- ══════════════════════════════════
        SCREEN 6 — ONBOARDING 5: Pantry
   ══════════════════════════════════ -->
-  <div class="screen" id="ob5">
-    <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span>🔋</span></div></div>
-    <div class="ob-header">
-      <div class="progress-bar"><div class="progress-fill" style="width:75%"></div></div>
-      <div class="ob-step" id="t-ob5-step">Step 6 of 8</div>
-      <div class="ob-question" id="t-ob5-q">What's hiding in your fridge? 🧊</div>
-      <div class="ob-sub" id="t-ob5-s">Tap everything you have.</div>
-    </div>
-    <div class="ob-body" style="padding-bottom:8px;">
-      <input class="input-field" type="text" placeholder="🔍  Search ingredients..." style="margin-bottom:16px;" oninput="filterPantry(this.value)">
-
-      <!-- Category tabs -->
-      <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:12px;scrollbar-width:none;" id="pantryTabs">
-        <div class="pantry-cat-tab active" onclick="showPantryCategory('all',this)">All</div>
-        <div class="pantry-cat-tab" onclick="showPantryCategory('protein',this)">🥩 Protein</div>
-        <div class="pantry-cat-tab" onclick="showPantryCategory('veggie',this)">🥦 Veggies</div>
-        <div class="pantry-cat-tab" onclick="showPantryCategory('grain',this)">🌾 Grains</div>
-        <div class="pantry-cat-tab" onclick="showPantryCategory('dairy',this)">🥛 Dairy</div>
-        <div class="pantry-cat-tab" onclick="showPantryCategory('pantry',this)">🫙 Pantry</div>
-      </div>
-
-      <!-- Pantry grid — big tappable cards -->
-      <div id="pantryGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding-bottom:16px;">
-        <!-- Proteins -->
-        <div class="pantry-card selected" data-cat="protein" onclick="togglePantryCard(this)">
-          <div class="pantry-card-emoji">🥚</div>
-          <div class="pantry-card-name" data-t="pantry-eggs">Eggs</div>
-          <div class="pantry-card-check">✓</div>
-        </div>
-        <div class="pantry-card selected" data-cat="protein" onclick="togglePantryCard(this)">
-          <div class="pantry-card-emoji">🍗</div>
-          <div class="pantry-card-name" data-t="pantry-chicken">Chicken</div>
-          <div class="pantry-card-check">✓</div>
-        </div>
-        <div class="pantry-card selected" data-cat="protein" onclick="togglePantryCard(this)">
-          <div class="pantry-card-emoji">🐟</div>
-          <div class="pantry-card-name" data-t="pantry-salmon">Salmon</div>
-          <div class="pantry-card-check">✓</div>
-        </div>
-        <div class="pantry-card" data-cat="protein" onclick="togglePantryCard(this)">
-          <div class="pantry-card-emoji">🥩</div>
-          <div class="pantry-card-name" data-t="pantry-beef">Beef</div>
-          <div class="pantry-card-check">✓</div>
-        </div>
-        <div class="pantry-card" data-cat="protein" onclick="togglePantryCard(this)">
-          <div class="pantry-card-emoji">🫘</div>
-          <div class="pantry-card-name" data-t="pantry-chickpeas">Chickpeas</div>
-          <div class="pantry-card-check">✓</div>
-        </div>
-        <div class="pantry-card" data-cat="protein" onclick="togglePantryCard(this)">
-          <div class="pantry-card-emoji">🐠</div>
-          <div class="pantry-card-name" data-t="pantry-tuna">Tuna</div>
-          <div class="pantry-card-check">✓</div>
-        </div>
-        <!-- Veggies -->
-        <div class="pantry-card selected" data-cat="veggie" onclick="togglePantryCard(this)">
-          <div class="pantry-card-emoji">🥬</div>
-          <div class="pantry-card-name" data-t="pantry-spinach">Spinach</div>
-          <div class="pantry-card-check">✓</div>
-        </div>
-        <div class="pantry-card selected" data-cat="veggie" onclick="togglePantryCard(this)">
-          <div class="pantry-card-emoji">🥦</div>
-          <div class="pantry-card-name" data-t="pantry-broccoli">Broccoli</div>
-          <div class="pantry-card-check">✓</div>
-        </div>
-        <div class="pantry-card selected" data-cat="veggie" onclick="togglePantryCard(this)">
-          <div class="pantry-card-emoji">🍅</div>
-          <div class="pantry-card-name" data-t="pantry-tomatoes">Tomatoes</div>
-          <div class="pantry-card-check">✓</div>
-        </div>
-        <div class="pantry-card selected" data-cat="veggie" onclick="togglePantryCard(this)">
-          <div class="pantry-card-emoji">🥕</div>
-          <div class="pantry-card-name" data-t="pantry-carrots">Carrots</div>
-          <div class="pantry-card-check">✓</div>
-        </div>
-        <div class="pantry-card selected" data-cat="veggie" onclick="togglePantryCard(this)">
-          <div class="pantry-card-emoji">🧄</div>
-          <div class="pantry-card-name" data-t="pantry-garlic">Garlic</div>
-          <div class="pantry-card-check">✓</div>
-        </div>
-        <div class="pantry-card selected" data-cat="veggie" onclick="togglePantryCard(this)">
-          <div class="pantry-card-emoji">🧅</div>
-          <div class="pantry-card-name" data-t="pantry-onion">Onion</div>
-          <div class="pantry-card-check">✓</div>
-        </div>
-        <div class="pantry-card" data-cat="veggie" onclick="togglePantryCard(this)">
-          <div class="pantry-card-emoji">🥑</div>
-          <div class="pantry-card-name" data-t="pantry-avocado">Avocado</div>
-          <div class="pantry-card-check">✓</div>
-        </div>
-        <div class="pantry-card" data-cat="veggie" onclick="togglePantryCard(this)">
-          <div class="pantry-card-emoji">🌶️</div>
-          <div class="pantry-card-name" data-t="pantry-chilli">Chilli</div>
-          <div class="pantry-card-check">✓</div>
-        </div>
-        <div class="pantry-card" data-cat="veggie" onclick="togglePantryCard(this)">
-          <div class="pantry-card-emoji">🍠</div>
-          <div class="pantry-card-name" data-t="pantry-sweetpotato">Sweet Potato</div>
-          <div class="pantry-card-check">✓</div>
-        </div>
-        <!-- Grains -->
-        <div class="pantry-card selected" data-cat="grain" onclick="togglePantryCard(this)">
-          <div class="pantry-card-emoji">🌾</div>
-          <div class="pantry-card-name" data-t="pantry-rice">Rice</div>
-          <div class="pantry-card-check">✓</div>
-        </div>
-        <div class="pantry-card" data-cat="grain" onclick="togglePantryCard(this)">
-          <div class="pantry-card-emoji">🍝</div>
-          <div class="pantry-card-name" data-t="pantry-pasta">Pasta</div>
-          <div class="pantry-card-check">✓</div>
-        </div>
-        <div class="pantry-card" data-cat="grain" onclick="togglePantryCard(this)">
-          <div class="pantry-card-emoji">🫓</div>
-          <div class="pantry-card-name" data-t="pantry-bread">Bread</div>
-          <div class="pantry-card-check">✓</div>
-        </div>
-        <div class="pantry-card" data-cat="grain" onclick="togglePantryCard(this)">
-          <div class="pantry-card-emoji">🥣</div>
-          <div class="pantry-card-name" data-t="pantry-oats">Oats</div>
-          <div class="pantry-card-check">✓</div>
-        </div>
-        <div class="pantry-card" data-cat="grain" onclick="togglePantryCard(this)">
-          <div class="pantry-card-emoji">🌽</div>
-          <div class="pantry-card-name" data-t="pantry-quinoa">Quinoa</div>
-          <div class="pantry-card-check">✓</div>
-        </div>
-        <!-- Dairy -->
-        <div class="pantry-card selected" data-cat="dairy" onclick="togglePantryCard(this)">
-          <div class="pantry-card-emoji">🥛</div>
-          <div class="pantry-card-name" data-t="pantry-milk">Milk</div>
-          <div class="pantry-card-check">✓</div>
-        </div>
-        <div class="pantry-card selected" data-cat="dairy" onclick="togglePantryCard(this)">
-          <div class="pantry-card-emoji">🧀</div>
-          <div class="pantry-card-name" data-t="pantry-cheese">Cheese</div>
-          <div class="pantry-card-check">✓</div>
-        </div>
-        <div class="pantry-card" data-cat="dairy" onclick="togglePantryCard(this)">
-          <div class="pantry-card-emoji">🍦</div>
-          <div class="pantry-card-name" data-t="pantry-yogurt">Yogurt</div>
-          <div class="pantry-card-check">✓</div>
-        </div>
-        <div class="pantry-card" data-cat="dairy" onclick="togglePantryCard(this)">
-          <div class="pantry-card-emoji">🧈</div>
-          <div class="pantry-card-name">Butter</div>
-          <div class="pantry-card-check">✓</div>
-        </div>
-        <!-- Pantry staples -->
-        <div class="pantry-card selected" data-cat="pantry" onclick="togglePantryCard(this)">
-          <div class="pantry-card-emoji">🫒</div>
-          <div class="pantry-card-name">Olive Oil</div>
-          <div class="pantry-card-check">✓</div>
-        </div>
-        <div class="pantry-card" data-cat="pantry" onclick="togglePantryCard(this)">
-          <div class="pantry-card-emoji">🧂</div>
-          <div class="pantry-card-name">Salt & Pepper</div>
-          <div class="pantry-card-check">✓</div>
-        </div>
-        <div class="pantry-card" data-cat="pantry" onclick="togglePantryCard(this)">
-          <div class="pantry-card-emoji">🍋</div>
-          <div class="pantry-card-name">Lemon</div>
-          <div class="pantry-card-check">✓</div>
-        </div>
-        <div class="pantry-card" data-cat="pantry" onclick="togglePantryCard(this)">
-          <div class="pantry-card-emoji">🥫</div>
-          <div class="pantry-card-name">Canned Beans</div>
-          <div class="pantry-card-check">✓</div>
-        </div>
-        <div class="pantry-card" data-cat="pantry" onclick="togglePantryCard(this)">
-          <div class="pantry-card-emoji">🍯</div>
-          <div class="pantry-card-name">Honey</div>
-          <div class="pantry-card-check">✓</div>
-        </div>
-        <div class="pantry-card" data-cat="pantry" onclick="togglePantryCard(this)">
-          <div class="pantry-card-emoji">🌿</div>
-          <div class="pantry-card-name">Mixed Herbs</div>
-          <div class="pantry-card-check">✓</div>
-        </div>
-      </div>
-
-      <!-- Selected count -->
-      <div id="pantryCount" style="text-align:center;font-size:13px;color:var(--deep);font-weight:700;padding-bottom:8px;">
-        10 ingredients selected ✓
-      </div>
-    </div>
-    <div class="ob-footer">
-      <button class="btn-primary" style="background:var(--deep);animation:none;" onclick="goTo('ob6')" data-t="continue">Continue →</button>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════════
-       SCREEN 7 — ONBOARDING 6: Cuisine
-  ══════════════════════════════════ -->
   <div class="screen" id="ob6">
     <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span>🔋</span></div></div>
     <div class="ob-header">
-      <div class="progress-bar"><div class="progress-fill" style="width:87%"></div></div>
-      <div class="ob-step" id="t-ob6-step">Step 7 of 8</div>
+      <div class="progress-bar"><div class="progress-fill" style="width:86%"></div></div>
+      <div class="ob-step" id="t-ob6-step">Step 6 of 7</div>
       <div class="ob-question" id="cuisineQuestion">What cuisines do you love? 🌍</div>
       <div class="ob-sub" id="cuisineSub">We'll suggest meals that actually excite you. Pick all you love!</div>
     </div>
@@ -2097,6 +1978,7 @@
           <div style="font-size:11px;color:var(--muted);margin-top:1px;" id="ui-plan-ready">Tuesday · Your plan is ready</div>
         </div>
         <div class="avatar" style="width:36px;height:36px;font-size:15px;">M</div>
+        <button onclick="goTo('search')" style="width:36px;height:36px;background:var(--card);border:1.5px solid var(--border);border-radius:12px;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s;" title="Search recipes">🔍</button>
         <div onclick="openQuickMealPrep()" style="background:var(--coral);border-radius:12px;padding:8px 12px;cursor:pointer;display:flex;align-items:center;gap:5px;flex-shrink:0;">
           <span style="font-size:14px;">⚡</span>
           <span style="font-size:11px;font-weight:700;color:white;" id="t-qm">Quick Meal</span>
@@ -2274,9 +2156,122 @@
 
       </div>
     </div>
-    <div class="bottom-nav">
+  
+  <!-- ══════════════════════════════════
+       SEARCH SCREEN
+  ══════════════════════════════════ -->
+  <div class="screen" id="search">
+    <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span>🔋</span></div></div>
+
+    <!-- Header -->
+    <div style="padding:16px 20px 0;flex-shrink:0;">
+      <div style="font-size:22px;font-weight:800;color:var(--text);font-family:'Playfair Display',serif;" id="t-search-title">Search Recipes</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:2px;" id="t-search-sub">Voice, text or browse your pantry</div>
+    </div>
+
+    <!-- Search Bar -->
+    <div style="padding:14px 20px 0;flex-shrink:0;">
+      <div style="display:flex;gap:10px;align-items:center;">
+        <!-- Text input -->
+        <div style="flex:1;position:relative;">
+          <div style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--muted);">🔍</div>
+          <input id="searchInput" type="text" placeholder="Search recipes, ingredients..."
+            style="width:100%;padding:13px 14px 13px 42px;border:2px solid var(--border);border-radius:16px;font-size:14px;font-family:'DM Sans',sans-serif;background:var(--card);color:var(--text);outline:none;box-sizing:border-box;transition:border 0.2s;"
+            oninput="onSearchInput(this.value)"
+            onfocus="this.style.borderColor='var(--coral)'"
+            onblur="this.style.borderColor='var(--border)'">
+        </div>
+        <!-- Voice mic button -->
+        <button id="voiceBtn" onclick="toggleVoiceSearch()"
+          style="width:50px;height:50px;border-radius:16px;border:none;background:var(--deep);color:white;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s;position:relative;">
+          🎙️
+          <div id="voicePulse" style="display:none;position:absolute;inset:-4px;border-radius:20px;border:3px solid var(--coral);animation:pulse 1s infinite;"></div>
+        </button>
+      </div>
+
+      <!-- Voice status bar -->
+      <div id="voiceStatus" style="display:none;margin-top:10px;background:linear-gradient(135deg,var(--deep),var(--deep2));border-radius:14px;padding:12px 16px;display:flex;align-items:center;gap:12px;">
+        <div style="display:flex;gap:3px;align-items:center;">
+          <div class="voice-bar" style="width:3px;height:16px;background:var(--coral);border-radius:2px;animation:voiceBar 0.8s ease-in-out infinite;"></div>
+          <div class="voice-bar" style="width:3px;height:24px;background:var(--coral);border-radius:2px;animation:voiceBar 0.8s ease-in-out 0.1s infinite;"></div>
+          <div class="voice-bar" style="width:3px;height:12px;background:var(--coral);border-radius:2px;animation:voiceBar 0.8s ease-in-out 0.2s infinite;"></div>
+          <div class="voice-bar" style="width:3px;height:20px;background:var(--coral);border-radius:2px;animation:voiceBar 0.8s ease-in-out 0.15s infinite;"></div>
+          <div class="voice-bar" style="width:3px;height:14px;background:var(--coral);border-radius:2px;animation:voiceBar 0.8s ease-in-out 0.3s infinite;"></div>
+        </div>
+        <div>
+          <div style="font-size:12px;font-weight:700;color:white;" id="t-listening">Listening...</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.6);" id="voiceTranscript">Say a recipe name or ingredient</div>
+        </div>
+        <button onclick="stopVoiceSearch()" style="margin-left:auto;background:rgba(255,255,255,0.15);border:none;color:white;border-radius:8px;padding:6px 10px;font-size:11px;cursor:pointer;" id="t-stop">Stop</button>
+      </div>
+
+      <!-- Filter chips -->
+      <div style="display:flex;gap:8px;margin-top:12px;overflow-x:auto;padding-bottom:4px;">
+        <button class="search-filter active" data-filter="all" onclick="setSearchFilter('all',this)" id="t-sf-all">All Recipes</button>
+        <button class="search-filter" data-filter="saved" onclick="setSearchFilter('saved',this)" id="t-sf-saved">My Saved</button>
+        <button class="search-filter" data-filter="pantry" onclick="setSearchFilter('pantry',this)" id="t-sf-pantry">From Pantry</button>
+        <button class="search-filter" data-filter="quick" onclick="setSearchFilter('quick',this)" id="t-sf-quick">Under 30 min</button>
+        <button class="search-filter" data-filter="kids" onclick="setSearchFilter('kids',this)" id="t-sf-kids">Kid-Friendly</button>
+      </div>
+    </div>
+
+    <!-- Scrollable content -->
+    <div class="scroll-content" style="padding:16px 20px;" id="searchContent">
+
+      <!-- Default view: featured recipes grid + voice prompt -->
+      <div id="searchDefault">
+
+        <!-- Voice invite banner -->
+        <div style="background:linear-gradient(135deg,var(--deep),var(--deep2));border-radius:20px;padding:18px 20px;margin-bottom:18px;display:flex;align-items:center;gap:14px;cursor:pointer;" onclick="toggleVoiceSearch()">
+          <div style="width:52px;height:52px;background:rgba(var(--coral-rgb,255,107,74),0.2);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;">🎙️</div>
+          <div style="flex:1;">
+            <div style="font-size:14px;font-weight:800;color:white;margin-bottom:3px;" id="t-voice-invite">Try Voice Search</div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.65);line-height:1.5;" id="t-voice-invite-sub">Say "salmon recipe" or "quick vegetarian dinner" in your language</div>
+          </div>
+          <div id="searchMicAnim" style="width:36px;height:36px;background:var(--coral);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🎤</div>
+        </div>
+
+        <!-- Quick filter suggestion chips -->
+        <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:18px;scrollbar-width:none;">
+          <button class="suggest-chip" onclick="doSearch('high protein')">💪 High Protein</button>
+          <button class="suggest-chip" onclick="doSearch('vegetarian')">🥦 Vegetarian</button>
+          <button class="suggest-chip" onclick="doSearch('quick')">⚡ Quick</button>
+          <button class="suggest-chip" onclick="doSearch('kid')">🧒 Kids</button>
+          <button class="suggest-chip" onclick="doSearch('salmon')">🐟 Salmon</button>
+          <button class="suggest-chip" onclick="doSearch('pasta')">🍝 Pasta</button>
+        </div>
+
+        <!-- Featured recipes -->
+        <div style="font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;" id="t-featured-recipes">Featured Recipes</div>
+        <div id="featuredRecipeGrid" style="display:flex;flex-direction:column;gap:12px;"></div>
+
+      </div>
+
+            <!-- Search results -->
+      <div id="searchResults" style="display:none;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <div style="font-size:13px;color:var(--muted);" id="resultCount">12 recipes found</div>
+          <!-- Audio playall button -->
+          <button onclick="readAllResults()" style="background:var(--deep);border:none;color:white;border-radius:10px;padding:6px 12px;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:5px;">
+            <span>🔊</span> <span id="t-read-results">Read Results</span>
+          </button>
+        </div>
+        <div id="resultsGrid" style="display:flex;flex-direction:column;gap:12px;"></div>
+      </div>
+
+      <!-- No results -->
+      <div id="searchNoResults" style="display:none;text-align:center;padding:40px 20px;">
+        <div style="font-size:48px;margin-bottom:12px;">🔍</div>
+        <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px;" id="t-no-results">No recipes found</div>
+        <div style="font-size:13px;color:var(--muted);" id="t-try-voice">Try voice search or a different keyword</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
       <div class="nav-item active" onclick="switchTab('home',this)"><div class="nav-icon">🏠</div><div class="nav-label" id="t-nav-home">Home</div></div>
       <div class="nav-item" onclick="goTo('nutrition');switchTab('nutrition',this)"><div class="nav-icon">📊</div><div class="nav-label" id="t-nav-nut">Nutrition</div></div>
+      <div class="nav-item" onclick="goTo('pantry');switchTab('pantry',this)"><div class="nav-icon">🥫</div><div class="nav-label" id="t-nav-pantry">Pantry</div></div>
       <div class="nav-item" onclick="goTo('shopping');switchTab('shopping',this)"><div class="nav-icon">🛒</div><div class="nav-label" id="t-nav-shop">Shopping</div></div>
       <div class="nav-item" onclick="goTo('profile');switchTab('profile',this)"><div class="nav-icon">👤</div><div class="nav-label" id="t-nav-prof">Profile</div></div>
     </div>
@@ -2530,6 +2525,67 @@
   <!-- ══════════════════════════════════
        SCREEN 10 — SHOPPING LIST
   ══════════════════════════════════ -->
+  <!-- ═══ PANTRY SCREEN ═══ -->
+  <div class="screen" id="pantry">
+    <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span>🔋</span></div></div>
+    <div style="padding:16px 20px 0;flex-shrink:0;">
+      <div style="display:flex;align-items:center;gap:12px;justify-content:space-between;margin-bottom:4px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <button onclick="goTo('home');switchTab('home',document.querySelector('.nav-item'))" style="width:34px;height:34px;background:var(--card);border:1.5px solid var(--border);border-radius:12px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">←</button>
+          <div style="font-size:22px;font-weight:800;color:var(--text);font-family:'Playfair Display',serif;" id="t-pantry-title">My Pantry</div>
+        </div>
+        <button onclick="showAddIngredient()" style="background:var(--coral);border:none;color:white;border-radius:12px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;" id="t-pantry-add">+ Add</button>
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:14px;" id="t-pantry-sub">Ingredients you have at home</div>
+      <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;">
+        <button class="pantry-tab active" data-cat="all" onclick="filterPantry('all',this)" id="t-pt-all">All</button>
+        <button class="pantry-tab" data-cat="protein" onclick="filterPantry('protein',this)" id="t-pt-protein">Proteins</button>
+        <button class="pantry-tab" data-cat="veggie" onclick="filterPantry('veggie',this)" id="t-pt-veg">Veggies</button>
+        <button class="pantry-tab" data-cat="grain" onclick="filterPantry('grain',this)" id="t-pt-grain">Grains</button>
+        <button class="pantry-tab" data-cat="dairy" onclick="filterPantry('dairy',this)" id="t-pt-dairy">Dairy</button>
+      </div>
+    </div>
+    <div class="scroll-content" style="padding:16px 20px;">
+      <div onclick="findPantryRecipes()" style="background:linear-gradient(135deg,var(--deep),var(--deep2));border-radius:16px;padding:14px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;cursor:pointer;">
+        <div style="font-size:28px;">🍳</div>
+        <div style="flex:1;">
+          <div style="font-size:13px;font-weight:700;color:white;" id="t-pantry-cook-title">What can I cook today?</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.65);margin-top:2px;" id="t-pantry-cook-sub">Find recipes using your pantry</div>
+        </div>
+        <div style="font-size:20px;color:rgba(255,255,255,0.5);">→</div>
+      </div>
+      <div id="pantryGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+        <div class="pantry-card selected" data-cat="protein" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🐟</div><div class="pantry-card-name" data-t="pantry-salmon">Salmon</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card selected" data-cat="protein" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🍗</div><div class="pantry-card-name" data-t="pantry-chicken">Chicken</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card" data-cat="protein" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🥩</div><div class="pantry-card-name" data-t="pantry-beef">Beef</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card" data-cat="protein" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🫘</div><div class="pantry-card-name" data-t="pantry-chickpeas">Chickpeas</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card" data-cat="protein" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🐠</div><div class="pantry-card-name" data-t="pantry-tuna">Tuna</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card selected" data-cat="protein" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🥚</div><div class="pantry-card-name" data-t="pantry-eggs">Eggs</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card selected" data-cat="veggie" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🥬</div><div class="pantry-card-name" data-t="pantry-spinach">Spinach</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card selected" data-cat="veggie" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🥦</div><div class="pantry-card-name" data-t="pantry-broccoli">Broccoli</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card selected" data-cat="veggie" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🍅</div><div class="pantry-card-name" data-t="pantry-tomatoes">Tomatoes</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card selected" data-cat="veggie" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🥕</div><div class="pantry-card-name" data-t="pantry-carrots">Carrots</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card selected" data-cat="veggie" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🧄</div><div class="pantry-card-name" data-t="pantry-garlic">Garlic</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card selected" data-cat="veggie" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🧅</div><div class="pantry-card-name" data-t="pantry-onion">Onion</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card" data-cat="veggie" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🥑</div><div class="pantry-card-name" data-t="pantry-avocado">Avocado</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card" data-cat="veggie" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🌶️</div><div class="pantry-card-name" data-t="pantry-chilli">Chilli</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card" data-cat="veggie" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🍠</div><div class="pantry-card-name" data-t="pantry-sweetpotato">Sweet Potato</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card selected" data-cat="grain" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🌾</div><div class="pantry-card-name" data-t="pantry-rice">Rice</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card" data-cat="grain" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🍝</div><div class="pantry-card-name" data-t="pantry-pasta">Pasta</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card" data-cat="grain" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🍞</div><div class="pantry-card-name" data-t="pantry-bread">Bread</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card" data-cat="grain" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🌿</div><div class="pantry-card-name" data-t="pantry-quinoa">Quinoa</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card" data-cat="grain" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🥣</div><div class="pantry-card-name" data-t="pantry-oats">Oats</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card selected" data-cat="dairy" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🧀</div><div class="pantry-card-name" data-t="pantry-cheese">Cheese</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card selected" data-cat="dairy" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🥛</div><div class="pantry-card-name" data-t="pantry-milk">Milk</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card selected" data-cat="dairy" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🍶</div><div class="pantry-card-name" data-t="pantry-yogurt">Yogurt</div><div class="pantry-card-check">✓</div></div>
+      </div>
+      <div style="margin-top:16px;text-align:center;padding:12px;background:var(--card);border-radius:14px;">
+        <div style="font-size:13px;color:var(--muted);" id="pantryCount">12 ingredients selected</div>
+      </div>
+    </div>
+  </div>
+
+
   <div class="screen" id="shopping">
     <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span>🔋</span></div></div>
     <div class="shop-header">
@@ -2932,6 +2988,7 @@
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     const target = document.getElementById(id);
     if (target) target.classList.add('active');
+    if (id === 'search') { initSearchScreen(); renderRecents(); }
     // Re-apply language on every screen navigation
     if (currentLang && currentLang !== 'english') applyLanguage(currentLang);
 
@@ -3172,6 +3229,44 @@
       'pantry-cheese':'Cheese',
       'pantry-oats':'Oats',
       'pantry-quinoa':'Quinoa'
+    ,
+      'search-title':'Search Recipes',
+      'search-sub':'Voice, text or browse your pantry',
+      'sf-all':'All Recipes',
+      'sf-saved':'My Saved',
+      'sf-pantry':'From Pantry',
+      'sf-quick':'Under 30 min',
+      'sf-kids':'Kid-Friendly',
+      'audio-title':'Audio Recipe Mode',
+      'audio-sub':'Hands-free cooking — we narrate every step',
+      'try-it':'Try it',
+      'recent':'Recent',
+      'trending':'Trending This Week',
+      'read-results':'Read Results',
+      'no-results':'No recipes found',
+      'try-voice':'Try voice search or a different keyword',
+      'listening':'Listening...',
+      'stop':'Stop',
+      'results-found':'recipes found',
+      'nav-search':'Search'
+    ,
+      'nav-pantry':'Pantry',
+      'featured-recipes':'Featured Recipes',
+      'voice-invite':'Try Voice Search',
+      'voice-invite-sub':'Say a recipe or ingredient name in your language'
+    ,
+      'pantry-title':'My Pantry',
+      'pantry-add':'+ Add',
+      'pantry-sub':'Ingredients you have at home',
+      'pt-all':'All',
+      'pt-protein':'Proteins',
+      'pt-veg':'Veggies',
+      'pt-grain':'Grains',
+      'pt-dairy':'Dairy',
+      'pantry-cook-title':'What can I cook today?',
+      'pantry-cook-sub':'Find recipes using your pantry',
+      'pantry-selected':'ingredients selected',
+      'coming-soon':'✨ Custom ingredients coming soon!'
     },
 
     hi: {
@@ -3340,6 +3435,44 @@
       'pantry-cheese':'पनीर',
       'pantry-oats':'ओट्स',
       'pantry-quinoa':'क्विनोआ'
+    ,
+      'search-title':'रेसिपी खोजें',
+      'search-sub':'आवाज़, टेक्स्ट या पेंट्री से',
+      'sf-all':'सभी रेसिपी',
+      'sf-saved':'मेरी सेव्ड',
+      'sf-pantry':'पेंट्री से',
+      'sf-quick':'30 मिनट से कम',
+      'sf-kids':'बच्चों के लिए',
+      'audio-title':'ऑडियो रेसिपी मोड',
+      'audio-sub':'हैंड्स-फ्री खाना पकाएं — हम हर कदम बताएंगे',
+      'try-it':'आज़माएं',
+      'recent':'हाल की खोजें',
+      'trending':'इस हफ्ते ट्रेंडिंग',
+      'read-results':'परिणाम पढ़ें',
+      'no-results':'कोई रेसिपी नहीं मिली',
+      'try-voice':'आवाज़ से खोजें या कोई और शब्द आज़माएं',
+      'listening':'सुन रहे हैं...',
+      'stop':'रोकें',
+      'results-found':'रेसिपी मिलीं',
+      'nav-search':'खोज'
+    ,
+      'nav-pantry':'पेंट्री',
+      'featured-recipes':'फीचर्ड रेसिपी',
+      'voice-invite':'आवाज़ से खोजें',
+      'voice-invite-sub':'कोई भी रेसिपी या सामग्री बोलें'
+    ,
+      'pantry-title':'मेरी पेंट्री',
+      'pantry-add':'+ जोड़ें',
+      'pantry-sub':'घर पर उपलब्ध सामग्री',
+      'pt-all':'सभी',
+      'pt-protein':'प्रोटीन',
+      'pt-veg':'सब्ज़ियां',
+      'pt-grain':'अनाज',
+      'pt-dairy':'डेयरी',
+      'pantry-cook-title':'आज क्या बना सकता हूं?',
+      'pantry-cook-sub':'पेंट्री से रेसिपी खोजें',
+      'pantry-selected':'सामग्री चुनी गई',
+      'coming-soon':'✨ कस्टम सामग्री जल्द आ रही है!'
     },
 
     te: {
@@ -3508,6 +3641,44 @@
       'pantry-cheese':'చీజ్',
       'pantry-oats':'ఓట్స్',
       'pantry-quinoa':'క్వినోవా'
+    ,
+      'search-title':'వంటకాలు వెతకండి',
+      'search-sub':'వాయిస్, టెక్స్ట్ లేదా పాంట్రీ నుండి',
+      'sf-all':'అన్ని వంటకాలు',
+      'sf-saved':'నా సేవ్‌చేసినవి',
+      'sf-pantry':'పాంట్రీ నుండి',
+      'sf-quick':'30 నిమిషాల లోపు',
+      'sf-kids':'పిల్లలకు',
+      'audio-title':'ఆడియో రెసిపీ మోడ్',
+      'audio-sub':'చేతులు లేకుండా వంట — మేము ప్రతి దశ చెప్తాం',
+      'try-it':'ప్రయత్నించు',
+      'recent':'ఇటీవలి శోధనలు',
+      'trending':'ఈ వారం ట్రెండింగ్',
+      'read-results':'ఫలితాలు చదవండి',
+      'no-results':'వంటకాలు కనుగొనబడలేదు',
+      'try-voice':'వాయిస్ శోధన ప్రయత్నించండి',
+      'listening':'వింటున్నాం...',
+      'stop':'ఆపు',
+      'results-found':'వంటకాలు దొరికాయి',
+      'nav-search':'వెతుకు'
+    ,
+      'nav-pantry':'పాంట్రీ',
+      'featured-recipes':'ఫీచర్డ్ రెసిపీలు',
+      'voice-invite':'వాయిస్ శోధన చేయండి',
+      'voice-invite-sub':'రెసిపీ లేదా పదార్థం పేరు చెప్పండి'
+    ,
+      'pantry-title':'నా పాంట్రీ',
+      'pantry-add':'+ జోడించు',
+      'pantry-sub':'ఇంట్లో ఉన్న పదార్థాలు',
+      'pt-all':'అన్నీ',
+      'pt-protein':'ప్రొటీన్లు',
+      'pt-veg':'కూరగాయలు',
+      'pt-grain':'ధాన్యాలు',
+      'pt-dairy':'పాల ఉత్పత్తులు',
+      'pantry-cook-title':'ఈరోజు ఏం వండగలను?',
+      'pantry-cook-sub':'పాంట్రీ నుండి రెసిపీలు కనుగొనండి',
+      'pantry-selected':'పదార్థాలు ఎంచుకోబడ్డాయి',
+      'coming-soon':'✨ కస్టమ్ పదార్థాలు త్వరలో!'
     },
 
     ta: {
@@ -3676,6 +3847,44 @@
       'pantry-cheese':'பாலாடை',
       'pantry-oats':'ஓட்ஸ்',
       'pantry-quinoa':'கினோவா'
+    ,
+      'search-title':'சமையல் வகைகள் தேடுங்கள்',
+      'search-sub':'குரல், உரை அல்லது பாண்ட்ரி',
+      'sf-all':'அனைத்து சமையல்',
+      'sf-saved':'என் சேமிப்புகள்',
+      'sf-pantry':'பாண்ட்ரியிலிருந்து',
+      'sf-quick':'30 நிமிடத்திற்கும் குறைவு',
+      'sf-kids':'குழந்தைகளுக்கு',
+      'audio-title':'ஆடியோ சமையல் முறை',
+      'audio-sub':'கைகள் இல்லாமல் சமை — ஒவ்வொரு கட்டமும் சொல்வோம்',
+      'try-it':'முயற்சி செய்',
+      'recent':'சமீபத்திய தேடல்கள்',
+      'trending':'இந்த வாரம் டிரெண்டிங்',
+      'read-results':'முடிவுகளை படி',
+      'no-results':'சமையல் வகைகள் இல்லை',
+      'try-voice':'குரல் தேடல் முயற்சிக்கவும்',
+      'listening':'கேட்கிறோம்...',
+      'stop':'நிறுத்து',
+      'results-found':'சமையல் வகைகள் கிடைத்தன',
+      'nav-search':'தேடு'
+    ,
+      'nav-pantry':'பான்ட்ரி',
+      'featured-recipes':'சிறப்பு சமையல்கள்',
+      'voice-invite':'குரல் தேடல் முயற்சி',
+      'voice-invite-sub':'சமையல் அல்லது பொருள் பேசுங்கள்'
+    ,
+      'pantry-title':'என் பான்ட்ரி',
+      'pantry-add':'+ சேர்',
+      'pantry-sub':'வீட்டில் உள்ள பொருட்கள்',
+      'pt-all':'அனைத்தும்',
+      'pt-protein':'புரதங்கள்',
+      'pt-veg':'காய்கறிகள்',
+      'pt-grain':'தானியங்கள்',
+      'pt-dairy':'பால் பொருட்கள்',
+      'pantry-cook-title':'இன்று என்ன சமைக்கலாம்?',
+      'pantry-cook-sub':'பான்ட்ரியில் இருந்து சமையல் கண்டறி',
+      'pantry-selected':'பொருட்கள் தேர்ந்தெடுக்கப்பட்டன',
+      'coming-soon':'✨ விரைவில் தனிப்பயன் பொருட்கள்!'
     },
 
     kn: {
@@ -3844,6 +4053,44 @@
       'pantry-cheese':'ಚೀಸ್',
       'pantry-oats':'ಓಟ್ಸ್',
       'pantry-quinoa':'ಕ್ವಿನೋವಾ'
+    ,
+      'search-title':'ರೆಸಿಪಿಗಳನ್ನು ಹುಡುಕಿ',
+      'search-sub':'ಧ್ವನಿ, ಟೆಕ್ಸ್ಟ್ ಅಥವಾ ಪ್ಯಾಂಟ್ರಿ',
+      'sf-all':'ಎಲ್ಲ ರೆಸಿಪಿ',
+      'sf-saved':'ನನ್ನ ಸೇವ್‌ಗಳು',
+      'sf-pantry':'ಪ್ಯಾಂಟ್ರಿಯಿಂದ',
+      'sf-quick':'30 ನಿಮಿಷ ಒಳಗೆ',
+      'sf-kids':'ಮಕ್ಕಳಿಗೆ',
+      'audio-title':'ಆಡಿಯೋ ರೆಸಿಪಿ ಮೋಡ್',
+      'audio-sub':'ಕೈಗಳಿಲ್ಲದೆ ಅಡುಗೆ — ಪ್ರತಿ ಹಂತ ಹೇಳುತ್ತೇವೆ',
+      'try-it':'ಪ್ರಯತ್ನಿಸಿ',
+      'recent':'ಇತ್ತೀಚಿನ ಹುಡುಕಾಟಗಳು',
+      'trending':'ಈ ವಾರ ಟ್ರೆಂಡಿಂಗ್',
+      'read-results':'ಫಲಿತಾಂಶ ಓದಿ',
+      'no-results':'ರೆಸಿಪಿಗಳು ಕಂಡುಬಂದಿಲ್ಲ',
+      'try-voice':'ಧ್ವನಿ ಹುಡುಕಾಟ ಪ್ರಯತ್ನಿಸಿ',
+      'listening':'ಕೇಳುತ್ತಿದ್ದೇವೆ...',
+      'stop':'ನಿಲ್ಲಿಸಿ',
+      'results-found':'ರೆಸಿಪಿ ದೊರೆತವು',
+      'nav-search':'ಹುಡುಕಿ'
+    ,
+      'nav-pantry':'ಪ್ಯಾಂಟ್ರಿ',
+      'featured-recipes':'ವೈಶಿಷ್ಟ್ಯ ರೆಸಿಪಿಗಳು',
+      'voice-invite':'ಧ್ವನಿ ಹುಡುಕಾಟ ಪ್ರಯತ್ನಿಸಿ',
+      'voice-invite-sub':'ರೆಸಿಪಿ ಅಥವಾ ಪದಾರ್ಥ ಹೆಸರು ಹೇಳಿ'
+    ,
+      'pantry-title':'ನನ್ನ ಪ್ಯಾಂಟ್ರಿ',
+      'pantry-add':'+ ಸೇರಿಸಿ',
+      'pantry-sub':'ಮನೆಯಲ್ಲಿ ಇರುವ ಪದಾರ್ಥಗಳು',
+      'pt-all':'ಎಲ್ಲಾ',
+      'pt-protein':'ಪ್ರೊಟೀನ್ಗಳು',
+      'pt-veg':'ತರಕಾರಿಗಳು',
+      'pt-grain':'ಧಾನ್ಯಗಳು',
+      'pt-dairy':'ಡೈರಿ',
+      'pantry-cook-title':'ಇಂದು ಏನು ಮಾಡಬಹುದು?',
+      'pantry-cook-sub':'ಪ್ಯಾಂಟ್ರಿಯಿಂದ ರೆಸಿಪಿ ಹುಡುಕಿ',
+      'pantry-selected':'ಪದಾರ್ಥಗಳು ಆಯ್ಕೆಯಾಗಿವೆ',
+      'coming-soon':'✨ ಶೀಘ್ರದಲ್ಲೇ ಕಸ್ಟಮ್ ಪದಾರ್ಥಗಳು!'
     },
 
     ml: {
@@ -4012,6 +4259,44 @@
       'pantry-cheese':'ചീസ്',
       'pantry-oats':'ഓട്സ്',
       'pantry-quinoa':'ക്വിനോവ'
+    ,
+      'search-title':'റെസിപ്പികൾ തിരയുക',
+      'search-sub':'ശബ്ദം, ടെക്സ്റ്റ് അല്ലെങ്കിൽ പാൻട്രി',
+      'sf-all':'എല്ലാ റെസിപ്പികൾ',
+      'sf-saved':'സേവ് ചെയ്തവ',
+      'sf-pantry':'പാൻട്രിയിൽ നിന്ന്',
+      'sf-quick':'30 മിനിറ്റ് ഇനം',
+      'sf-kids':'കുട്ടികൾക്ക്',
+      'audio-title':'ഓഡിയോ റെസിപ്പി മോഡ്',
+      'audio-sub':'കൈ ഇല്ലാതെ പാചകം — ഓരോ ഘട്ടവും പറഞ്ഞുതരും',
+      'try-it':'പരീക്ഷിക്കൂ',
+      'recent':'സമീപകാല തിരയലുകൾ',
+      'trending':'ഈ ആഴ്ച ട്രെൻഡിംഗ്',
+      'read-results':'ഫലങ്ങൾ വായിക്കൂ',
+      'no-results':'റെസിപ്പികൾ കണ്ടില്ല',
+      'try-voice':'ശബ്ദ തിരയൽ ശ്രമിക്കൂ',
+      'listening':'കേൾക്കുന്നു...',
+      'stop':'നിർത്തുക',
+      'results-found':'റെസിപ്പി കിട്ടി',
+      'nav-search':'തിരയൂ'
+    ,
+      'nav-pantry':'പാൻട്രി',
+      'featured-recipes':'ഫീച്ചർ ചെയ്ത റെസിപ്പികൾ',
+      'voice-invite':'വോയ്സ് തിരയൽ ശ്രമിക്കൂ',
+      'voice-invite-sub':'ഒരു റെസിപ്പിയോ ചേരുവയോ പറയൂ'
+    ,
+      'pantry-title':'എന്റെ പാൻട്രി',
+      'pantry-add':'+ ചേർക്കൂ',
+      'pantry-sub':'വീട്ടിലുള്ള ചേരുവകൾ',
+      'pt-all':'എല്ലാം',
+      'pt-protein':'പ്രോട്ടീൻ',
+      'pt-veg':'പച്ചക്കറി',
+      'pt-grain':'ധാന്യങ്ങൾ',
+      'pt-dairy':'ഡെയറി',
+      'pantry-cook-title':'ഇന്ന് എന്ത് പാകം ചെയ്യാം?',
+      'pantry-cook-sub':'പാൻട്രിയിൽ നിന്ന് റെസിപ്പി കണ്ടെത്തൂ',
+      'pantry-selected':'ചേരുവകൾ തിരഞ്ഞെടുത്തു',
+      'coming-soon':'✨ ഉടൻ കസ്റ്റം ചേരുവകൾ!'
     },
 
     bn: {
@@ -4180,6 +4465,44 @@
       'pantry-cheese':'পনির',
       'pantry-oats':'ওটস',
       'pantry-quinoa':'কুইনোয়া'
+    ,
+      'search-title':'রেসিপি খুঁজুন',
+      'search-sub':'ভয়েস, টেক্সট বা প্যান্ট্রি থেকে',
+      'sf-all':'সব রেসিপি',
+      'sf-saved':'আমার সেভড',
+      'sf-pantry':'প্যান্ট্রি থেকে',
+      'sf-quick':'৩০ মিনিটের কম',
+      'sf-kids':'শিশুবান্ধব',
+      'audio-title':'অডিও রেসিপি মোড',
+      'audio-sub':'হাত মুক্ত রান্না — প্রতিটি ধাপ বলব',
+      'try-it':'চেষ্টা করুন',
+      'recent':'সাম্প্রতিক খোঁজ',
+      'trending':'এই সপ্তাহের ট্রেন্ডিং',
+      'read-results':'ফলাফল পড়ুন',
+      'no-results':'কোনো রেসিপি পাওয়া যায়নি',
+      'try-voice':'ভয়েস সার্চ চেষ্টা করুন',
+      'listening':'শুনছি...',
+      'stop':'থামুন',
+      'results-found':'রেসিপি পাওয়া গেছে',
+      'nav-search':'খোঁজ'
+    ,
+      'nav-pantry':'প্যান্ট্রি',
+      'featured-recipes':'বৈশিষ্ট্যযুক্ত রেসিপি',
+      'voice-invite':'ভয়েস সার্চ চেষ্টা করুন',
+      'voice-invite-sub':'একটি রেসিপি বা উপকরণের নাম বলুন'
+    ,
+      'pantry-title':'আমার প্যান্ট্রি',
+      'pantry-add':'+ যোগ করুন',
+      'pantry-sub':'বাড়িতে থাকা উপকরণ',
+      'pt-all':'সব',
+      'pt-protein':'প্রোটিন',
+      'pt-veg':'সবজি',
+      'pt-grain':'শস্য',
+      'pt-dairy':'ডেইরি',
+      'pantry-cook-title':'আজ কী রান্না করতে পারি?',
+      'pantry-cook-sub':'প্যান্ট্রি থেকে রেসিপি খুঁজুন',
+      'pantry-selected':'উপকরণ নির্বাচিত',
+      'coming-soon':'✨ শীঘ্রই কাস্টম উপকরণ!'
     },
 
     mr: {
@@ -4348,6 +4671,44 @@
       'pantry-cheese':'चीज',
       'pantry-oats':'ओट्स',
       'pantry-quinoa':'क्विनोआ'
+    ,
+      'search-title':'रेसिपी शोधा',
+      'search-sub':'आवाज, मजकूर किंवा पॅन्ट्री',
+      'sf-all':'सर्व रेसिपी',
+      'sf-saved':'माझ्या सेव्ह',
+      'sf-pantry':'पॅन्ट्रीतून',
+      'sf-quick':'30 मिनिटांपेक्षा कमी',
+      'sf-kids':'मुलांसाठी',
+      'audio-title':'ऑडियो रेसिपी मोड',
+      'audio-sub':'हात मुक्त स्वयंपाक — प्रत्येक पायरी सांगू',
+      'try-it':'वापरून पाहा',
+      'recent':'अलीकडील शोध',
+      'trending':'या आठवड्यात ट्रेंडिंग',
+      'read-results':'निकाल वाचा',
+      'no-results':'कोणतीही रेसिपी सापडली नाही',
+      'try-voice':'आवाज शोध वापरून पाहा',
+      'listening':'ऐकत आहोत...',
+      'stop':'थांबा',
+      'results-found':'रेसिपी सापडल्या',
+      'nav-search':'शोध'
+    ,
+      'nav-pantry':'पॅन्ट्री',
+      'featured-recipes':'वैशिष्ट्यीकृत रेसिपी',
+      'voice-invite':'व्हॉइस सर्च वापरा',
+      'voice-invite-sub':'रेसिपी किंवा घटकाचे नाव सांगा'
+    ,
+      'pantry-title':'माझी पॅन्ट्री',
+      'pantry-add':'+ जोडा',
+      'pantry-sub':'घरी उपलब्ध घटक',
+      'pt-all':'सर्व',
+      'pt-protein':'प्रथिने',
+      'pt-veg':'भाज्या',
+      'pt-grain':'धान्य',
+      'pt-dairy':'दुग्धजन्य',
+      'pantry-cook-title':'आज काय बनवता येईल?',
+      'pantry-cook-sub':'पॅन्ट्रीतून रेसिपी शोधा',
+      'pantry-selected':'घटक निवडले',
+      'coming-soon':'✨ लवकरच सानुकूल घटक!'
     },
 
     es: {
@@ -4516,6 +4877,44 @@
       'pantry-cheese':'Queso',
       'pantry-oats':'Avena',
       'pantry-quinoa':'Quinoa'
+    ,
+      'search-title':'Buscar Recetas',
+      'search-sub':'Voz, texto o desde despensa',
+      'sf-all':'Todas las recetas',
+      'sf-saved':'Mis guardadas',
+      'sf-pantry':'De mi despensa',
+      'sf-quick':'Menos de 30 min',
+      'sf-kids':'Para niños',
+      'audio-title':'Modo Receta en Audio',
+      'audio-sub':'Cocina sin manos — narramos cada paso',
+      'try-it':'Probar',
+      'recent':'Búsquedas recientes',
+      'trending':'En tendencia esta semana',
+      'read-results':'Leer resultados',
+      'no-results':'No se encontraron recetas',
+      'try-voice':'Intenta con búsqueda de voz',
+      'listening':'Escuchando...',
+      'stop':'Detener',
+      'results-found':'recetas encontradas',
+      'nav-search':'Buscar'
+    ,
+      'nav-pantry':'Despensa',
+      'featured-recipes':'Recetas destacadas',
+      'voice-invite':'Buscar por voz',
+      'voice-invite-sub':'Di el nombre de una receta o ingrediente'
+    ,
+      'pantry-title':'Mi despensa',
+      'pantry-add':'+ Agregar',
+      'pantry-sub':'Ingredientes que tienes en casa',
+      'pt-all':'Todo',
+      'pt-protein':'Proteínas',
+      'pt-veg':'Verduras',
+      'pt-grain':'Granos',
+      'pt-dairy':'Lácteos',
+      'pantry-cook-title':'¿Qué puedo cocinar hoy?',
+      'pantry-cook-sub':'Encuentra recetas con tu despensa',
+      'pantry-selected':'ingredientes seleccionados',
+      'coming-soon':'✨ ¡Ingredientes personalizados pronto!'
     },
 
     fr: {
@@ -4684,6 +5083,44 @@
       'pantry-cheese':'Fromage',
       'pantry-oats':"Flocons d'avoine",
       'pantry-quinoa':'Quinoa'
+    ,
+      'search-title':'Rechercher des Recettes',
+      'search-sub':'Voix, texte ou depuis le garde-manger',
+      'sf-all':'Toutes les recettes',
+      'sf-saved':'Mes sauvegardées',
+      'sf-pantry':'De mon garde-manger',
+      'sf-quick':'Moins de 30 min',
+      'sf-kids':'Pour enfants',
+      'audio-title':'Mode Recette Audio',
+      'audio-sub':'Cuisinez les mains libres — nous narrons chaque étape',
+      'try-it':'Essayer',
+      'recent':'Recherches récentes',
+      'trending':'Tendances cette semaine',
+      'read-results':'Lire les résultats',
+      'no-results':'Aucune recette trouvée',
+      'try-voice':'Essayez la recherche vocale',
+      'listening':'À l\'écoute...',
+      'stop':'Arrêter',
+      'results-found':'recettes trouvées',
+      'nav-search':'Chercher'
+    ,
+      'nav-pantry':'Garde-manger',
+      'featured-recipes':'Recettes vedettes',
+      'voice-invite':'Essayez la recherche vocale',
+      'voice-invite-sub':'Dites un nom de recette ou d\'ingrédient'
+    ,
+      'pantry-title':'Mon garde-manger',
+      'pantry-add':'+ Ajouter',
+      'pantry-sub':'Ingrédients que vous avez chez vous',
+      'pt-all':'Tout',
+      'pt-protein':'Protéines',
+      'pt-veg':'Légumes',
+      'pt-grain':'Grains',
+      'pt-dairy':'Produits laitiers',
+      'pantry-cook-title':"Que cuisiner aujourd'hui?",
+      'pantry-cook-sub':'Trouver des recettes avec votre garde-manger',
+      'pantry-selected':'ingrédients sélectionnés',
+      'coming-soon':'✨ Ingrédients personnalisés bientôt!'
     },
 
     ar: {
@@ -4852,6 +5289,44 @@
       'pantry-cheese':'جبن',
       'pantry-oats':'شوفان',
       'pantry-quinoa':'كينوا'
+    ,
+      'search-title':'البحث عن الوصفات',
+      'search-sub':'بالصوت أو النص أو من المخزن',
+      'sf-all':'جميع الوصفات',
+      'sf-saved':'محفوظاتي',
+      'sf-pantry':'من مخزني',
+      'sf-quick':'أقل من 30 دقيقة',
+      'sf-kids':'للأطفال',
+      'audio-title':'وضع الوصفة الصوتية',
+      'audio-sub':'طبخ بدون يدين — نسرد كل خطوة',
+      'try-it':'جرّب',
+      'recent':'عمليات البحث الأخيرة',
+      'trending':'الأكثر شيوعاً هذا الأسبوع',
+      'read-results':'قراءة النتائج',
+      'no-results':'لم يتم العثور على وصفات',
+      'try-voice':'جرّب البحث الصوتي',
+      'listening':'جارٍ الاستماع...',
+      'stop':'إيقاف',
+      'results-found':'وصفات موجودة',
+      'nav-search':'بحث'
+    ,
+      'nav-pantry':'المخزن',
+      'featured-recipes':'وصفات مميزة',
+      'voice-invite':'جرب البحث الصوتي',
+      'voice-invite-sub':'قل اسم وصفة أو مكون'
+    ,
+      'pantry-title':'مخزني',
+      'pantry-add':'+ إضافة',
+      'pantry-sub':'المكونات المتوفرة لديك',
+      'pt-all':'الكل',
+      'pt-protein':'بروتينات',
+      'pt-veg':'خضروات',
+      'pt-grain':'حبوب',
+      'pt-dairy':'ألبان',
+      'pantry-cook-title':'ماذا أطبخ اليوم؟',
+      'pantry-cook-sub':'ابحث عن وصفات من مخزنك',
+      'pantry-selected':'مكونات محددة',
+      'coming-soon':'✨ مكونات مخصصة قريبًا!'
     },
 
     zh: {
@@ -5020,6 +5495,44 @@
       'pantry-cheese':'奶酪',
       'pantry-oats':'燕麦',
       'pantry-quinoa':'藜麦'
+    ,
+      'search-title':'搜索食谱',
+      'search-sub':'语音、文字或从储物柜',
+      'sf-all':'所有食谱',
+      'sf-saved':'我的收藏',
+      'sf-pantry':'来自储物柜',
+      'sf-quick':'30分钟内',
+      'sf-kids':'适合儿童',
+      'audio-title':'语音食谱模式',
+      'audio-sub':'解放双手做饭 — 我们讲解每一步',
+      'try-it':'试试',
+      'recent':'最近搜索',
+      'trending':'本周热门',
+      'read-results':'朗读结果',
+      'no-results':'未找到食谱',
+      'try-voice':'尝试语音搜索',
+      'listening':'正在听...',
+      'stop':'停止',
+      'results-found':'个食谱',
+      'nav-search':'搜索'
+    ,
+      'nav-pantry':'储藏室',
+      'featured-recipes':'精选菜谱',
+      'voice-invite':'语音搜索',
+      'voice-invite-sub':'说出菜谱名或食材名称'
+    ,
+      'pantry-title':'我的储藏室',
+      'pantry-add':'+ 添加',
+      'pantry-sub':'家中现有的食材',
+      'pt-all':'全部',
+      'pt-protein':'蛋白质',
+      'pt-veg':'蔬菜',
+      'pt-grain':'谷物',
+      'pt-dairy':'乳制品',
+      'pantry-cook-title':'今天能做什么?',
+      'pantry-cook-sub':'用储藏室食材找菜谱',
+      'pantry-selected':'种食材已选',
+      'coming-soon':'✨ 自定义食材即将上线!'
     },
 
     pt: {
@@ -5188,6 +5701,44 @@
       'pantry-cheese':'Queijo',
       'pantry-oats':'Aveia',
       'pantry-quinoa':'Quinoa'
+    ,
+      'search-title':'Pesquisar Receitas',
+      'search-sub':'Voz, texto ou da despensa',
+      'sf-all':'Todas as receitas',
+      'sf-saved':'Minhas salvas',
+      'sf-pantry':'Da minha despensa',
+      'sf-quick':'Menos de 30 min',
+      'sf-kids':'Para crianças',
+      'audio-title':'Modo Receita em Áudio',
+      'audio-sub':'Cozinhe com as mãos livres — narramos cada passo',
+      'try-it':'Experimentar',
+      'recent':'Pesquisas recentes',
+      'trending':'Em alta esta semana',
+      'read-results':'Ler resultados',
+      'no-results':'Nenhuma receita encontrada',
+      'try-voice':'Tente a pesquisa por voz',
+      'listening':'Ouvindo...',
+      'stop':'Parar',
+      'results-found':'receitas encontradas',
+      'nav-search':'Pesquisar'
+    ,
+      'nav-pantry':'Despensa',
+      'featured-recipes':'Receitas em destaque',
+      'voice-invite':'Experimente busca por voz',
+      'voice-invite-sub':'Diga o nome de uma receita ou ingrediente'
+    ,
+      'pantry-title':'Minha despensa',
+      'pantry-add':'+ Adicionar',
+      'pantry-sub':'Ingredientes que você tem em casa',
+      'pt-all':'Todos',
+      'pt-protein':'Proteínas',
+      'pt-veg':'Legumes',
+      'pt-grain':'Grãos',
+      'pt-dairy':'Laticínios',
+      'pantry-cook-title':'O que posso cozinhar hoje?',
+      'pantry-cook-sub':'Encontre receitas com sua despensa',
+      'pantry-selected':'ingredientes selecionados',
+      'coming-soon':'✨ Ingredientes personalizados em breve!'
     },
 
     de: {
@@ -5356,6 +5907,44 @@
       'pantry-cheese':'Käse',
       'pantry-oats':'Haferflocken',
       'pantry-quinoa':'Quinoa'
+    ,
+      'search-title':'Rezepte Suchen',
+      'search-sub':'Sprache, Text oder Vorratskammer',
+      'sf-all':'Alle Rezepte',
+      'sf-saved':'Meine Gespeicherten',
+      'sf-pantry':'Aus Vorratskammer',
+      'sf-quick':'Unter 30 Min',
+      'sf-kids':'Kinderfreundlich',
+      'audio-title':'Audio-Rezept Modus',
+      'audio-sub':'Freihändig kochen — wir erläutern jeden Schritt',
+      'try-it':'Ausprobieren',
+      'recent':'Letzte Suchen',
+      'trending':'Diese Woche im Trend',
+      'read-results':'Ergebnisse vorlesen',
+      'no-results':'Keine Rezepte gefunden',
+      'try-voice':'Sprachsuche versuchen',
+      'listening':'Höre zu...',
+      'stop':'Stopp',
+      'results-found':'Rezepte gefunden',
+      'nav-search':'Suchen'
+    ,
+      'nav-pantry':'Speisekammer',
+      'featured-recipes':'Empfohlene Rezepte',
+      'voice-invite':'Sprachsuche ausprobieren',
+      'voice-invite-sub':'Sagen Sie einen Rezept- oder Zutatennamen'
+    ,
+      'pantry-title':'Meine Speisekammer',
+      'pantry-add':'+ Hinzufügen',
+      'pantry-sub':'Zutaten die Sie zu Hause haben',
+      'pt-all':'Alle',
+      'pt-protein':'Proteine',
+      'pt-veg':'Gemüse',
+      'pt-grain':'Getreide',
+      'pt-dairy':'Milchprodukte',
+      'pantry-cook-title':'Was kann ich heute kochen?',
+      'pantry-cook-sub':'Rezepte aus Ihrer Speisekammer finden',
+      'pantry-selected':'Zutaten ausgewählt',
+      'coming-soon':'✨ Benutzerdefinierte Zutaten bald!'
     },
   };
 
@@ -5426,6 +6015,25 @@
     });
 
     // Update the language display in profile settings
+    // ── Search screen UI elements ──
+    const searchIds = {
+      't-search-title': t['search-title'], 't-search-sub': t['search-sub'],
+      't-sf-all': t['sf-all'], 't-sf-saved': t['sf-saved'],
+      't-sf-pantry': t['sf-pantry'], 't-sf-quick': t['sf-quick'],
+      't-sf-kids': t['sf-kids'], 't-audio-title': t['audio-title'],
+      't-audio-sub': t['audio-sub'], 't-try-it': t['try-it'],
+      't-recent': t['recent'], 't-trending': t['trending'],
+      't-read-results': t['read-results'], 't-no-results': t['no-results'],
+      't-try-voice': t['try-voice'], 't-listening': t['listening'],
+      't-stop': t['stop'], 't-nav-search': t['nav-search']
+    };
+    Object.entries(searchIds).forEach(([id, val]) => {
+      const el = document.getElementById(id);
+      if (el && val) el.textContent = val;
+    });
+    // Store TR for use in search JS
+    window._currentTR = t;
+
     // Sex dropdown options
     const sexSel = document.querySelector('#ob1 select');
     if (sexSel && sexSel.options.length >= 3) {
@@ -5472,7 +6080,7 @@
       't-kids-step-label','t-kids-step-num','t-kids-safety','t-kids-step1-instr',
       't-kids-adult-btn','t-kids-next-btn','t-kids-meal-name',
       't-no-strong-spices','t-same-ingredients',
-      't-items-count'];
+      't-items-count','t-nav-pantry','t-featured-recipes','t-voice-invite','t-voice-invite-sub'];
     namedIds.forEach(id => {
       const key = id.replace(/^t-/,'');
       const el = document.getElementById(id);
@@ -5703,6 +6311,41 @@
     el.classList.toggle('selected');
     updatePantryCount();
   }
+  // ── PANTRY SCREEN ──
+  function filterPantry(cat, btn) {
+    document.querySelectorAll('.pantry-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('#pantryGrid .pantry-card').forEach(card => {
+      card.style.display = (cat === 'all' || card.dataset.cat === cat) ? 'flex' : 'none';
+    });
+    updatePantryCount();
+  }
+
+  function updatePantryCount() {
+    const selected = document.querySelectorAll('#pantryGrid .pantry-card.selected').length;
+    const el = document.getElementById('pantryCount');
+    const t  = window._currentTR || {};
+    if (el) el.textContent = selected + ' ' + (t['pantry-selected'] || 'ingredients selected');
+  }
+
+  function findPantryRecipes() {
+    goTo('search');
+    setTimeout(() => {
+      const btn = document.querySelector('[data-filter="pantry"]');
+      if (btn) setSearchFilter('pantry', btn);
+    }, 100);
+  }
+
+  function showAddIngredient() {
+    const t = window._currentTR || {};
+    const toast = document.createElement('div');
+    toast.style.cssText = "position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:var(--deep);color:white;padding:12px 20px;border-radius:14px;font-size:13px;font-weight:600;z-index:999;font-family:'DM Sans',sans-serif;white-space:nowrap;";
+    toast.textContent = t['coming-soon'] || '✨ Custom ingredients coming soon!';
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 2500);
+  }
+
+
 
   function updatePantryCount() {
     const count = document.querySelectorAll('.pantry-card.selected').length;
@@ -6048,6 +6691,424 @@
       container.appendChild(piece);
     }
   }
+
+
+  // ══ SEARCH ENGINE ══
+  // ══════════════════════════════════════════════════════
+  //  RECIPE SEARCH ENGINE — Full Data + Voice + Audio
+  // ══════════════════════════════════════════════════════
+  
+  const RECIPE_DB = [
+    { id:1, name:'Lemon Herb Salmon', emoji:'🐟', time:25, cal:480, tags:['High Protein','Omega-3'], cats:['all','pantry'], saved:true, kids:false,
+      ingredients:['Salmon fillet','Lemon','Fresh dill','Olive oil','Garlic'],
+      steps:['Season salmon with salt, pepper, lemon zest and fresh dill.','Heat pan over medium-high, add olive oil.','Cook salmon skin-side down 4 minutes, flip, 2 more minutes.','Squeeze lemon, garnish with dill and serve.'] },
+    { id:2, name:'Avocado Toast with Poached Eggs', emoji:'🥑', time:15, cal:380, tags:['Vegetarian','High Protein'], cats:['all','quick','saved'], saved:true, kids:true,
+      ingredients:['Sourdough bread','Avocado','Eggs','Lemon','Chilli flakes'],
+      steps:['Toast bread until golden and crisp.','Mash avocado with lemon juice and salt.','Poach eggs in simmering water 3 minutes.','Assemble: toast → avocado → egg → chilli flakes.'] },
+    { id:3, name:'Grilled Chicken Quinoa Bowl', emoji:'🍗', time:30, cal:520, tags:['High Protein','Gluten-Free'], cats:['all','pantry'], saved:false, kids:false,
+      ingredients:['Chicken breast','Quinoa','Spinach','Tomatoes','Garlic','Olive oil'],
+      steps:['Cook quinoa in salted water 15 minutes, drain.','Season chicken and grill 6 minutes each side.','Sauté spinach and tomatoes with garlic.','Assemble bowl: quinoa base, chicken slices, veggies.'] },
+    { id:4, name:'Salmon Bites & Sweet Potato Mash', emoji:'🍠', time:25, cal:320, tags:['Kid-Friendly','No Spices'], cats:['all','kids','pantry'], saved:true, kids:true,
+      ingredients:['Salmon fillet','Sweet potato','Butter','Lemon','Dill'],
+      steps:['Boil cubed sweet potato 10 minutes until soft.','Mash with butter until smooth and creamy.','Pan-fry bite-sized salmon pieces 2 minutes per side.','Serve salmon bites over sweet potato mash.'] },
+    { id:5, name:'Spinach & Lentil Dal', emoji:'🫘', time:35, cal:340, tags:['Vegan','High Protein'], cats:['all','pantry'], saved:false, kids:true,
+      ingredients:['Red lentils','Spinach','Tomatoes','Garlic','Cumin','Turmeric'],
+      steps:['Sauté garlic and cumin in oil until fragrant.','Add tomatoes and cook 5 minutes.','Add lentils and water, simmer 20 minutes.','Stir in spinach, season and serve with rice.'] },
+    { id:6, name:'Fruit & Yogurt Bowl with Honey', emoji:'🍓', time:5, cal:220, tags:['Vegetarian','No Cook'], cats:['all','quick','saved','kids'], saved:true, kids:true,
+      ingredients:['Greek yogurt','Mixed berries','Banana','Honey','Granola'],
+      steps:['Spoon yogurt into bowl.','Slice banana and add mixed berries.','Drizzle honey generously.','Top with granola and serve immediately.'] },
+    { id:7, name:'Garlic Butter Pasta', emoji:'🍝', time:20, cal:450, tags:['Vegetarian','Quick'], cats:['all','quick','pantry'], saved:false, kids:true,
+      ingredients:['Pasta','Garlic','Butter','Parmesan','Parsley','Olive oil'],
+      steps:['Boil pasta until al dente, reserve 1 cup pasta water.','Sauté garlic in butter 2 minutes.','Toss pasta with garlic butter, add pasta water as needed.','Finish with parmesan and fresh parsley.'] },
+    { id:8, name:'Tuna & Avocado Rice Bowl', emoji:'🐠', time:10, cal:390, tags:['High Protein','Omega-3'], cats:['all','quick'], saved:false, kids:false,
+      ingredients:['Cooked rice','Tuna','Avocado','Cucumber','Soy sauce','Sesame oil'],
+      steps:['Prepare steamed rice or use leftover.','Dice avocado and cucumber.','Mix tuna with soy sauce and sesame oil.','Assemble bowl: rice, tuna, avocado, cucumber.'] },
+    { id:9, name:'Broccoli Cheddar Omelette', emoji:'🥦', time:12, cal:310, tags:['Vegetarian','High Protein','Quick'], cats:['all','quick','kids'], saved:true, kids:true,
+      ingredients:['Eggs','Broccoli florets','Cheddar cheese','Butter','Salt'],
+      steps:['Steam broccoli 3 minutes until bright and tender.','Whisk eggs with salt and pepper.','Melt butter in pan, pour eggs, cook until set.','Add broccoli and cheese, fold and serve.'] },
+    { id:10, name:'Carrot Ginger Soup', emoji:'🥕', time:30, cal:190, tags:['Vegan','Gluten-Free'], cats:['all','pantry'], saved:false, kids:true,
+      ingredients:['Carrots','Fresh ginger','Onion','Garlic','Coconut milk','Vegetable stock'],
+      steps:['Sauté onion and garlic until soft.','Add sliced carrots and grated ginger, cook 5 minutes.','Pour in stock, simmer 20 minutes until carrots are tender.','Blend smooth, stir in coconut milk and season.'] },
+    { id:11, name:'Beef & Vegetable Stir Fry', emoji:'🥩', time:20, cal:480, tags:['High Protein','Quick'], cats:['all','quick'], saved:false, kids:false,
+      ingredients:['Beef strips','Broccoli','Carrots','Garlic','Soy sauce','Sesame oil'],
+      steps:['Marinate beef in soy sauce and sesame oil 10 minutes.','Stir-fry beef in hot wok 3 minutes, set aside.','Stir-fry vegetables 4 minutes until crisp-tender.','Combine, add sauce, toss and serve over rice.'] },
+    { id:12, name:'Chickpea Curry', emoji:'🍛', time:25, cal:360, tags:['Vegan','High Protein'], cats:['all','pantry'], saved:true, kids:false,
+      ingredients:['Chickpeas','Tomatoes','Onion','Garlic','Garam masala','Coconut milk'],
+      steps:['Fry onion and garlic until golden.','Add garam masala and cook 1 minute.','Add tomatoes and chickpeas, simmer 15 minutes.','Stir in coconut milk, serve with rice or bread.'] },
+  ];
+  
+  const TRENDING = [1, 4, 7, 12]; // IDs of trending recipes
+  
+  let searchFilter = 'all';
+  let voiceRecognition = null;
+  let isListening = false;
+  let currentAudioStep = 0;
+  let audioRecipe = null;
+  let speechSynth = window.speechSynthesis;
+  
+  // ── Build trending cards on search screen open ──
+  function initSearchScreen() {
+    const container = document.getElementById('trendingCards');
+    if (!container || container.children.length > 0) return;
+    TRENDING.forEach(id => {
+      const r = RECIPE_DB.find(x => x.id === id);
+      if (r) container.appendChild(buildRecipeCard(r, true));
+    });
+  }
+  
+  // ── Build a recipe card element ──
+  function buildRecipeCard(recipe, compact) {
+    const div = document.createElement('div');
+    div.className = 'recipe-search-card';
+    div.onclick = (e) => {
+      if (!e.target.closest('.audio-play')) openSearchRecipe(recipe);
+    };
+  
+    const savedBadge = recipe.saved ? '<div style="position:absolute;top:10px;right:52px;font-size:10px;background:#FEF3C7;color:#92400E;padding:2px 7px;border-radius:8px;font-weight:700;">★ Saved</div>' : '';
+  
+    const tagColors = {
+      'High Protein': ['#D1FAE5','#065F46'],
+      'Vegetarian': ['#D1FAE5','#065F46'],
+      'Vegan': ['#D1FAE5','#065F46'],
+      'Quick': ['#EDE9FE','#5B21B6'],
+      'No Cook': ['#EDE9FE','#5B21B6'],
+      'Omega-3': ['#DBEAFE','#1E40AF'],
+      'Gluten-Free': ['#FEE2E2','#991B1B'],
+      'Kid-Friendly': ['#FEF3C7','#92400E'],
+      'No Spices': ['#FEF3C7','#92400E'],
+    };
+  
+    const tagHtml = recipe.tags.map(t => {
+      const [bg, fg] = tagColors[t] || ['#F3F4F6','#374151'];
+      return `<span class="r-tag" style="background:${bg};color:${fg}">${t}</span>`;
+    }).join('');
+  
+    div.innerHTML = `
+      ${savedBadge}
+      <div class="recipe-emoji">${recipe.emoji}</div>
+      <div class="recipe-info">
+        <div class="recipe-name">${recipe.name}</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:3px;">⚡ ${recipe.time} min · 🔥 ${recipe.cal} kcal · ${recipe.ingredients.length} ingredients</div>
+        <div class="recipe-tags">${tagHtml}</div>
+      </div>
+      <div class="audio-play" onclick="readRecipeAloud(${recipe.id})" title="Listen to recipe">🔊</div>
+    `;
+    return div;
+  }
+  
+  // ── Search logic ──
+  function onSearchInput(val) {
+    if (val.length < 1) { showDefault(); return; }
+    doSearch(val);
+  }
+  
+  function doSearch(query) {
+    document.getElementById('searchInput').value = query;
+    saveRecentSearch(query);
+  
+    const q = query.toLowerCase();
+    let results = RECIPE_DB.filter(r => {
+      const matchesFilter = searchFilter === 'all' ||
+        r.cats.includes(searchFilter) ||
+        (searchFilter === 'kids' && r.kids) ||
+        (searchFilter === 'quick' && r.time <= 30);
+      const matchesQuery = r.name.toLowerCase().includes(q) ||
+        r.ingredients.some(i => i.toLowerCase().includes(q)) ||
+        r.tags.some(t => t.toLowerCase().includes(q));
+      return matchesFilter && matchesQuery;
+    });
+  
+    showResults(results, query);
+  }
+  
+  function showResults(results, query) {
+    document.getElementById('searchDefault').style.display = 'none';
+    document.getElementById('searchNoResults').style.display = results.length ? 'none' : 'block';
+    document.getElementById('searchResults').style.display = results.length ? 'block' : 'none';
+  
+    if (results.length) {
+      const t = window._currentTR || {};
+      document.getElementById('resultCount').textContent = results.length + ' ' + (t['results-found'] || 'recipes found');
+      const grid = document.getElementById('resultsGrid');
+      grid.innerHTML = '';
+      results.forEach(r => grid.appendChild(buildRecipeCard(r)));
+    }
+  }
+  
+  function showDefault() {
+    document.getElementById('searchDefault').style.display = 'block';
+    document.getElementById('searchResults').style.display = 'none';
+    document.getElementById('searchNoResults').style.display = 'none';
+    document.getElementById('searchInput').value = '';
+    populateFeaturedRecipes();
+  }
+
+  function populateFeaturedRecipes() {
+    const grid = document.getElementById('featuredRecipeGrid');
+    if (!grid || grid.children.length > 0) return; // already populated
+    const t = window._currentTR || {};
+    RECIPE_DB.forEach(r => {
+      const card = buildRecipeCard(r);
+      grid.appendChild(card);
+    });
+  }
+  
+  function setSearchFilter(filter, btn) {
+    searchFilter = filter;
+    document.querySelectorAll('.search-filter').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const q = document.getElementById('searchInput').value;
+    if (q.length >= 2) doSearch(q);
+  }
+  
+  // ── Recent searches ──
+  function saveRecentSearch(q) {
+    let recents = JSON.parse(localStorage.getItem('wb_recents') || '[]');
+    recents = [q, ...recents.filter(r => r !== q)].slice(0, 5);
+    localStorage.setItem('wb_recents', JSON.stringify(recents));
+    renderRecents();
+  }
+  
+  function renderRecents() {
+    const container = document.getElementById('recentSearches');
+    if (!container) return;
+    try {
+      const recents = JSON.parse(localStorage.getItem('wb_recents') || '[]');
+      if (recents.length === 0) return;
+      container.innerHTML = recents.map(r =>
+        `<div class="recent-chip" onclick="doSearch('${r.replace(/'/g, '')}')">🔍 ${r}</div>`
+      ).join('');
+    } catch(e) {}
+  }
+  
+  // ── Voice Search ──
+  function toggleVoiceSearch() {
+    if (isListening) { stopVoiceSearch(); return; }
+  
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert('Voice search is not supported in this browser. Try Chrome or Edge!');
+      return;
+    }
+  
+    voiceRecognition = new SpeechRecognition();
+  
+    // Set language based on selected language
+    const langMap = {
+      hi: 'hi-IN', te: 'te-IN', ta: 'ta-IN', kn: 'kn-IN',
+      ml: 'ml-IN', bn: 'bn-IN', mr: 'mr-IN',
+      es: 'es-ES', fr: 'fr-FR', ar: 'ar-SA',
+      zh: 'zh-CN', pt: 'pt-BR', de: 'de-DE', en: 'en-US'
+    };
+    const lang = window.currentLang || 'en';
+    voiceRecognition.lang = langMap[lang] || 'en-US';
+    voiceRecognition.continuous = false;
+    voiceRecognition.interimResults = true;
+    voiceRecognition.maxAlternatives = 3;
+  
+    voiceRecognition.onstart = () => {
+      isListening = true;
+      document.getElementById('voiceBtn').style.background = 'var(--coral)';
+      document.getElementById('voicePulse').style.display = 'block';
+      document.getElementById('voiceStatus').style.display = 'flex';
+    };
+  
+    voiceRecognition.onresult = (e) => {
+      const transcript = Array.from(e.results)
+        .map(r => r[0].transcript).join('');
+      document.getElementById('voiceTranscript').textContent = transcript;
+      if (e.results[0].isFinal) {
+        doSearch(transcript);
+        stopVoiceSearch();
+      }
+    };
+  
+    voiceRecognition.onerror = (e) => {
+      stopVoiceSearch();
+      if (e.error === 'not-allowed') alert('Microphone permission denied. Please allow access in your browser.');
+    };
+  
+    voiceRecognition.onend = () => { if (isListening) stopVoiceSearch(); };
+  
+    voiceRecognition.start();
+  }
+  
+  function stopVoiceSearch() {
+    isListening = false;
+    if (voiceRecognition) { try { voiceRecognition.stop(); } catch(e) {} }
+    document.getElementById('voiceBtn').style.background = 'var(--deep)';
+    document.getElementById('voicePulse').style.display = 'none';
+    document.getElementById('voiceStatus').style.display = 'none';
+  }
+  
+  // ── Open recipe detail from search ──
+  function openSearchRecipe(recipe) {
+    // Build a quick preview sheet
+    showRecipeSheet(recipe);
+  }
+  
+  function showRecipeSheet(recipe) {
+    let sheet = document.getElementById('searchRecipeSheet');
+    if (!sheet) {
+      sheet = document.createElement('div');
+      sheet.id = 'searchRecipeSheet';
+      sheet.style.cssText = 'position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.5);display:flex;align-items:flex-end;';
+      sheet.onclick = (e) => { if (e.target === sheet) closeRecipeSheet(); };
+      document.body.appendChild(sheet);
+    }
+  
+    const tagColors = { 'High Protein':['#D1FAE5','#065F46'],'Vegetarian':['#D1FAE5','#065F46'],'Vegan':['#D1FAE5','#065F46'],'Quick':['#EDE9FE','#5B21B6'],'No Cook':['#EDE9FE','#5B21B6'],'Omega-3':['#DBEAFE','#1E40AF'],'Gluten-Free':['#FEE2E2','#991B1B'],'Kid-Friendly':['#FEF3C7','#92400E'],'No Spices':['#FEF3C7','#92400E'] };
+    const tagHtml = recipe.tags.map(t => { const [bg,fg] = tagColors[t]||['#F3F4F6','#374151']; return `<span style="padding:4px 10px;border-radius:10px;font-size:11px;font-weight:700;background:${bg};color:${fg}">${t}</span>`; }).join('');
+    const stepsHtml = recipe.steps.map((s,i) => `<div style="display:flex;gap:10px;margin-bottom:12px;"><div style="width:24px;height:24px;background:var(--deep);color:white;border-radius:8px;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${i+1}</div><div style="font-size:13px;color:var(--text);line-height:1.5;">${s}</div></div>`).join('');
+    const ingrHtml = recipe.ingredients.map(i => `<div style="padding:8px 12px;background:var(--bg);border-radius:10px;font-size:12px;color:var(--text);">• ${i}</div>`).join('');
+  
+    sheet.innerHTML = `
+      <div style="background:var(--card);border-radius:28px 28px 0 0;width:100%;max-height:85vh;overflow-y:auto;padding:20px;">
+        <div style="width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 16px;"></div>
+        <div style="text-align:center;font-size:52px;margin-bottom:8px;">${recipe.emoji}</div>
+        <div style="font-size:20px;font-weight:800;color:var(--text);text-align:center;font-family:'Playfair Display',serif;margin-bottom:6px;">${recipe.name}</div>
+        <div style="display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-bottom:16px;">${tagHtml}</div>
+        <div style="display:flex;gap:8px;justify-content:center;margin-bottom:16px;">
+          <div style="text-align:center;background:var(--bg);border-radius:12px;padding:10px 16px;"><div style="font-size:16px;font-weight:800;color:var(--text);">⚡${recipe.time}</div><div style="font-size:10px;color:var(--muted);">min</div></div>
+          <div style="text-align:center;background:var(--bg);border-radius:12px;padding:10px 16px;"><div style="font-size:16px;font-weight:800;color:var(--text);">🔥${recipe.cal}</div><div style="font-size:10px;color:var(--muted);">kcal</div></div>
+          <div style="text-align:center;background:var(--bg);border-radius:12px;padding:10px 16px;"><div style="font-size:16px;font-weight:800;color:var(--text);">${recipe.ingredients.length}</div><div style="font-size:10px;color:var(--muted);">items</div></div>
+        </div>
+        <div style="margin-bottom:14px;">
+          <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Ingredients</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">${ingrHtml}</div>
+        </div>
+        <div style="margin-bottom:20px;">
+          <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">Steps</div>
+          ${stepsHtml}
+        </div>
+        <div style="display:flex;gap:10px;position:sticky;bottom:0;background:var(--card);padding-top:10px;">
+          <button onclick="readRecipeAloud(${recipe.id})" style="flex:1;padding:14px;background:var(--deep);color:white;border:none;border-radius:16px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">🔊 Listen to Recipe</button>
+          <button onclick="closeRecipeSheet()" style="width:52px;padding:14px;background:var(--bg);color:var(--text);border:none;border-radius:16px;font-size:16px;cursor:pointer;">✕</button>
+        </div>
+      </div>`;
+    sheet.style.display = 'flex';
+  }
+  
+  function closeRecipeSheet() {
+    const sheet = document.getElementById('searchRecipeSheet');
+    if (sheet) sheet.style.display = 'none';
+    if (homeSpeechSynth) homeSpeechSynth.cancel();
+  }
+  
+  // ── Audio Recipe Mode ──
+  function readRecipeAloud(recipeId) {
+    if (!speechSynth) { alert('Text-to-speech not supported in your browser.'); return; }
+    speechSynth.cancel();
+  
+    const recipe = RECIPE_DB.find(r => r.id === recipeId);
+    if (!recipe) return;
+  
+    // Show audio overlay
+    let overlay = document.getElementById('audioModeOverlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'audioModeOverlay';
+      document.body.appendChild(overlay);
+    }
+  
+    overlay.innerHTML = `
+      <button onclick="stopAudioMode()" style="position:absolute;top:50px;right:20px;background:rgba(255,255,255,0.15);border:none;color:white;border-radius:12px;padding:8px 14px;cursor:pointer;font-size:13px;">✕ Stop</button>
+      <div style="font-size:48px;margin-bottom:16px;">${recipe.emoji}</div>
+      <div style="font-size:22px;font-weight:800;color:white;text-align:center;font-family:'Playfair Display',serif;margin-bottom:6px;">${recipe.name}</div>
+      <div class="audio-wave" style="margin:20px 0;">
+        <span style="height:20px;"></span><span></span><span></span><span></span><span style="height:20px;"></span>
+      </div>
+      <div id="audioStepNum" style="font-size:12px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Step 1 of ${recipe.steps.length}</div>
+      <div id="audioStepText" style="font-size:15px;color:white;text-align:center;line-height:1.6;max-width:300px;"></div>
+      <div style="display:flex;gap:12px;margin-top:30px;">
+        <button onclick="audioStepBack()" style="padding:12px 20px;background:rgba(255,255,255,0.1);color:white;border:none;border-radius:14px;font-size:14px;cursor:pointer;">← Prev</button>
+        <button onclick="pauseResumeAudio()" id="audioPauseBtn" style="padding:12px 24px;background:var(--coral);color:white;border:none;border-radius:14px;font-size:14px;font-weight:700;cursor:pointer;">⏸ Pause</button>
+        <button onclick="audioStepNext()" style="padding:12px 20px;background:rgba(255,255,255,0.1);color:white;border:none;border-radius:14px;font-size:14px;cursor:pointer;">Next →</button>
+      </div>
+    `;
+    overlay.style.display = 'flex';
+  
+    audioRecipe = recipe;
+    currentAudioStep = 0;
+    readAudioStep();
+  }
+  
+  function readAudioStep() {
+    if (!audioRecipe) return;
+    const step = audioRecipe.steps[currentAudioStep];
+    document.getElementById('audioStepNum').textContent = `Step ${currentAudioStep+1} of ${audioRecipe.steps.length}`;
+    document.getElementById('audioStepText').textContent = step;
+  
+    if (speechSynth) {
+      speechSynth.cancel();
+      const utter = new SpeechSynthesisUtterance(`Step ${currentAudioStep+1}. ${step}`);
+      utter.rate = 0.9;
+      utter.pitch = 1;
+      // Match voice language
+      const langMap = { hi:'hi-IN',te:'te-IN',ta:'ta-IN',kn:'kn-IN',ml:'ml-IN',bn:'bn-IN',mr:'mr-IN',es:'es-ES',fr:'fr-FR',ar:'ar-SA',zh:'zh-CN',pt:'pt-BR',de:'de-DE',en:'en-US' };
+      utter.lang = langMap[window.currentLang || 'en'] || 'en-US';
+      utter.onend = () => {
+        // Auto-advance to next step after 1.5s
+        if (currentAudioStep < audioRecipe.steps.length - 1) {
+          setTimeout(() => { currentAudioStep++; readAudioStep(); }, 1500);
+        } else {
+          document.getElementById('audioStepNum').textContent = '✅ Recipe Complete!';
+        }
+      };
+      speechSynth.speak(utter);
+    }
+  }
+  
+  function audioStepNext() {
+    if (!audioRecipe || currentAudioStep >= audioRecipe.steps.length - 1) return;
+    speechSynth.cancel();
+    currentAudioStep++;
+    readAudioStep();
+  }
+  
+  function audioStepBack() {
+    if (!audioRecipe || currentAudioStep <= 0) return;
+    speechSynth.cancel();
+    currentAudioStep--;
+    readAudioStep();
+  }
+  
+  let audioPaused = false;
+  function pauseResumeAudio() {
+    if (!speechSynth) return;
+    if (audioPaused) { speechSynth.resume(); audioPaused = false; document.getElementById('audioPauseBtn').textContent = '⏸ Pause'; }
+    else { speechSynth.pause(); audioPaused = true; document.getElementById('audioPauseBtn').textContent = '▶ Resume'; }
+  }
+  
+  function stopAudioMode() {
+    if (homeSpeechSynth) homeSpeechSynth.cancel();
+    audioRecipe = null;
+    const overlay = document.getElementById('audioModeOverlay');
+    if (overlay) overlay.style.display = 'none';
+  }
+  
+  function startAudioMode() {
+    // Start with first saved recipe
+    const first = RECIPE_DB.find(r => r.saved) || RECIPE_DB[0];
+    readRecipeAloud(first.id);
+  }
+  
+  function readAllResults() {
+    const results = Array.from(document.querySelectorAll('#resultsGrid .recipe-search-card'));
+    if (!results.length || !speechSynth) return;
+    speechSynth.cancel();
+    const names = RECIPE_DB.filter(r => {
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      return r.name.toLowerCase().includes(q) || r.ingredients.some(i => i.toLowerCase().includes(q));
+    }).map(r => r.name);
+    const utter = new SpeechSynthesisUtterance(`Found ${names.length} recipes: ${names.join(', ')}.`);
+    utter.rate = 0.95;
+    speechSynth.speak(utter);
+  }
+  
+  // Init search when switching to search tab
+  document.addEventListener('DOMContentLoaded', () => { renderRecents(); });
+  
 </script>
 </body>
 </html>
