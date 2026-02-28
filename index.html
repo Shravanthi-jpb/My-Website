@@ -1435,7 +1435,7 @@
     <div class="ob-header">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
         <button class="back-btn dark" onclick="goTo('splash')" style="width:36px;height:36px;background:var(--border);border:none;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">←</button>
-        <div style="flex:1"><div class="progress-bar" style="margin:0;"><div class="progress-fill" style="width:12%"></div></div></div>
+        <div style="flex:1"><div class="progress-bar" style="margin:0;"><div class="progress-fill" style="width:14%"></div></div></div>
       </div>
       <div class="ob-step">Step 1 of 7</div>
       <div class="ob-question">Choose your language 🌍</div>
@@ -1573,7 +1573,7 @@
     <div class="ob-header">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
         <button class="back-btn dark" onclick="goTo('ob0')" style="width:36px;height:36px;background:var(--border);border:none;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">←</button>
-        <div style="flex:1"><div class="progress-bar" style="margin:0;"><div class="progress-fill" style="width:25%"></div></div></div>
+        <div style="flex:1"><div class="progress-bar" style="margin:0;"><div class="progress-fill" style="width:29%"></div></div></div>
       </div>
       <div class="ob-step">Step 2 of 7</div>
       <div class="ob-question" id="t-ob1-q">What should we call you? 👋</div>
@@ -1627,7 +1627,7 @@
     <div class="ob-header">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
         <button class="back-btn dark" onclick="goTo('ob1')" style="width:36px;height:36px;background:var(--border);border:none;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">←</button>
-        <div style="flex:1"><div class="progress-bar" style="margin:0;"><div class="progress-fill" style="width:37%"></div></div></div>
+        <div style="flex:1"><div class="progress-bar" style="margin:0;"><div class="progress-fill" style="width:43%"></div></div></div>
       </div>
       <div class="ob-step">Step 3 of 7</div>
       <div class="ob-question" id="t-ob2-q">Who's eating with you? 🏡</div>
@@ -1686,7 +1686,7 @@
     <div class="ob-header">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
         <button class="back-btn dark" onclick="goTo('ob2')" style="width:36px;height:36px;background:var(--border);border:none;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">←</button>
-        <div style="flex:1"><div class="progress-bar" style="margin:0;"><div class="progress-fill" style="width:50%"></div></div></div>
+        <div style="flex:1"><div class="progress-bar" style="margin:0;"><div class="progress-fill" style="width:57%"></div></div></div>
       </div>
       <div class="ob-step" id="t-ob3-step">Step 4 of 7</div>
       <div class="ob-question" id="t-ob3-q">What does your body love? 🥗</div>
@@ -1726,7 +1726,7 @@
     <div class="ob-header">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
         <button class="back-btn dark" onclick="goTo('ob3')" style="width:36px;height:36px;background:var(--border);border:none;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">←</button>
-        <div style="flex:1"><div class="progress-bar" style="margin:0;"><div class="progress-fill" style="width:62%"></div></div></div>
+        <div style="flex:1"><div class="progress-bar" style="margin:0;"><div class="progress-fill" style="width:71%"></div></div></div>
       </div>
       <div class="ob-step" id="t-ob4-step">Step 5 of 7</div>
       <div class="ob-question" id="t-ob4-q">How does your day usually look? 📅</div>
@@ -1781,18 +1781,77 @@
       </div>
     </div>
     <div class="ob-footer">
-      <button class="btn-primary" style="background:var(--deep);animation:none;" onclick="goTo('ob6')" data-t="continue">Continue →</button>
+      <button class="btn-primary" style="background:var(--deep);animation:none;" onclick="goTo('ob5')" data-t="continue">Continue →</button>
     </div>
   </div>
 
   <!-- ══════════════════════════════════
        SCREEN 6 — ONBOARDING 5: Pantry
   ══════════════════════════════════ -->
-  <div class="screen" id="ob6">
+  <div class="screen" id="ob5">
     <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span>🔋</span></div></div>
     <div class="ob-header">
-      <div class="progress-bar"><div class="progress-fill" style="width:86%"></div></div>
-      <div class="ob-step" id="t-ob6-step">Step 6 of 7</div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+        <button class="back-btn dark" onclick="goTo('ob4')" style="width:36px;height:36px;background:var(--border);border:none;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">←</button>
+        <div style="flex:1"><div class="progress-bar" style="margin:0;"><div class="progress-fill" style="width:86%"></div></div></div>
+      </div>
+      <div class="ob-step" id="t-ob5-step">Step 6 of 7</div>
+      <div class="ob-question" id="t-ob5-q">What's in your kitchen? 🥫</div>
+      <div class="ob-sub" id="t-ob5-s">Tap what you already have — we'll build your plan around it.</div>
+    </div>
+    <div class="scroll-content" style="padding:0 20px 16px;">
+      <div style="display:flex;gap:8px;overflow-x:auto;padding:12px 0 10px;scrollbar-width:none;">
+        <button class="pantry-tab active" data-cat="all" onclick="filterObPantry('all',this)">All</button>
+        <button class="pantry-tab" data-cat="protein" onclick="filterObPantry('protein',this)">🥩 Proteins</button>
+        <button class="pantry-tab" data-cat="veggie" onclick="filterObPantry('veggie',this)">🥦 Veggies</button>
+        <button class="pantry-tab" data-cat="grain" onclick="filterObPantry('grain',this)">🌾 Grains</button>
+        <button class="pantry-tab" data-cat="dairy" onclick="filterObPantry('dairy',this)">🥛 Dairy</button>
+      </div>
+      <div id="obPantryGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding-bottom:8px;">
+        <div class="pantry-card selected" data-cat="protein" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🐟</div><div class="pantry-card-name" data-t="pantry-salmon">Salmon</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card selected" data-cat="protein" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🍗</div><div class="pantry-card-name" data-t="pantry-chicken">Chicken</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card" data-cat="protein" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🥩</div><div class="pantry-card-name" data-t="pantry-beef">Beef</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card" data-cat="protein" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🫘</div><div class="pantry-card-name" data-t="pantry-chickpeas">Chickpeas</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card" data-cat="protein" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🐠</div><div class="pantry-card-name" data-t="pantry-tuna">Tuna</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card selected" data-cat="protein" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🥚</div><div class="pantry-card-name" data-t="pantry-eggs">Eggs</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card selected" data-cat="veggie" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🥬</div><div class="pantry-card-name" data-t="pantry-spinach">Spinach</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card selected" data-cat="veggie" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🥦</div><div class="pantry-card-name" data-t="pantry-broccoli">Broccoli</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card selected" data-cat="veggie" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🍅</div><div class="pantry-card-name" data-t="pantry-tomatoes">Tomatoes</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card selected" data-cat="veggie" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🥕</div><div class="pantry-card-name" data-t="pantry-carrots">Carrots</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card selected" data-cat="veggie" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🧄</div><div class="pantry-card-name" data-t="pantry-garlic">Garlic</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card selected" data-cat="veggie" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🧅</div><div class="pantry-card-name" data-t="pantry-onion">Onion</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card" data-cat="veggie" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🥑</div><div class="pantry-card-name" data-t="pantry-avocado">Avocado</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card" data-cat="veggie" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🌶️</div><div class="pantry-card-name" data-t="pantry-chilli">Chilli</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card" data-cat="veggie" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🍠</div><div class="pantry-card-name" data-t="pantry-sweetpotato">Sweet Potato</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card selected" data-cat="grain" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🌾</div><div class="pantry-card-name" data-t="pantry-rice">Rice</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card" data-cat="grain" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🍝</div><div class="pantry-card-name" data-t="pantry-pasta">Pasta</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card" data-cat="grain" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🍞</div><div class="pantry-card-name" data-t="pantry-bread">Bread</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card" data-cat="grain" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🌿</div><div class="pantry-card-name" data-t="pantry-quinoa">Quinoa</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card" data-cat="grain" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🥣</div><div class="pantry-card-name" data-t="pantry-oats">Oats</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card selected" data-cat="dairy" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🧀</div><div class="pantry-card-name" data-t="pantry-cheese">Cheese</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card selected" data-cat="dairy" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🥛</div><div class="pantry-card-name" data-t="pantry-milk">Milk</div><div class="pantry-card-check">✓</div></div>
+        <div class="pantry-card selected" data-cat="dairy" onclick="togglePantryCard(this)"><div class="pantry-card-emoji">🍶</div><div class="pantry-card-name" data-t="pantry-yogurt">Yogurt</div><div class="pantry-card-check">✓</div></div>
+      </div>
+      <div style="margin-top:12px;text-align:center;padding:10px;background:var(--card);border-radius:14px;">
+        <div style="font-size:13px;color:var(--muted);" id="obPantryCount">12 ingredients selected</div>
+      </div>
+    </div>
+    <div class="ob-footer">
+      <button class="btn-primary" style="background:var(--deep);animation:none;" onclick="syncObPantryToMain();goTo('ob6')" data-t="continue">Continue →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       SCREEN 7 — ONBOARDING 6: Cuisine
+  ══════════════════════════════════ -->
+  <div class="screen" id="ob6">
+    <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span>🔋</span></div></div>
+        <div class="ob-header">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+        <button class="back-btn dark" onclick="goTo('ob5')" style="width:36px;height:36px;background:var(--border);border:none;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">←</button>
+        <div style="flex:1"><div class="progress-bar" style="margin:0;"><div class="progress-fill" style="width:100%"></div></div></div>
+      </div>
+      <div class="ob-step" id="t-ob6-step">Step 7 of 7</div>
       <div class="ob-question" id="cuisineQuestion">What cuisines do you love? 🌍</div>
       <div class="ob-sub" id="cuisineSub">We'll suggest meals that actually excite you. Pick all you love!</div>
     </div>
@@ -2165,7 +2224,6 @@
   <div class="bottom-nav">
       <div class="nav-item active" onclick="switchTab('home',this)"><div class="nav-icon">🏠</div><div class="nav-label" id="t-nav-home">Home</div></div>
       <div class="nav-item" onclick="goTo('nutrition');switchTab('nutrition',this)"><div class="nav-icon">📊</div><div class="nav-label" id="t-nav-nut">Nutrition</div></div>
-      <div class="nav-item" onclick="goTo('pantry');switchTab('pantry',this)"><div class="nav-icon">🥫</div><div class="nav-label" id="t-nav-pantry">Pantry</div></div>
       <div class="nav-item" onclick="goTo('shopping');switchTab('shopping',this)"><div class="nav-icon">🛒</div><div class="nav-label" id="t-nav-shop">Shopping</div></div>
       <div class="nav-item" onclick="goTo('profile');switchTab('profile',this)"><div class="nav-icon">👤</div><div class="nav-label" id="t-nav-prof">Profile</div></div>
     </div>
@@ -2291,7 +2349,6 @@
     <div class="bottom-nav">
       <div class="nav-item" onclick="goTo('home');switchTab('home',this)"><div class="nav-icon">🏠</div><div class="nav-label">Home</div></div>
       <div class="nav-item" onclick="goTo('nutrition');switchTab('nutrition',this)"><div class="nav-icon">📊</div><div class="nav-label">Nutrition</div></div>
-      <div class="nav-item" onclick="goTo('pantry');switchTab('pantry',this)"><div class="nav-icon">🥫</div><div class="nav-label">Pantry</div></div>
       <div class="nav-item" onclick="goTo('shopping');switchTab('shopping',this)"><div class="nav-icon">🛒</div><div class="nav-label">Shopping</div></div>
       <div class="nav-item" onclick="goTo('profile');switchTab('profile',this)"><div class="nav-icon">👤</div><div class="nav-label">Profile</div></div>
     </div>
@@ -7167,6 +7224,34 @@
   // Init search when switching to search tab
   document.addEventListener('DOMContentLoaded', () => { renderRecents(); });
   
+
+  function filterObPantry(cat, el) {
+    document.querySelectorAll('#ob5 .pantry-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelectorAll('#obPantryGrid .pantry-card').forEach(card => {
+      card.style.display = (cat === 'all' || card.dataset.cat === cat) ? 'flex' : 'none';
+    });
+  }
+
+  function syncObPantryToMain() {
+    // Sync ob5 selections → main pantry screen so they stay in sync
+    const obCards = document.querySelectorAll('#obPantryGrid .pantry-card');
+    const mainCards = document.querySelectorAll('#pantryGrid .pantry-card');
+    obCards.forEach((obCard, i) => {
+      if (mainCards[i]) {
+        if (obCard.classList.contains('selected')) {
+          mainCards[i].classList.add('selected');
+        } else {
+          mainCards[i].classList.remove('selected');
+        }
+      }
+    });
+    // Update obPantryCount
+    const sel = document.querySelectorAll('#obPantryGrid .pantry-card.selected').length;
+    const el = document.getElementById('obPantryCount');
+    if (el) el.textContent = sel + ' ingredients selected';
+  }
+
 </script>
 </body>
 </html>
