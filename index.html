@@ -2160,13 +2160,30 @@
   <!-- ══════════════════════════════════
        SEARCH SCREEN
   ══════════════════════════════════ -->
+  
+
+  <div class="bottom-nav">
+      <div class="nav-item active" onclick="switchTab('home',this)"><div class="nav-icon">🏠</div><div class="nav-label" id="t-nav-home">Home</div></div>
+      <div class="nav-item" onclick="goTo('nutrition');switchTab('nutrition',this)"><div class="nav-icon">📊</div><div class="nav-label" id="t-nav-nut">Nutrition</div></div>
+      <div class="nav-item" onclick="goTo('pantry');switchTab('pantry',this)"><div class="nav-icon">🥫</div><div class="nav-label" id="t-nav-pantry">Pantry</div></div>
+      <div class="nav-item" onclick="goTo('shopping');switchTab('shopping',this)"><div class="nav-icon">🛒</div><div class="nav-label" id="t-nav-shop">Shopping</div></div>
+      <div class="nav-item" onclick="goTo('profile');switchTab('profile',this)"><div class="nav-icon">👤</div><div class="nav-label" id="t-nav-prof">Profile</div></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       SEARCH SCREEN
+  ══════════════════════════════════ -->
   <div class="screen" id="search">
     <div class="status-bar"><span class="status-time">9:41</span><div class="status-icons"><span>🔋</span></div></div>
 
     <!-- Header -->
-    <div style="padding:16px 20px 0;flex-shrink:0;">
-      <div style="font-size:22px;font-weight:800;color:var(--text);font-family:'Playfair Display',serif;" id="t-search-title">Search Recipes</div>
-      <div style="font-size:12px;color:var(--muted);margin-top:2px;" id="t-search-sub">Voice, text or browse your pantry</div>
+    <div style="padding:14px 20px 0;flex-shrink:0;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px;">
+        <button onclick="goTo('home');switchTab('home',document.querySelector('.nav-item'))" style="width:34px;height:34px;background:var(--card);border:1.5px solid var(--border);border-radius:12px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">←</button>
+        <div style="font-size:20px;font-weight:800;color:var(--text);font-family:'Playfair Display',serif;" id="t-search-title">Search Recipes</div>
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:2px;" id="t-search-sub">Type, tap a chip, or use voice 🎙️</div>
     </div>
 
     <!-- Search Bar -->
@@ -2218,32 +2235,36 @@
     <!-- Scrollable content -->
     <div class="scroll-content" style="padding:16px 20px;" id="searchContent">
 
-      <!-- Default view: featured recipes grid + voice prompt -->
+      <!-- Default view: browse + recipes list -->
       <div id="searchDefault">
 
-        <!-- Voice invite banner -->
-        <div style="background:linear-gradient(135deg,var(--deep),var(--deep2));border-radius:20px;padding:18px 20px;margin-bottom:18px;display:flex;align-items:center;gap:14px;cursor:pointer;" onclick="toggleVoiceSearch()">
-          <div style="width:52px;height:52px;background:rgba(var(--coral-rgb,255,107,74),0.2);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;">🎙️</div>
+        <!-- Voice banner -->
+        <div style="background:linear-gradient(135deg,var(--deep),var(--deep2));border-radius:18px;padding:14px 18px;margin-bottom:14px;display:flex;align-items:center;gap:12px;cursor:pointer;" onclick="toggleVoiceSearch()">
+          <div style="width:44px;height:44px;background:rgba(255,107,74,0.2);border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🎙️</div>
           <div style="flex:1;">
-            <div style="font-size:14px;font-weight:800;color:white;margin-bottom:3px;" id="t-voice-invite">Try Voice Search</div>
-            <div style="font-size:12px;color:rgba(255,255,255,0.65);line-height:1.5;" id="t-voice-invite-sub">Say "salmon recipe" or "quick vegetarian dinner" in your language</div>
+            <div style="font-size:13px;font-weight:800;color:white;margin-bottom:2px;" id="t-voice-invite">Try Voice Search</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.6);" id="t-voice-invite-sub">Say a recipe or ingredient name</div>
           </div>
-          <div id="searchMicAnim" style="width:36px;height:36px;background:var(--coral);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🎤</div>
+          <div style="background:var(--coral);border-radius:10px;padding:8px 12px;font-size:11px;font-weight:700;color:white;flex-shrink:0;">🎤 Speak</div>
         </div>
 
-        <!-- Quick filter suggestion chips -->
-        <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:18px;scrollbar-width:none;">
-          <button class="suggest-chip" onclick="doSearch('high protein')">💪 High Protein</button>
-          <button class="suggest-chip" onclick="doSearch('vegetarian')">🥦 Vegetarian</button>
+        <!-- Quick chips -->
+        <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:16px;scrollbar-width:none;">
           <button class="suggest-chip" onclick="doSearch('quick')">⚡ Quick</button>
+          <button class="suggest-chip" onclick="doSearch('high protein')">💪 Protein</button>
+          <button class="suggest-chip" onclick="doSearch('vegetarian')">🥦 Veggie</button>
+          <button class="suggest-chip" onclick="doSearch('vegan')">🌱 Vegan</button>
           <button class="suggest-chip" onclick="doSearch('kid')">🧒 Kids</button>
-          <button class="suggest-chip" onclick="doSearch('salmon')">🐟 Salmon</button>
-          <button class="suggest-chip" onclick="doSearch('pasta')">🍝 Pasta</button>
+          <button class="suggest-chip" onclick="doSearch('no cook')">🥗 No Cook</button>
+          <button class="suggest-chip" onclick="doSearch('gluten')">🌾 Gluten-Free</button>
         </div>
 
-        <!-- Featured recipes -->
-        <div style="font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;" id="t-featured-recipes">Featured Recipes</div>
-        <div id="featuredRecipeGrid" style="display:flex;flex-direction:column;gap:12px;"></div>
+        <!-- All recipes label + count -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <div style="font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;" id="t-featured-recipes">All Recipes</div>
+          <div id="recipeCountBadge" style="font-size:11px;color:var(--coral);font-weight:700;background:rgba(255,107,74,0.1);padding:3px 8px;border-radius:8px;"></div>
+        </div>
+        <div id="featuredRecipeGrid" style="display:flex;flex-direction:column;gap:10px;"></div>
 
       </div>
 
@@ -2266,14 +2287,13 @@
         <div style="font-size:13px;color:var(--muted);" id="t-try-voice">Try voice search or a different keyword</div>
       </div>
     </div>
-  </div>
 
-  <div class="bottom-nav">
-      <div class="nav-item active" onclick="switchTab('home',this)"><div class="nav-icon">🏠</div><div class="nav-label" id="t-nav-home">Home</div></div>
-      <div class="nav-item" onclick="goTo('nutrition');switchTab('nutrition',this)"><div class="nav-icon">📊</div><div class="nav-label" id="t-nav-nut">Nutrition</div></div>
-      <div class="nav-item" onclick="goTo('pantry');switchTab('pantry',this)"><div class="nav-icon">🥫</div><div class="nav-label" id="t-nav-pantry">Pantry</div></div>
-      <div class="nav-item" onclick="goTo('shopping');switchTab('shopping',this)"><div class="nav-icon">🛒</div><div class="nav-label" id="t-nav-shop">Shopping</div></div>
-      <div class="nav-item" onclick="goTo('profile');switchTab('profile',this)"><div class="nav-icon">👤</div><div class="nav-label" id="t-nav-prof">Profile</div></div>
+    <div class="bottom-nav">
+      <div class="nav-item" onclick="goTo('home');switchTab('home',this)"><div class="nav-icon">🏠</div><div class="nav-label">Home</div></div>
+      <div class="nav-item" onclick="goTo('nutrition');switchTab('nutrition',this)"><div class="nav-icon">📊</div><div class="nav-label">Nutrition</div></div>
+      <div class="nav-item" onclick="goTo('pantry');switchTab('pantry',this)"><div class="nav-icon">🥫</div><div class="nav-label">Pantry</div></div>
+      <div class="nav-item" onclick="goTo('shopping');switchTab('shopping',this)"><div class="nav-icon">🛒</div><div class="nav-label">Shopping</div></div>
+      <div class="nav-item" onclick="goTo('profile');switchTab('profile',this)"><div class="nav-icon">👤</div><div class="nav-label">Profile</div></div>
     </div>
   </div>
 
@@ -6734,7 +6754,43 @@
       steps:['Marinate beef in soy sauce and sesame oil 10 minutes.','Stir-fry beef in hot wok 3 minutes, set aside.','Stir-fry vegetables 4 minutes until crisp-tender.','Combine, add sauce, toss and serve over rice.'] },
     { id:12, name:'Chickpea Curry', emoji:'🍛', time:25, cal:360, tags:['Vegan','High Protein'], cats:['all','pantry'], saved:true, kids:false,
       ingredients:['Chickpeas','Tomatoes','Onion','Garlic','Garam masala','Coconut milk'],
-      steps:['Fry onion and garlic until golden.','Add garam masala and cook 1 minute.','Add tomatoes and chickpeas, simmer 15 minutes.','Stir in coconut milk, serve with rice or bread.'] },
+      steps:['Fry onion and garlic until golden.','Add garam masala and cook 1 minute.','Add tomatoes and chickpeas, simmer 15 minutes.','Stir in coconut milk, serve with rice or bread.'] },,
+    { id:13, name:'Egg Fried Rice', emoji:'🍳', time:15, cal:420, tags:['Quick','Vegetarian'], cats:['all','quick','pantry'], saved:false, kids:true,
+      ingredients:['Rice','Eggs','Soy sauce','Garlic','Spring onion','Sesame oil'],
+      steps:['Cook rice ahead and let it cool (or use leftover rice).','Beat eggs and scramble in hot oiled pan, set aside.','Fry garlic 30 seconds, add rice and stir-fry 3 minutes.','Add soy sauce, eggs back in, toss well and garnish with spring onion.'] },
+    { id:14, name:'Greek Salad Bowl', emoji:'🥗', time:10, cal:280, tags:['Vegetarian','No Cook','Gluten-Free'], cats:['all','quick','saved'], saved:true, kids:false,
+      ingredients:['Cucumber','Tomatoes','Olives','Feta cheese','Red onion','Olive oil','Oregano'],
+      steps:['Chop cucumber, tomatoes and red onion into chunks.','Add olives and crumbled feta.','Drizzle with olive oil and sprinkle oregano.','Toss gently and serve immediately.'] },
+    { id:15, name:'Banana Oat Pancakes', emoji:'🥞', time:20, cal:310, tags:['Vegetarian','Kid-Friendly'], cats:['all','quick','kids'], saved:false, kids:true,
+      ingredients:['Oats','Banana','Eggs','Milk','Honey','Cinnamon'],
+      steps:['Blend oats into flour in a blender.','Mash banana and mix with eggs, milk and cinnamon.','Combine with oat flour to form a batter.','Cook small pancakes 2 min each side, drizzle with honey.'] },
+    { id:16, name:'Paneer Tikka Bowl', emoji:'🧀', time:25, cal:460, tags:['Vegetarian','High Protein'], cats:['all','pantry'], saved:false, kids:false,
+      ingredients:['Paneer','Yogurt','Tomatoes','Onion','Bell pepper','Garam masala','Rice'],
+      steps:['Cube paneer and marinate in spiced yogurt 15 mins.','Grill or pan-fry paneer until golden on each side.','Sauté onion, peppers and tomatoes with garam masala.','Serve paneer and sauce over steamed rice.'] },
+    { id:17, name:'Mango Smoothie Bowl', emoji:'🥭', time:5, cal:240, tags:['Vegan','No Cook','Quick'], cats:['all','quick','kids'], saved:true, kids:true,
+      ingredients:['Mango','Banana','Coconut milk','Granola','Chia seeds','Berries'],
+      steps:['Blend frozen mango and banana with coconut milk until thick.','Pour into a bowl — it should be thick enough to hold toppings.','Top with granola, chia seeds and fresh berries.','Serve immediately before it melts.'] },
+    { id:18, name:'Mushroom Stir Fry', emoji:'🍄', time:15, cal:230, tags:['Vegan','Quick','Gluten-Free'], cats:['all','quick','pantry'], saved:false, kids:false,
+      ingredients:['Mushrooms','Garlic','Soy sauce','Sesame oil','Spring onion','Chilli'],
+      steps:['Slice mushrooms thickly and mince garlic.','Heat sesame oil in wok on high heat.','Stir-fry garlic 30 seconds, add mushrooms and cook 4 minutes.','Add soy sauce and chilli, toss well and garnish with spring onion.'] },
+    { id:19, name:'Overnight Oats', emoji:'🥣', time:5, cal:350, tags:['Vegetarian','No Cook','High Protein'], cats:['all','quick','saved'], saved:true, kids:true,
+      ingredients:['Oats','Milk','Yogurt','Honey','Chia seeds','Berries'],
+      steps:['Mix oats, milk, yogurt and chia seeds in a jar.','Sweeten with honey and stir well.','Cover and refrigerate overnight (minimum 4 hours).','Top with fresh berries in the morning and enjoy cold.'] },
+    { id:20, name:'Prawn Garlic Butter', emoji:'🦐', time:12, cal:390, tags:['High Protein','Gluten-Free','Quick'], cats:['all','quick'], saved:false, kids:false,
+      ingredients:['Prawns','Garlic','Butter','Lemon','Parsley','Chilli flakes'],
+      steps:['Peel and devein prawns, pat them dry.','Melt butter in pan over high heat, add garlic and chilli.','Add prawns and cook 2 minutes each side until pink.','Squeeze lemon, sprinkle parsley and serve immediately.'] },
+    { id:21, name:'Veggie Wrap', emoji:'🌯', time:10, cal:320, tags:['Vegetarian','Quick','Kid-Friendly'], cats:['all','quick','kids'], saved:false, kids:true,
+      ingredients:['Tortilla wrap','Avocado','Spinach','Tomatoes','Cheese','Hummus'],
+      steps:['Spread hummus generously over the tortilla.','Layer spinach, sliced avocado, tomatoes and cheese.','Roll tightly, tucking in the sides as you go.','Slice diagonally and serve fresh.'] },
+    { id:22, name:'Dal Tadka', emoji:'🫘', time:30, cal:380, tags:['Vegan','High Protein','Gluten-Free'], cats:['all','pantry'], saved:false, kids:true,
+      ingredients:['Yellow lentils','Onion','Tomatoes','Garlic','Cumin','Turmeric','Ghee'],
+      steps:['Boil lentils with turmeric until soft, about 20 minutes.','Fry onions golden in ghee, add garlic and cumin seeds.','Add tomatoes and cook until mushy, 5 minutes.','Pour tadka over cooked dal, stir and serve with rice.'] },
+    { id:23, name:'Caprese Salad', emoji:'🍅', time:5, cal:200, tags:['Vegetarian','No Cook','Quick'], cats:['all','quick'], saved:false, kids:false,
+      ingredients:['Tomatoes','Fresh mozzarella','Basil','Olive oil','Balsamic glaze','Salt'],
+      steps:['Slice tomatoes and mozzarella into even rounds.','Alternate tomato and mozzarella slices on plate.','Tuck fresh basil leaves between slices.','Drizzle olive oil and balsamic glaze, season and serve.'] },
+    { id:24, name:'Chicken Soup', emoji:'🍲', time:35, cal:290, tags:['High Protein','Gluten-Free'], cats:['all','pantry'], saved:true, kids:true,
+      ingredients:['Chicken breast','Carrots','Celery','Onion','Garlic','Broth','Parsley'],
+      steps:['Simmer chicken in broth with garlic and onion 20 minutes.','Remove chicken, shred with two forks and return to pot.','Add chopped carrots and celery, cook 10 more minutes.','Season well, ladle into bowls and garnish with parsley.'] }
   ];
   
   const TRENDING = [1, 4, 7, 12]; // IDs of trending recipes
@@ -6748,12 +6804,11 @@
   
   // ── Build trending cards on search screen open ──
   function initSearchScreen() {
-    const container = document.getElementById('trendingCards');
-    if (!container || container.children.length > 0) return;
-    TRENDING.forEach(id => {
-      const r = RECIPE_DB.find(x => x.id === id);
-      if (r) container.appendChild(buildRecipeCard(r, true));
-    });
+    // Clear input
+    const inp = document.getElementById('searchInput');
+    if (inp) inp.value = '';
+    // Show default view with all recipes
+    showDefault();
   }
   
   // ── Build a recipe card element ──
@@ -6836,21 +6891,24 @@
   }
   
   function showDefault() {
-    document.getElementById('searchDefault').style.display = 'block';
-    document.getElementById('searchResults').style.display = 'none';
-    document.getElementById('searchNoResults').style.display = 'none';
-    document.getElementById('searchInput').value = '';
+    const def = document.getElementById('searchDefault');
+    const res = document.getElementById('searchResults');
+    const none = document.getElementById('searchNoResults');
+    if (def) def.style.display = 'block';
+    if (res) res.style.display = 'none';
+    if (none) none.style.display = 'none';
     populateFeaturedRecipes();
   }
 
   function populateFeaturedRecipes() {
-    const grid = document.getElementById('featuredRecipeGrid');
-    if (!grid || grid.children.length > 0) return; // already populated
-    const t = window._currentTR || {};
-    RECIPE_DB.forEach(r => {
-      const card = buildRecipeCard(r);
-      grid.appendChild(card);
-    });
+    try {
+      const grid = document.getElementById('featuredRecipeGrid');
+      if (!grid) return;
+      grid.innerHTML = '';
+      RECIPE_DB.forEach(function(r) { grid.appendChild(buildRecipeCard(r)); });
+      const badge = document.getElementById('recipeCountBadge');
+      if (badge) badge.textContent = RECIPE_DB.length + ' recipes';
+    } catch(e) { console.warn('populateFeaturedRecipes error:', e); }
   }
   
   function setSearchFilter(filter, btn) {
